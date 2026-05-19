@@ -35,7 +35,7 @@
             line-height: 1.6;
             color: #333;
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
-            padding: 20px;
+            padding: 10px;
             min-height: 100vh;
         }
 
@@ -45,7 +45,6 @@
             background: white;
             border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
         }
 
         /* ===== LOGIN OVERLAY ===== */
@@ -333,7 +332,7 @@
         .config-panels {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
+            gap: 12px;
         }
 
         .config-panel {
@@ -507,86 +506,37 @@
             gap: 10px;
         }
 
-        /* ===== AREAS TAB BAR ===== */
-        .areas-tabs {
-            display: flex;
-            gap: 0;
-            padding: 0 30px;
-            border-bottom: 2px solid #dee2e6;
-        }
-
-        .area-tab {
-            padding: 14px 24px;
-            background: none;
-            border: none;
-            border-bottom: 3px solid transparent;
-            font-family: inherit;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #868e96;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            white-space: nowrap;
-            position: relative;
-            bottom: -2px;
-        }
-
-        .area-tab:hover {
-            color: #495057;
-            background: #f8f9fa;
-        }
-
-        .area-tab.active {
-            color: #3b5bdb;
-            border-bottom-color: #3b5bdb;
-        }
-
-        .area-tab i {
-            font-size: 1rem;
-        }
-
         /* ===== AREAS CONTAINER ===== */
         .areas-container {
-            display: none;
-            gap: 25px;
-            padding: 30px;
-        }
-
-        .areas-container.active {
-            display: block;
-        }
-
-        .areas-container.show-all {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            padding: 30px;
-        }
-
-        .areas-container.show-all .area-card {
-            /* override hover for grid view */
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 15px;
+            padding: 20px;
+            align-items: flex-start;
+            width: 100%;
         }
 
         .area-card {
             background: white;
             border-radius: 12px;
-            overflow: hidden;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             border: 1px solid #e0e0e0;
+            width: calc((100% - 30px) / 3);
+            flex-shrink: 1;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            overflow: hidden;
         }
 
-        .area-header { color: white; padding: 20px 25px; text-align: center; }
+        .area-header { color: white; padding: 14px 18px; text-align: center; }
         .socio-header { background: linear-gradient(to right, #2c3e50, #4a6491); }
         .artistico-header { background: linear-gradient(to right, #d6336c, #e64980); }
         .tecnologico-header { background: linear-gradient(to right, #0c8599, #1098ad); }
         .orientacion-header { background: linear-gradient(to right, #6f42c1, #8a63d2); }
 
         .area-title {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
+            font-size: 1.4rem;
+            margin-bottom: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -594,11 +544,11 @@
         }
 
         .department-list {
-            padding: 20px;
+            padding: 10px;
         }
 
         .department {
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             border: 1px solid #e0e0e0;
             border-radius: 10px;
             overflow: hidden;
@@ -606,14 +556,15 @@
 
         .department-header {
             background: #f8f9fa;
-            padding: 12px 15px;
+            padding: 8px 12px;
             font-weight: 700;
             color: #495057;
             border-bottom: 1px solid #e0e0e0;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
+            gap: 6px;
+            flex-wrap: wrap;
         }
 
         .department-header-left {
@@ -628,10 +579,10 @@
         }
 
         .dept-action-btn {
-            padding: 4px 10px;
+            padding: 3px 8px;
             border: none;
             border-radius: 6px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.2s;
@@ -659,30 +610,36 @@
             background: #ffd9dd;
         }
 
-        .department-content { padding: 15px; }
+        .department-content { padding: 10px; overflow-x: auto; }
 
-        table { width: 100%; border-collapse: collapse; }
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; min-width: 0; }
 
         th {
             background: #f1f3f5;
-            padding: 12px;
+            padding: 8px 6px;
             text-align: left;
             font-weight: 600;
             color: #495057;
             border-bottom: 2px solid #e0e0e0;
+            font-size: 0.82rem;
+            white-space: nowrap;
         }
 
-        td { padding: 10px 12px; border-bottom: 1px solid #e0e0e0; }
+        td { padding: 6px; border-bottom: 1px solid #e0e0e0; font-size: 0.88rem; }
         tr:last-child td { border-bottom: none; }
 
         input[type="text"] {
             width: 100%;
-            padding: 8px 10px;
+            padding: 6px 8px;
             border: 1px solid #dee2e6;
             border-radius: 6px;
             font-family: inherit;
-            font-size: 0.95rem;
+            font-size: 0.88rem;
             transition: border 0.3s;
+            min-width: 0;
+            box-sizing: border-box;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         input[type="text"]:focus {
@@ -741,27 +698,27 @@
 
         .summary-card {
             background: #f8f9fa;
-            padding: 25px;
+            padding: 12px;
             border-top: 1px solid #e0e0e0;
         }
 
         .summary-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            gap: 8px;
         }
 
         .summary-item {
             background: white;
-            padding: 15px;
+            padding: 8px;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
-        .summary-item h3 { font-size: 1.1rem; margin-bottom: 10px; color: #495057; }
+        .summary-item h3 { font-size: 0.85rem; margin-bottom: 4px; color: #495057; }
 
         .summary-value {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #3b5bdb;
         }
@@ -1237,10 +1194,8 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .areas-tabs { padding: 0 15px; overflow-x: auto; }
-            .area-tab { padding: 10px 14px; font-size: 0.82rem; }
+            .areas-container { flex-direction: column; }
             .area-title { font-size: 1.5rem; }
-            .areas-container.show-all { grid-template-columns: 1fr; }
             .summary-grid { grid-template-columns: 1fr; }
             .otras-grid, .resumen-grid { grid-template-columns: 1fr; }
             .resumen-item.total { grid-column: span 1; }
@@ -1277,28 +1232,13 @@
 
             .header-right { display: none !important; }
 
-            .areas-tabs { display: none !important; }
-
-            /* Show all areas in 3-column grid for printing */
-            #areasAllView {
-                display: grid !important;
-                grid-template-columns: repeat(3, 1fr) !important;
+            .areas-container {
+                display: flex !important;
                 padding: 10px;
                 gap: 15px;
             }
 
-            #areasSingleView {
-                display: none !important;
-            }
-
-            #areasPrintView {
-                display: grid !important;
-                grid-template-columns: repeat(3, 1fr) !important;
-                padding: 10px;
-                gap: 15px;
-            }
-
-            .area-card { box-shadow: none; border: 1px solid #ddd; margin-bottom: 10px; page-break-inside: avoid; }
+            .area-card { flex: 1 1 0% !important; box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
             .department-list { padding: 10px; max-height: none; overflow: visible; }
             .summary-card { padding: 15px; }
             .resumen-general { padding: 20px; }
@@ -1381,37 +1321,30 @@
             </div>
             <div class="config-body" id="configBody">
                 <div class="config-panels">
-                    <!-- Panel Datos -->
-                    <div class="config-panel">
-                        <div class="config-panel-title"><i class="fas fa-database"></i> Datos</div>
-                        <div class="config-panel-body">
-                            <button class="config-btn config-btn-primary" id="saveBtn"><i class="fas fa-save"></i> Guardar Datos</button>
-                            <button class="config-btn config-btn-export" id="exportBtn"><i class="fas fa-file-export"></i> Exportar Datos</button>
-                            <button class="config-btn config-btn-import" id="importBtn"><i class="fas fa-file-import"></i> Importar Datos JSON</button>
-                            <input type="file" id="fileInput" class="file-input" accept=".json">
-                        </div>
-                    </div>
-
-                    <!-- Panel Nube -->
-                    <div class="config-panel">
-                        <div class="config-panel-title"><i class="fas fa-cloud"></i> Nube</div>
-                        <div class="config-panel-body">
-                            <p style="font-size:0.82rem;color:#868e96;margin:0;">La sincronización con Firebase es automática. Cada cambio se guarda y se reciben actualizaciones de otros usuarios en tiempo real.</p>
-                            <button class="config-btn config-btn-load" id="restoreFirebaseBtn"><i class="fas fa-cloud-download-alt"></i> Restaurar desde Firebase</button>
-                        </div>
-                    </div>
-
                     <!-- Panel Profesorado -->
-                    <div class="config-panel">
+                    <div class="config-panel" style="grid-column: span 2;">
                         <div class="config-panel-title"><i class="fas fa-chalkboard-teacher"></i> Profesorado</div>
                         <div class="config-panel-body">
                             <div class="new-course-row" id="addTeacherRow">
                                 <input type="text" id="newTeacherName" placeholder="Nombre del profesor/a" style="flex:1;padding:8px 12px;border:1px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:0.85rem;">
-                                <select id="newTeacherDept" style="padding:8px;border-radius:8px;border:1px solid #dee2e6;font-family:inherit;font-size:0.85rem;max-width:200px;"></select>
+                                <select id="newTeacherDept" style="padding:8px;border-radius:8px;border:1px solid #dee2e6;font-family:inherit;font-size:0.85rem;min-width:160px;"></select>
                                 <button id="addTeacherBtn" style="padding:8px 14px;background:#4dabf7;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;white-space:nowrap;"><i class="fas fa-plus"></i> Añadir</button>
                             </div>
                             <button class="config-btn config-btn-import" id="importExcelBtn"><i class="fas fa-file-excel"></i> Importar profesorado (Excel)</button>
                             <input type="file" id="excelFileInput" class="file-input" accept=".xlsx,.xls">
+                        </div>
+                    </div>
+
+                    <!-- Panel Datos -->
+                    <div class="config-panel">
+                        <div class="config-panel-title"><i class="fas fa-database"></i> Datos</div>
+                        <div class="config-panel-body">
+                            <button class="config-btn config-btn-primary" id="saveBtn"><i class="fas fa-save"></i> Guardar</button>
+                            <button class="config-btn config-btn-export" id="exportBtn"><i class="fas fa-file-export"></i> Exportar JSON</button>
+                            <button class="config-btn config-btn-import" id="importBtn"><i class="fas fa-file-import"></i> Importar JSON</button>
+                            <input type="file" id="fileInput" class="file-input" accept=".json">
+                            <button class="config-btn config-btn-secondary" id="resetBtn"><i class="fas fa-redo"></i> Reiniciar Datos</button>
+                            <button class="config-btn config-btn-print" id="printBtn"><i class="fas fa-print"></i> Imprimir en A3</button>
                         </div>
                     </div>
 
@@ -1426,29 +1359,29 @@
                         </div>
                     </div>
 
+                    <!-- Panel Nube -->
+                    <div class="config-panel">
+                        <div class="config-panel-title"><i class="fas fa-cloud"></i> Nube</div>
+                        <div class="config-panel-body">
+                            <p style="font-size:0.82rem;color:#868e96;margin:0;">Sincronización automática con Firebase. Los cambios se guardan y se reciben en tiempo real.</p>
+                            <button class="config-btn config-btn-load" id="restoreFirebaseBtn"><i class="fas fa-cloud-download-alt"></i> Restaurar desde Firebase</button>
+                        </div>
+                    </div>
+
                     <!-- Panel Usuarios (admin only) -->
-                    <div class="config-panel" id="usersPanel" style="display:none;">
+                    <div class="config-panel" id="usersPanel" style="display:none; grid-column: 1 / -1;">
                         <div class="config-panel-title"><i class="fas fa-users-cog"></i> Gestión de Usuarios</div>
                         <div class="config-panel-body" id="usersPanelBody">
-                            <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
-                                <input type="text" id="newUserName" placeholder="Nombre completo" style="flex:1;padding:8px 12px;border:1px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:0.85rem;">
-                                <input type="text" id="newUserUsername" placeholder="Usuario" style="width:110px;padding:8px 12px;border:1px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:0.85rem;">
-                                <input type="password" id="newUserPass" placeholder="Contraseña" style="width:110px;padding:8px 12px;border:1px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:0.85rem;">
+                            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                                <input type="text" id="newUserName" placeholder="Nombre completo" style="flex:1;min-width:120px;padding:8px 12px;border:1px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:0.85rem;">
+                                <input type="text" id="newUserUsername" placeholder="Usuario" style="width:100px;padding:8px 12px;border:1px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:0.85rem;">
+                                <input type="password" id="newUserPass" placeholder="Contraseña" style="width:100px;padding:8px 12px;border:1px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:0.85rem;">
                                 <select id="newUserRole" style="padding:8px;border-radius:8px;border:1px solid #dee2e6;font-family:inherit;font-size:0.85rem;">
                                     <option value="user">Usuario</option>
                                     <option value="admin">Admin</option>
                                 </select>
                                 <button id="addUserBtn" style="padding:8px 14px;background:#4dabf7;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;white-space:nowrap;"><i class="fas fa-plus"></i> Añadir</button>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Panel Otros -->
-                    <div class="config-panel">
-                        <div class="config-panel-title"><i class="fas fa-ellipsis-h"></i> Otros</div>
-                        <div class="config-panel-body">
-                            <button class="config-btn config-btn-secondary" id="resetBtn"><i class="fas fa-redo"></i> Reiniciar Datos</button>
-                            <button class="config-btn config-btn-print" id="printBtn"><i class="fas fa-print"></i> Imprimir en A3</button>
                         </div>
                     </div>
                 </div>
@@ -1474,13 +1407,8 @@
             </div>
         </div>
 
-        <!-- Areas Tab Bar -->
-        <div class="areas-tabs" id="areasTabs">
-            <!-- Rendered dynamically -->
-        </div>
-
-        <!-- Areas Containers (one per area tab + "all") -->
-        <div id="areasWrapper">
+        <!-- Areas (3 columns) -->
+        <div class="areas-container" id="areasWrapper">
             <!-- Rendered dynamically -->
         </div>
 
@@ -1601,6 +1529,10 @@
     // Data model
     let equipoDirectivo = null;
     let data = null;
+
+    // Global pool of imported teachers, organized by area.dept
+    // { 'socio.lengua': ['García López, Ana', 'Fernández Ruiz, Pedro'], ... }
+    let teacherPool = {};
 
     // Department metadata (icon, display name)
     const AREA_META = {
@@ -1789,9 +1721,17 @@
 
         // === ATTEMPT 1: Firestore ===
         try {
-            const usersSnapshot = await db.collection('users').get();
+            // Add timeout to prevent Firestore from hanging indefinitely
+            const firestorePromise = db.collection('users').get();
+            const timeoutPromise = new Promise(function(resolve) {
+                setTimeout(function() { resolve(null); }, 5000);
+            });
+            const usersSnapshot = await Promise.race([firestorePromise, timeoutPromise]);
 
-            if (usersSnapshot.empty) {
+            if (!usersSnapshot) {
+                // Firestore timed out, fall through to local
+                console.warn('Firestore login timed out after 5s, using local fallback');
+            } else if (usersSnapshot.empty) {
                 // First user ever in Firestore: create as admin
                 const userData = {
                     username: username,
@@ -1808,21 +1748,21 @@
 
                 enterApp({ username: username, name: username, role: 'admin' });
                 return;
-            }
-
-            // Check if user exists in Firestore
-            const userDoc = await db.collection('users').doc(username).get();
-            if (userDoc.exists) {
-                const userData = userDoc.data();
-                if (userData.passwordHash === hashedPw) {
-                    enterApp({ username: username, name: userData.name || username, role: userData.role });
-                    return;
-                } else {
-                    showNotification('Usuario o contraseña incorrectos', 'error');
-                    return;
+            } else {
+                // Check if user exists in Firestore
+                const userDoc = await db.collection('users').doc(username).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    if (userData.passwordHash === hashedPw) {
+                        enterApp({ username: username, name: userData.name || username, role: userData.role });
+                        return;
+                    } else {
+                        showNotification('Usuario o contraseña incorrectos', 'error');
+                        return;
+                    }
                 }
+                // User not in Firestore, fall through to local check
             }
-            // User not in Firestore, fall through to local check
         } catch (firestoreError) {
             console.warn('Firestore no disponible para login, usando modo local:', firestoreError.message);
         }
@@ -1830,22 +1770,13 @@
         // === ATTEMPT 2: localStorage (fallback) ===
         try {
             var localUsers = getLocalUsers();
-            var userKeys = Object.keys(localUsers);
 
-            if (userKeys.length === 0) {
-                // No users anywhere: create first admin locally
-                var userData = {
-                    username: username,
-                    name: username,
-                    passwordHash: hashedPw,
-                    role: 'admin',
-                    createdAt: new Date().toISOString()
-                };
-                localUsers[username] = userData;
-                saveLocalUsers(localUsers);
-                // Try to sync to Firestore in background
-                syncUserToFirestore(username, userData);
-                enterApp({ username: username, name: username, role: 'admin' });
+            // Exclude locally deleted users from the check
+            var deletedArr = JSON.parse(localStorage.getItem('deletedUsers') || '[]');
+            var isDeleted = deletedArr.indexOf(username) !== -1;
+
+            if (isDeleted) {
+                showNotification('Usuario o contraseña incorrectos', 'error');
                 return;
             }
 
@@ -1859,10 +1790,23 @@
                 }
             }
 
-            showNotification('Usuario o contraseña incorrectos', 'error');
+            // No user found anywhere: create first admin locally
+            var userData = {
+                username: username,
+                name: username,
+                passwordHash: hashedPw,
+                role: 'admin',
+                createdAt: new Date().toISOString()
+            };
+            localUsers[username] = userData;
+            saveLocalUsers(localUsers);
+            // Try to sync to Firestore in background
+            syncUserToFirestore(username, userData);
+            enterApp({ username: username, name: username, role: 'admin' });
+            return;
         } catch (localError) {
             console.error('Error en login local:', localError);
-            alert('Error al iniciar sesión. Verifica tu conexión e inténtalo de nuevo.');
+            showNotification('Error al iniciar sesión. Verifica tu conexión e inténtalo de nuevo.', 'error');
         }
     }
 
@@ -1915,12 +1859,15 @@
             usersMap[key] = localUsers[key];
         });
 
-        // Try to merge with Firestore data
+        // Try to merge with Firestore data (but exclude locally deleted users)
+        var deletedArr = JSON.parse(localStorage.getItem('deletedUsers') || '[]');
         try {
             var snapshot = await db.collection('users').get();
             snapshot.forEach(function(doc) {
                 var u = doc.data();
-                if (u.username) usersMap[u.username] = u;
+                if (u.username && deletedArr.indexOf(u.username) === -1) {
+                    usersMap[u.username] = u;
+                }
             });
         } catch (e) {
             console.warn('No se pudo leer usuarios de Firestore:', e.message);
@@ -1992,12 +1939,18 @@
                 delete localUsers[username];
                 saveLocalUsers(localUsers);
 
-                // Try Firestore delete
-                db.collection('users').doc(username).delete().catch(function(err) {
+                // Try Firestore delete (await to ensure it completes before reload)
+                try {
+                    await db.collection('users').doc(username).delete();
+                } catch (err) {
                     console.warn('No se pudo eliminar de Firestore:', err.message);
-                });
+                    // Track locally deleted users so Firestore doesn't re-add them
+                    var deletedArr = JSON.parse(localStorage.getItem('deletedUsers') || '[]');
+                    if (deletedArr.indexOf(username) === -1) deletedArr.push(username);
+                    localStorage.setItem('deletedUsers', JSON.stringify(deletedArr));
+                }
 
-                showNotification('Usuario eliminado', 'success');
+                showNotification('Usuario ' + username + ' eliminado', 'success');
                 loadUsersPanel();
             });
         });
@@ -2061,18 +2014,27 @@
     async function switchCourse(newCourse) {
         if (newCourse === currentCourse) return;
 
-        // Save current data first
-        await saveToFirebaseSilent();
+        // Unsubscribe realtime listener FIRST to avoid race conditions
+        if (firebaseUnsubscribe) {
+            firebaseUnsubscribe();
+            firebaseUnsubscribe = null;
+        }
 
+        // Save current data to Firebase
+        var saveOk = await saveToFirebaseSilent();
+        saveToLocal();
+
+        // Switch to new course
         currentCourse = newCourse;
         localStorage.setItem('currentCourse', currentCourse);
 
         // Load new course data
         await loadCourseData();
+        ensureSinAsignar();
         renderAll();
         recalculateAll();
 
-        // Re-setup realtime listener
+        // Setup realtime listener for the new course
         setupRealtimeSync();
 
         showNotification('Curso cambiado a ' + newCourse, 'info');
@@ -2096,6 +2058,17 @@
             courseList.sort().reverse();
             await db.collection('cursos_meta').doc('lista').set({ cursos: courseList });
             localStorage.setItem('courseList', JSON.stringify(courseList));
+
+            // Auto-switch to the new course
+            currentCourse = courseName;
+            localStorage.setItem('currentCourse', currentCourse);
+
+            // Load the new empty data
+            await loadCourseData();
+            ensureSinAsignar();
+            renderAll();
+            recalculateAll();
+            setupRealtimeSync();
 
             renderCourseSelector();
             document.getElementById('newCourseInput').value = '';
@@ -2138,7 +2111,11 @@
     }
 
     async function saveToFirebaseSilent() {
-        if (!currentUser) return;
+        if (!currentUser) {
+            console.warn('saveToFirebaseSilent: no currentUser, skipping Firebase save');
+            saveToLocal();
+            return false;
+        }
         try {
             const saveObj = {
                 equipoDirectivo: equipoDirectivo,
@@ -2146,11 +2123,15 @@
                 lastModified: new Date().toISOString(),
                 version: "2.0"
             };
-            _isLocalWrite = true;
+            // Record write timestamp for echo filtering
+            _localWriteTimestamps.push(Date.now());
+            _lastSyncJson = JSON.stringify({ equipoDirectivo: equipoDirectivo, data: data });
             await db.collection('cursos').doc(currentCourse).set(saveObj, { merge: true });
             return true;
         } catch (e) {
-            console.warn('Silent Firebase save error:', e);
+            console.error('Firebase save error:', e);
+            // Remove last timestamp since write failed
+            if (_localWriteTimestamps.length > 0) _localWriteTimestamps.pop();
             return false;
         }
     }
@@ -2215,8 +2196,10 @@
     // =============================================
     // REALTIME SYNC
     // =============================================
-    // Flag to prevent echoing back our own writes
-    let _isLocalWrite = false;
+    // Counter to prevent echoing back our own writes (supports concurrent writes)
+    // Uses a Set of write timestamps so multiple onSnapshot triggers from a single write
+    // are all properly filtered out.
+    let _localWriteTimestamps = [];
     let _lastSyncJson = '';
 
     function setupRealtimeSync() {
@@ -2225,6 +2208,7 @@
             firebaseUnsubscribe = null;
         }
 
+        _localWriteTimestamps = [];
         _lastSyncJson = JSON.stringify({ equipoDirectivo: equipoDirectivo, data: data });
 
         firebaseUnsubscribe = db.collection('cursos').doc(currentCourse).onSnapshot(function(doc) {
@@ -2240,10 +2224,16 @@
                 const remoteJson = JSON.stringify({ equipoDirectivo: remoteData.equipoDirectivo, data: remoteData.data });
 
                 // Skip if we just wrote this data ourselves (avoid echo loop)
-                if (_isLocalWrite) {
-                    _isLocalWrite = false;
-                    _lastSyncJson = remoteJson;
-                    return;
+                // Compare JSON content - if identical to what we last wrote, skip
+                if (_localWriteTimestamps.length > 0) {
+                    // Remove timestamps older than 5 seconds (stale writes)
+                    var now = Date.now();
+                    _localWriteTimestamps = _localWriteTimestamps.filter(function(ts) { return now - ts < 5000; });
+
+                    // If remote data matches our last sync OR there's a recent pending write, skip
+                    if (remoteJson === _lastSyncJson) {
+                        return;
+                    }
                 }
 
                 // Only update if data actually changed from another source
@@ -2304,6 +2294,65 @@
         container.innerHTML = html;
     }
 
+    // Updates a datalist to show only teachers from the department's pool
+    // that are NOT already used in other rows of the same department.
+    // If a currentValue is given, it is always included (the current row's value).
+    function updateDatalistForInput(input) {
+        var area = input.dataset.area;
+        var dept = input.dataset.dept;
+        if (!area || !dept) return;
+        var listId = input.getAttribute('list');
+        if (!listId) return;
+        var dl = document.getElementById(listId);
+        if (!dl) return;
+
+        var poolKey = area + '.' + dept;
+        var pool = teacherPool[poolKey] || [];
+        var currentValue = input.value.trim().toLowerCase();
+
+        // Collect names currently used in this department (from data model)
+        var usedNames = {};
+        if (data && data[area] && data[area][dept]) {
+            data[area][dept].forEach(function(p) {
+                if (p.name && !p.unassigned) {
+                    usedNames[p.name.toLowerCase()] = true;
+                }
+            });
+        }
+
+        // Build options: pool items not already used, plus the current value
+        var options = [];
+        pool.forEach(function(name) {
+            var nl = name.toLowerCase();
+            // Always include current row's value, skip others that are already used
+            if (nl === currentValue) {
+                options.push(name);
+            } else if (!usedNames[nl]) {
+                options.push(name);
+            }
+        });
+
+        // Also include current value even if not in pool (user typed it manually)
+        if (currentValue && !options.some(function(o) { return o.toLowerCase() === currentValue; })) {
+            options.unshift(input.value.trim());
+        }
+
+        dl.innerHTML = '';
+        options.forEach(function(name) {
+            var opt = document.createElement('option');
+            opt.value = name;
+            dl.appendChild(opt);
+        });
+    }
+
+    // Updates datalists for ALL inputs in a given department
+    function updateAllDatalistsForDept(area, dept) {
+        var inputs = document.querySelectorAll('.prof-name[data-area="' + area + '"][data-dept="' + dept + '"]');
+        inputs.forEach(function(input) {
+            updateDatalistForInput(input);
+        });
+    }
+
     function renderAreaCard(areaKey, isAdmin, disabled) {
         const area = AREA_META[areaKey];
         let html = '';
@@ -2316,13 +2365,18 @@
         Object.keys(area.departments).forEach(function(deptKey) {
             const dept = area.departments[deptKey];
             const profs = data[areaKey][deptKey];
+            const poolKey = areaKey + '.' + deptKey;
+            const pool = teacherPool[poolKey] || [];
+
+            // Shared datalist id for this department
+            var dlId = 'dl-' + areaKey + '-' + deptKey;
 
             html += '<div class="department">';
             html += '<div class="department-header">';
             html += '<div class="department-header-left"><i class="fas ' + dept.icon + '"></i> ' + dept.name + '</div>';
             if (isAdmin) {
                 html += '<div class="department-actions">';
-                html += '<button class="dept-action-btn dept-add-btn" data-add-prof="' + areaKey + '|' + deptKey + '"><i class="fas fa-plus"></i> Añadir profesor</button>';
+                html += '<button class="dept-action-btn dept-add-btn" data-add-prof="' + areaKey + '|' + deptKey + '"><i class="fas fa-plus"></i> Añadir</button>';
                 html += '</div>';
             }
             html += '</div>';
@@ -2337,8 +2391,11 @@
                 const isUnassigned = prof.unassigned;
                 const rowClass = isUnassigned ? ' class="unassigned-row"' : '';
                 const nameDisabled = (isUnassigned || !isAdmin) ? ' disabled' : '';
+                // Attach shared datalist if pool exists and user is admin
+                var listAttr = (pool.length > 0 && !isUnassigned && isAdmin) ? ' list="' + dlId + '"' : '';
+
                 html += '<tr' + rowClass + '>';
-                html += '<td><input type="text" class="prof-name" data-area="' + areaKey + '" data-dept="' + deptKey + '" data-index="' + index + '" value="' + escapeAttr(prof.name) + '"' + nameDisabled + '></td>';
+                html += '<td><input type="text" class="prof-name" data-area="' + areaKey + '" data-dept="' + deptKey + '" data-index="' + index + '" value="' + escapeAttr(prof.name) + '"' + nameDisabled + listAttr + '></td>';
                 html += '<td class="checkbox-cell"><input type="checkbox" class="jd" data-area="' + areaKey + '" data-dept="' + deptKey + '" data-index="' + index + '"' + (prof.jd ? ' checked' : '') + disabled + '></td>';
                 html += '<td class="radio-cell"><input type="radio" name="' + areaKey + '-ja" class="ja" data-area="' + areaKey + '" data-dept="' + deptKey + '" data-index="' + index + '"' + (prof.ja ? ' checked' : '') + disabled + '></td>';
                 html += '<td class="hours-cell"><span class="hours" data-area="' + areaKey + '" data-dept="' + deptKey + '" data-index="' + index + '">' + hours + '</span></td>';
@@ -2354,7 +2411,15 @@
 
             html += '</tbody></table>';
             html += '</div></div>';
+
+            // Emit the datalist for this department (will be dynamically updated on focus)
+            if (pool.length > 0 && isAdmin) {
+                html += '<datalist id="' + dlId + '"></datalist>';
+            }
         });
+
+        // Close department-list
+        html += '</div>';
 
         // Summary card for this area
         let jdTotal = 0, jaTotal = 0, jdHours = 0, jaHours = 0;
@@ -2375,56 +2440,27 @@
         return html;
     }
 
-    // Active area tab state
-    let activeAreaTab = 'all';
-
     function renderAreas() {
-        const tabsContainer = document.getElementById('areasTabs');
         const wrapper = document.getElementById('areasWrapper');
         const isAdmin = currentUser && currentUser.role === 'admin';
         const disabled = isAdmin ? '' : ' disabled';
 
-        // Build tab bar
-        let tabsHtml = '<button class="area-tab' + (activeAreaTab === 'all' ? ' active' : '') + '" data-area-tab="all"><i class="fas fa-th-large"></i> Todas</button>';
-        Object.keys(AREA_META).forEach(function(areaKey) {
-            const area = AREA_META[areaKey];
-            tabsHtml += '<button class="area-tab' + (activeAreaTab === areaKey ? ' active' : '') + '" data-area-tab="' + areaKey + '"><i class="fas ' + area.icon + '"></i> ' + area.title + '</button>';
-        });
-        tabsContainer.innerHTML = tabsHtml;
-
-        // Always render all areas in the DOM so printing can show them all
+        // Always render all 3 areas in a 3-column grid
         let wrapperHtml = '';
-
-        if (activeAreaTab === 'all') {
-            // Show all in grid
-            wrapperHtml += '<div class="areas-container show-all" id="areasAllView">';
-            Object.keys(AREA_META).forEach(function(areaKey) {
-                wrapperHtml += renderAreaCard(areaKey, isAdmin, disabled);
-            });
-            wrapperHtml += '</div>';
-        } else {
-            // Show single area
-            wrapperHtml += '<div class="areas-container active" id="areasSingleView">';
-            wrapperHtml += renderAreaCard(activeAreaTab, isAdmin, disabled);
-            wrapperHtml += '</div>';
-            // Hidden: all areas for printing
-            wrapperHtml += '<div class="areas-container" id="areasPrintView" style="display:none;">';
-            Object.keys(AREA_META).forEach(function(areaKey) {
-                wrapperHtml += renderAreaCard(areaKey, isAdmin, disabled);
-            });
-            wrapperHtml += '</div>';
-        }
+        Object.keys(AREA_META).forEach(function(areaKey) {
+            wrapperHtml += renderAreaCard(areaKey, isAdmin, disabled);
+        });
 
         wrapper.innerHTML = wrapperHtml;
 
-        // Tab click handlers
-        tabsContainer.querySelectorAll('.area-tab').forEach(function(tab) {
-            tab.addEventListener('click', function() {
-                activeAreaTab = this.getAttribute('data-area-tab');
-                renderAreas();
-                recalculateAll();
+        // Initialize all datalists with available candidates
+        if (isAdmin) {
+            Object.keys(AREA_META).forEach(function(areaKey) {
+                Object.keys(AREA_META[areaKey].departments).forEach(function(deptKey) {
+                    updateAllDatalistsForDept(areaKey, deptKey);
+                });
             });
-        });
+        }
     }
 
     function renderOrientacion() {
@@ -2680,6 +2716,15 @@
         });
 
         // Areas container delegation
+        // Focus: update datalist options for this department
+        document.getElementById('areasWrapper').addEventListener('focusin', function(e) {
+            if (currentUser && currentUser.role !== 'admin') return;
+            const target = e.target;
+            if (target.classList.contains('prof-name') && target.dataset.area && target.dataset.dept) {
+                updateDatalistForInput(target);
+            }
+        });
+
         document.getElementById('areasWrapper').addEventListener('input', function(e) {
             if (currentUser && currentUser.role !== 'admin') return;
             const target = e.target;
@@ -2689,13 +2734,16 @@
                 const area = target.dataset.area;
                 const dept = target.dataset.dept;
                 const index = parseInt(target.dataset.index);
-                // Prevent editing "Sin asignar" name
+                // Prevent editing "Sin assignar" name
                 if (data[area][dept][index].unassigned) {
                     target.value = 'Sin asignar';
                     return;
                 }
                 data[area][dept][index].name = target.value;
                 debouncedFirebaseSave();
+
+                // Update all datalists for this department so used names disappear from other rows
+                updateAllDatalistsForDept(area, dept);
             }
         });
 
@@ -3273,7 +3321,7 @@
         });
 
         // Confirm button
-        confirmBtn.onclick = function() {
+        confirmBtn.onclick = async function() {
             const toImport = pendingImportList.filter(function(p) { return p.resolved; });
             if (toImport.length === 0) return;
             let count = 0;
@@ -3284,8 +3332,16 @@
             modal.classList.remove('visible');
             renderAll();
             recalculateAll();
-            debouncedFirebaseSave();
-            showNotification('Se importaron ' + count + ' profesores correctamente', 'success');
+            // Immediate explicit Firebase save (not debounced)
+            updateSyncStatus('syncing');
+            var ok = await saveToFirebaseSilent();
+            saveToLocal();
+            updateSyncStatus(ok ? 'synced' : 'offline');
+            if (ok) {
+                showNotification('Se importaron ' + count + ' profesores y se guardaron en Firebase', 'success');
+            } else {
+                showNotification('Se importaron ' + count + ' profesores localmente. Error al guardar en Firebase.', 'error');
+            }
         };
     }
 
@@ -3319,11 +3375,30 @@
     }
 
     function addProfessorIfNotExists(area, dept, name) {
-        const exists = data[area][dept].some(function(p) {
+        // Handle orientacion specially (it's data.orientacion, not data.orientacion.orientacion)
+        if (area === 'orientacion') {
+            var oriExists = data.orientacion.some(function(p) {
+                return p.name.toLowerCase() === name.toLowerCase();
+            });
+            if (!oriExists) {
+                data.orientacion.push({ name: name, jd: false });
+            }
+            return;
+        }
+
+        // Standard areas
+        if (!data[area] || !data[area][dept]) return;
+        var exists = data[area][dept].some(function(p) {
             return p.name.toLowerCase() === name.toLowerCase();
         });
         if (!exists) {
             data[area][dept].push({ name: name, jd: false, ja: false });
+        }
+        // Always add to the teacher pool for this department
+        var key = area + '.' + dept;
+        if (!teacherPool[key]) teacherPool[key] = [];
+        if (!teacherPool[key].some(function(n) { return n.toLowerCase() === name.toLowerCase(); })) {
+            teacherPool[key].push(name);
         }
     }
 
@@ -3519,8 +3594,7 @@
                 localStorage.removeItem('currentUser');
             }
         } else {
-            // No stored session, clear any stale user data
-            localStorage.removeItem('app_users');
+            // No stored session — do NOT clear users, they may still be valid
         }
 
         // Login button
@@ -3568,6 +3642,14 @@
             // Save to localStorage (always works)
             localUsers[username] = userData;
             saveLocalUsers(localUsers);
+
+            // Remove from deletedUsers list if was previously deleted
+            var deletedArr = JSON.parse(localStorage.getItem('deletedUsers') || '[]');
+            var delIdx = deletedArr.indexOf(username);
+            if (delIdx !== -1) {
+                deletedArr.splice(delIdx, 1);
+                localStorage.setItem('deletedUsers', JSON.stringify(deletedArr));
+            }
 
             // Try to save to Firestore (fire-and-forget)
             syncUserToFirestore(username, userData);
@@ -3655,6 +3737,14 @@
             }
 
             data[area][dept].push({ name: name, jd: false, ja: false });
+
+            // Register in teacherPool for autocomplete
+            var poolKey = area + '.' + dept;
+            if (!teacherPool[poolKey]) teacherPool[poolKey] = [];
+            if (!teacherPool[poolKey].some(function(n) { return n.toLowerCase() === name.toLowerCase(); })) {
+                teacherPool[poolKey].push(name);
+            }
+
             saveToLocal();
             debouncedFirebaseSave();
             renderAll();
