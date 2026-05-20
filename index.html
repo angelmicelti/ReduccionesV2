@@ -1704,7 +1704,7 @@
                     <h3>TOTAL HORAS DE REDUCCIÓN</h3>
                     <div class="resumen-value" id="total-horas">0</div>
                     <div class="resumen-warning" id="warning-total">
-                        <i class="fas fa-exclamation-triangle"></i> Deben ser 64 horas
+                        <i class="fas fa-exclamation-triangle"></i> Deben ser <span id="expected-total-label">64</span> horas
                     </div>
                 </div>
             </div>
@@ -2325,7 +2325,15 @@
             if (c === currentCourse) opt.selected = true;
             selector.appendChild(opt);
         });
+        updateExpectedTotalLabel();
         renderCourseList();
+    }
+
+    function updateExpectedTotalLabel() {
+        var expectedEnsenanzaDigital = 3 + getEscuela40Hours();
+        var expectedTotal = 24 + 36 + expectedEnsenanzaDigital;
+        var label = document.getElementById('expected-total-label');
+        if (label) label.textContent = expectedTotal;
     }
 
     function renderCourseList() {
@@ -3148,6 +3156,10 @@
         const messageEl = document.getElementById('validation-message');
         let messages = [];
 
+        // Expected totals depend on the course (Escuela 4.0 hours vary)
+        var expectedEnsenanzaDigital = 3 + getEscuela40Hours(); // TDE(3) + Escuela 4.0
+        var expectedTotal = 24 + 36 + expectedEnsenanzaDigital; // Directivo + Plan Centro + Enseñanza Digital
+
         if (horasDirectivo !== 24) {
             messages.push('- Horas de Equipo Directivo: ' + horasDirectivo + ' (deben ser 24)');
             document.getElementById('warning-directivo').style.display = 'block';
@@ -3166,8 +3178,8 @@
             document.getElementById('horas-plan-centro').style.color = '#3b5bdb';
         }
 
-        if (horasEnsenanzaDigital !== 4) {
-            messages.push('- Horas de Enseñanza Digital: ' + horasEnsenanzaDigital + ' (deben ser 4)');
+        if (horasEnsenanzaDigital !== expectedEnsenanzaDigital) {
+            messages.push('- Horas de Enseñanza Digital: ' + horasEnsenanzaDigital + ' (deben ser ' + expectedEnsenanzaDigital + ')');
             document.getElementById('warning-ensenanza-digital').style.display = 'block';
             document.getElementById('horas-ensenanza-digital').style.color = '#e63946';
         } else {
@@ -3175,8 +3187,8 @@
             document.getElementById('horas-ensenanza-digital').style.color = '#3b5bdb';
         }
 
-        if (totalHoras !== 64) {
-            messages.push('- Total de horas: ' + totalHoras + ' (deben ser 64)');
+        if (totalHoras !== expectedTotal) {
+            messages.push('- Total de horas: ' + totalHoras + ' (deben ser ' + expectedTotal + ')');
             document.getElementById('warning-total').style.display = 'block';
             document.getElementById('total-horas').style.color = '#fa5252';
         } else {
