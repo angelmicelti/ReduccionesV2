@@ -13,6 +13,10 @@
     <meta name="msapplication-TileImage" content="icons/icon-144x144.png">
     <meta name="theme-color" content="#4dabf7">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+
     <!-- Apple Touch Icons -->
     <link rel="apple-touch-icon" href="icons/icon-152x152.png">
     <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
@@ -331,7 +335,7 @@
 
         .config-panels {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 12px;
         }
 
@@ -399,6 +403,97 @@
         .config-btn-print:hover { background: #12b886; }
         .config-btn-danger { background: #fa5252; color: white; }
         .config-btn-danger:hover { background: #e03131; }
+
+        /* Profesorado list inside config panel */
+        .profesorado-list-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #495057;
+            padding: 10px 0 6px;
+            border-top: 1px solid #e9ecef;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+        .profesorado-count {
+            font-weight: 400;
+            color: #868e96;
+            font-size: 0.8rem;
+        }
+        .profesorado-list-container {
+            max-height: 350px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        .profesorado-dept-group { margin-bottom: 0; }
+        .profesorado-dept-label {
+            font-weight: 700;
+            font-size: 0.72rem;
+            color: #868e96;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 5px 10px;
+            background: #f1f3f5;
+            border-bottom: 1px solid #e0e0e0;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        .profesorado-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 4px;
+            font-size: 0.85rem;
+            color: #495057;
+            border-bottom: 1px solid #f1f3f5;
+            transition: background 0.15s;
+        }
+        .profesorado-item:last-child { border-bottom: none; }
+        .profesorado-item:hover { background: #f8f9fa; }
+        .profesorado-item input[type="text"] {
+            flex: 1;
+            padding: 3px 6px;
+            border: 1px solid transparent;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            background: transparent;
+            color: #495057;
+            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+            min-width: 0;
+        }
+        .profesorado-item input[type="text"]:hover { border-color: #dee2e6; background: white; }
+        .profesorado-item input[type="text"]:focus {
+            outline: none;
+            border-color: #4dabf7;
+            background: white;
+            box-shadow: 0 0 0 2px rgba(77,171,247,0.15);
+        }
+        .profesorado-item-del {
+            background: none;
+            border: none;
+            color: #dee2e6;
+            cursor: pointer;
+            font-size: 0.7rem;
+            padding: 2px 4px;
+            border-radius: 4px;
+            opacity: 0.35;
+            transition: opacity 0.2s, color 0.2s, background 0.2s;
+            flex-shrink: 0;
+        }
+        .profesorado-item:hover .profesorado-item-del { opacity: 1; }
+        .profesorado-item-del:hover { color: #fa5252; background: #ffeef0; }
+        .profesorado-empty {
+            padding: 15px;
+            text-align: center;
+            color: #adb5bd;
+            font-style: italic;
+            font-size: 0.85rem;
+        }
 
         /* User management table */
         .users-table {
@@ -473,6 +568,77 @@
 
         .new-course-row button:hover {
             background: #3b8fd4;
+        }
+
+        /* Course list in Config panel */
+        .course-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .course-list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            transition: background 0.2s;
+        }
+
+        .course-list-item:hover {
+            background: #e9ecef;
+        }
+
+        .course-list-item.current {
+            background: #dbe4ff;
+            border-color: #74c0fc;
+            font-weight: 600;
+        }
+
+        .course-list-item-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #343a40;
+        }
+
+        .course-list-item-name i {
+            color: #4dabf7;
+            font-size: 0.8rem;
+        }
+
+        .course-delete-btn {
+            background: none;
+            border: none;
+            color: #adb5bd;
+            cursor: pointer;
+            font-size: 0.95rem;
+            padding: 4px 6px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .course-delete-btn:hover {
+            color: #ff6b6b;
+            background: #ffe3e3;
+        }
+
+        .course-delete-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .course-delete-btn:disabled:hover {
+            color: #adb5bd;
+            background: transparent;
         }
 
         /* ===== MAIN CONTENT ===== */
@@ -657,12 +823,23 @@
             font-family: inherit;
         }
 
-        .checkbox-cell, .radio-cell { text-align: center; vertical-align: middle; }
+        .checkbox-cell, .radio-cell { text-align: center; vertical-align: middle; width: 42px; min-width: 42px; max-width: 42px; }
 
         .hours-cell {
             text-align: center;
             font-weight: 600;
             color: #3b5bdb;
+            width: 52px;
+            min-width: 52px;
+            max-width: 52px;
+        }
+
+        /* Ensure the remove button column is also compact */
+        .department-content table td:last-child,
+        .department-content table th:last-child {
+            width: 30px;
+            min-width: 30px;
+            max-width: 30px;
         }
 
         .remove-row-btn {
@@ -671,7 +848,7 @@
             color: #fa5252;
             cursor: pointer;
             font-size: 0.85rem;
-            padding: 2px 6px;
+            padding: 2px 4px;
             border-radius: 4px;
             opacity: 0.6;
             transition: opacity 0.2s;
@@ -682,19 +859,7 @@
             background: #ffeef0;
         }
 
-        /* Unassigned teacher row */
-        .unassigned-row td {
-            background: #f8f9fa;
-            color: #adb5bd;
-            font-style: italic;
-        }
 
-        .unassigned-row input[type="text"] {
-            background: #f8f9fa;
-            color: #adb5bd;
-            font-style: italic;
-            cursor: default;
-        }
 
         .summary-card {
             background: #f8f9fa;
@@ -835,6 +1000,89 @@
         .pdc-header { background: linear-gradient(to right, #ffd43b, #ffec99); color: #333 !important; }
 
         .reduccion-content { padding: 15px; }
+
+        /* Teacher Picker in Otras Reducciones */
+        .otras-name-picker {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            color: #495057;
+            background: white;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            min-height: 32px;
+        }
+        .otras-name-picker:hover { border-color: #4dabf7; }
+        .otras-name-picker.has-value {
+            border-color: #a9d6ff;
+            background: #e7f5ff;
+            font-weight: 600;
+        }
+        .otras-name-picker[disabled] {
+            background: #f8f9fa;
+            cursor: default;
+            opacity: 0.8;
+        }
+        .picker-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .picker-placeholder { color: #adb5bd; font-weight: 400; font-style: italic; }
+        .picker-icon { color: #868e96; font-size: 0.7rem; flex-shrink: 0; }
+        .teacher-picker-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: #333;
+            background: white;
+            cursor: pointer;
+        }
+        .teacher-picker-select:focus {
+            outline: none;
+            border-color: #4dabf7;
+            box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
+        }
+
+        /* Report Modal Options */
+        .report-section {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .report-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        .report-section-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #495057;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .report-section-title i { color: #4dabf7; }
+        .report-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+            font-size: 0.88rem;
+            color: #495057;
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+        .report-checkbox:hover { color: #2c3e50; }
+        .report-checkbox input[type="checkbox"] {
+            width: auto;
+            accent-color: #4dabf7;
+        }
 
         /* Resumen General */
         .resumen-general {
@@ -1322,7 +1570,7 @@
             <div class="config-body" id="configBody">
                 <div class="config-panels">
                     <!-- Panel Profesorado -->
-                    <div class="config-panel" style="grid-column: span 2;">
+                    <div class="config-panel">
                         <div class="config-panel-title"><i class="fas fa-chalkboard-teacher"></i> Profesorado</div>
                         <div class="config-panel-body">
                             <div class="new-course-row" id="addTeacherRow">
@@ -1332,6 +1580,7 @@
                             </div>
                             <button class="config-btn config-btn-import" id="importExcelBtn"><i class="fas fa-file-excel"></i> Importar profesorado (Excel)</button>
                             <input type="file" id="excelFileInput" class="file-input" accept=".xlsx,.xls">
+                            <div id="profesoradoSection"></div>
                         </div>
                     </div>
 
@@ -1345,6 +1594,7 @@
                             <input type="file" id="fileInput" class="file-input" accept=".json">
                             <button class="config-btn config-btn-secondary" id="resetBtn"><i class="fas fa-redo"></i> Reiniciar Datos</button>
                             <button class="config-btn config-btn-print" id="printBtn"><i class="fas fa-print"></i> Imprimir en A3</button>
+                            <button class="config-btn config-btn-export" id="reportBtn"><i class="fas fa-file-pdf"></i> Generar Informe PDF</button>
                         </div>
                     </div>
 
@@ -1352,6 +1602,9 @@
                     <div class="config-panel">
                         <div class="config-panel-title"><i class="fas fa-calendar-plus"></i> Cursos</div>
                         <div class="config-panel-body">
+                            <div id="courseListContainer" class="course-list">
+                                <!-- Rendered dynamically -->
+                            </div>
                             <div class="new-course-row">
                                 <input type="text" id="newCourseInput" placeholder="Ej: 2026-2027">
                                 <button id="createCourseBtn">Crear</button>
@@ -1474,6 +1727,57 @@
         <span id="notification-message">Mensaje</span>
     </div>
 
+    <!-- Teacher Picker Modal (Otras Reducciones) -->
+    <div class="modal-overlay" id="teacherPickerModal">
+        <div class="modal-box" style="max-width:450px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-chalkboard-teacher"></i> Seleccionar Profesor/a</h3>
+                <button class="modal-close" id="teacherPickerClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <select class="teacher-picker-select" id="teacherPickerSelect">
+                    <option value="">— Sin asignar —</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-cancel" id="teacherPickerCancelBtn">Cancelar</button>
+                    <button class="modal-btn modal-btn-confirm" id="teacherPickerConfirmBtn">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Modal (PDF options) -->
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal-box" style="max-width:500px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-file-pdf"></i> Opciones del Informe PDF</h3>
+                <button class="modal-close" id="reportModalClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="report-section">
+                    <div class="report-section-title"><i class="fas fa-list"></i> Secciones a incluir</div>
+                    <label class="report-checkbox"><input type="checkbox" id="rptDirectivo" checked> Equipo Directivo</label>
+                    <label class="report-checkbox"><input type="checkbox" id="rptAreas" checked> Áreas y Departamentos</label>
+                    <label class="report-checkbox"><input type="checkbox" id="rptOrientacion" checked> Orientación</label>
+                    <label class="report-checkbox"><input type="checkbox" id="rptOtras" checked> Otras Reducciones</label>
+                    <label class="report-checkbox"><input type="checkbox" id="rptResumen" checked> Resumen General</label>
+                </div>
+                <div class="report-section">
+                    <div class="report-section-title"><i class="fas fa-filter"></i> Filtros</div>
+                    <label class="report-checkbox"><input type="checkbox" id="rptSoloActivos" checked> Mostrar solo profesores activos</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-cancel" id="reportModalCancel">Cancelar</button>
+                    <button class="modal-btn modal-btn-confirm" id="reportModalGenerate"><i class="fas fa-download"></i> Generar PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Import Modal -->
     <div class="modal-overlay" id="importModal">
         <div class="modal-box">
@@ -1499,6 +1803,8 @@
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
     <!-- SheetJS for Excel import -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 
     <script>
     // =============================================
@@ -1590,48 +1896,27 @@
         };
     }
 
-    // Ensure every department has a "Sin asignar" entry (always present, covers hours)
-    function ensureSinAsignar() {
-        if (!data) return;
-        Object.keys(AREA_META).forEach(function(areaKey) {
-            Object.keys(AREA_META[areaKey].departments).forEach(function(deptKey) {
-                if (!data[areaKey] || !data[areaKey][deptKey]) return;
-                var hasSinAsignar = data[areaKey][deptKey].some(function(p) {
-                    return p.name === 'Sin asignar';
-                });
-                if (!hasSinAsignar) {
-                    data[areaKey][deptKey].push({ name: 'Sin asignar', jd: false, ja: false, unassigned: true });
-                }
-            });
-        });
-        // Also for orientacion
-        if (data.orientacion) {
-            var hasOri = data.orientacion.some(function(p) { return p.name === 'Sin asignar'; });
-            if (!hasOri) {
-                data.orientacion.push({ name: 'Sin asignar', jd: false, unassigned: true });
-            }
-        }
-    }
 
-    function getDefaultData(emptyNames) {
+
+    function getDefaultData() {
         return {
             socio: {
-                lengua: Array(4).fill(null).map(() => ({ name: emptyNames ? '' : '', jd: false, ja: false })),
-                gh: Array(3).fill(null).map(() => ({ name: '', jd: false, ja: false })),
-                ingles: Array(3).fill(null).map(() => ({ name: '', jd: false, ja: false })),
-                frances: Array(1).fill(null).map(() => ({ name: '', jd: false, ja: false }))
+                lengua: [],
+                gh: [],
+                ingles: [],
+                frances: []
             },
             tecnologico: {
-                matematicas: Array(4).fill(null).map(() => ({ name: '', jd: false, ja: false })),
-                ciencias: Array(3).fill(null).map(() => ({ name: '', jd: false, ja: false })),
-                tecnologia: Array(3).fill(null).map(() => ({ name: '', jd: false, ja: false }))
+                matematicas: [],
+                ciencias: [],
+                tecnologia: []
             },
             artistico: {
-                dibujo: Array(1).fill(null).map(() => ({ name: '', jd: false, ja: false })),
-                ef: Array(1).fill(null).map(() => ({ name: '', jd: false, ja: false })),
-                musica: Array(1).fill(null).map(() => ({ name: '', jd: false, ja: false }))
+                dibujo: [],
+                ef: [],
+                musica: []
             },
-            orientacion: Array(4).fill(null).map(() => ({ name: '', jd: false })),
+            orientacion: [],
             otrasReducciones: {
                 convivencia: { name: '', jd: false },
                 actividades: { name: '', jd: false },
@@ -1644,12 +1929,44 @@
         };
     }
 
+    function getEscuela40Hours() {
+        // Escuela 4.0 hours depend on the course
+        // Extract starting year from course string (e.g., "2024-2025" -> 2024)
+        var match = currentCourse.match(/(\d{4})/);
+        if (match) {
+            var year = parseInt(match[1]);
+            // From 2026-2027 onwards: 2 hours. From 2024-2025: 1 hour. Before: 0 hours.
+            if (year >= 2026) return 2;
+            if (year >= 2024) return 1;
+        }
+        return 0;
+    }
+
     function createEmptyStructure() {
         return {
             equipoDirectivo: getDefaultEquipoDirectivo(),
-            data: getDefaultData(true),
+            data: getDefaultData(),
             lastModified: new Date().toISOString()
         };
+    }
+
+    // Remove empty or "Sin asignar" entries from loaded data (legacy cleanup)
+    function sanitizeData() {
+        if (!data) return;
+        ['socio', 'tecnologico', 'artistico'].forEach(function(areaKey) {
+            if (!data[areaKey]) return;
+            Object.keys(data[areaKey]).forEach(function(deptKey) {
+                if (!Array.isArray(data[areaKey][deptKey])) return;
+                data[areaKey][deptKey] = data[areaKey][deptKey].filter(function(p) {
+                    return p.name && p.name.trim() && p.name.trim().toLowerCase() !== 'sin asignar';
+                });
+            });
+        });
+        if (Array.isArray(data.orientacion)) {
+            data.orientacion = data.orientacion.filter(function(p) {
+                return p.name && p.name.trim() && p.name.trim().toLowerCase() !== 'sin asignar';
+            });
+        }
     }
 
     // =============================================
@@ -1939,16 +2256,15 @@
                 delete localUsers[username];
                 saveLocalUsers(localUsers);
 
-                // Try Firestore delete (await to ensure it completes before reload)
-                try {
-                    await db.collection('users').doc(username).delete();
-                } catch (err) {
+                // Always track as deleted so it doesn't reappear from Firestore cache
+                var deletedArr = JSON.parse(localStorage.getItem('deletedUsers') || '[]');
+                if (deletedArr.indexOf(username) === -1) deletedArr.push(username);
+                localStorage.setItem('deletedUsers', JSON.stringify(deletedArr));
+
+                // Try Firestore delete (don't block UI on this)
+                db.collection('users').doc(username).delete().catch(function(err) {
                     console.warn('No se pudo eliminar de Firestore:', err.message);
-                    // Track locally deleted users so Firestore doesn't re-add them
-                    var deletedArr = JSON.parse(localStorage.getItem('deletedUsers') || '[]');
-                    if (deletedArr.indexOf(username) === -1) deletedArr.push(username);
-                    localStorage.setItem('deletedUsers', JSON.stringify(deletedArr));
-                }
+                });
 
                 showNotification('Usuario ' + username + ' eliminado', 'success');
                 loadUsersPanel();
@@ -2009,6 +2325,64 @@
             if (c === currentCourse) opt.selected = true;
             selector.appendChild(opt);
         });
+        renderCourseList();
+    }
+
+    function renderCourseList() {
+        const container = document.getElementById('courseListContainer');
+        if (!container) return;
+        container.innerHTML = '';
+        courseList.forEach(function(c) {
+            const isCurrent = (c === currentCourse);
+            const item = document.createElement('div');
+            item.className = 'course-list-item' + (isCurrent ? ' current' : '');
+            item.innerHTML =
+                '<div class="course-list-item-name">' +
+                    '<i class="fas fa-' + (isCurrent ? 'circle-dot' : 'circle') + '"></i>' +
+                    '<span>Curso ' + c + '</span>' +
+                    (isCurrent ? ' <span style="font-size:0.75rem;color:#1971c2;font-weight:400;">(activo)</span>' : '') +
+                '</div>' +
+                '<button class="course-delete-btn" title="Eliminar curso"' + (isCurrent ? ' disabled' : '') + ' data-course="' + c + '">' +
+                    '<i class="fas fa-trash-alt"></i>' +
+                '</button>';
+            container.appendChild(item);
+        });
+
+        // Attach delete handlers
+        container.querySelectorAll('.course-delete-btn:not([disabled])').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var courseName = this.getAttribute('data-course');
+                deleteCourse(courseName);
+            });
+        });
+    }
+
+    async function deleteCourse(courseName) {
+        if (courseName === currentCourse) return;
+
+        // Confirm deletion
+        if (!confirm('Se eliminará el curso ' + courseName + ' y todos sus datos. ¿Estás seguro?')) return;
+
+        try {
+            // Remove from Firebase
+            await db.collection('cursos').doc(courseName).delete();
+
+            // Update course list
+            courseList = courseList.filter(function(c) { return c !== courseName; });
+            courseList.sort().reverse();
+            await db.collection('cursos_meta').doc('lista').set({ cursos: courseList });
+            localStorage.setItem('courseList', JSON.stringify(courseList));
+
+            // Also remove localStorage data for that course
+            localStorage.removeItem('reduccionesData_' + courseName);
+
+            // Re-render
+            renderCourseSelector();
+
+            showNotification('Curso ' + courseName + ' eliminado correctamente', 'success');
+        } catch (e) {
+            showNotification('Error al eliminar curso: ' + e.message, 'error');
+        }
     }
 
     async function switchCourse(newCourse) {
@@ -2030,7 +2404,6 @@
 
         // Load new course data
         await loadCourseData();
-        ensureSinAsignar();
         renderAll();
         recalculateAll();
 
@@ -2065,7 +2438,6 @@
 
             // Load the new empty data
             await loadCourseData();
-            ensureSinAsignar();
             renderAll();
             recalculateAll();
             setupRealtimeSync();
@@ -2104,9 +2476,11 @@
         if (parsed && parsed.equipoDirectivo && parsed.data) {
             equipoDirectivo = parsed.equipoDirectivo;
             data = parsed.data;
+            sanitizeData();
+            rebuildTeacherPoolFromData();
         } else {
             equipoDirectivo = getDefaultEquipoDirectivo();
-            data = getDefaultData(true);
+            data = getDefaultData();
         }
     }
 
@@ -2171,7 +2545,8 @@
             if (imported.equipoDirectivo && imported.data) {
                 equipoDirectivo = imported.equipoDirectivo;
                 data = imported.data;
-                ensureSinAsignar();
+                sanitizeData();
+                rebuildTeacherPoolFromData();
                 saveToLocal();
                 renderAll();
                 recalculateAll();
@@ -2241,7 +2616,8 @@
                     _lastSyncJson = remoteJson;
                     equipoDirectivo = remoteData.equipoDirectivo;
                     data = remoteData.data;
-                    ensureSinAsignar();
+                    sanitizeData();
+                    rebuildTeacherPoolFromData();
                     saveToLocal();
                     renderAll();
                     recalculateAll();
@@ -2261,6 +2637,7 @@
         renderAreas();
         renderOrientacion();
         renderOtrasReducciones();
+        renderProfesorado();
     }
 
     function renderDirectivo() {
@@ -2279,16 +2656,20 @@
             const val = equipoDirectivo[r.key];
             html += '<tr>';
             html += '<td>' + r.label + '</td>';
-            html += '<td><input type="text" data-directivo="' + r.key + '-name" value="' + escapeAttr(val.name) + '"' + disabled + '></td>';
-            html += '<td><input type="number" data-directivo="' + r.key + '-hours" min="0" max="24" value="' + val.hours + '"' + disabled + '></td>';
+            var dirPickerClass = val.name ? 'otras-name-picker has-value' : 'otras-name-picker';
+            var dirPickerLabel = val.name ? escapeHtml(val.name) : '<span class="picker-placeholder">Seleccionar...</span>';
+            var dirPickerDisabled = disabled ? ' disabled' : '';
+            html += '<td><div class="' + dirPickerClass + '" data-directivo-pick="' + r.key + '"' + dirPickerDisabled + '><span class="picker-label">' + dirPickerLabel + '</span><i class="fas fa-chevron-down picker-icon"></i></div></td>';
+            var displayHours = (val.name && val.name.trim()) ? val.hours : 0;
+            html += '<td><input type="number" data-directivo="' + r.key + '-hours" min="0" max="24" value="' + displayHours + '"' + disabled + '></td>';
             html += '</tr>';
         });
 
-        const total = equipoDirectivo.director.hours + equipoDirectivo.jefatura.hours + equipoDirectivo.secretaria.hours;
-        html += '<tr class="directivo-total"><td colspan="2">TOTAL</td><td><span id="total-directivo">' + total + '</span></td></tr>';
+        const totalDir = (equipoDirectivo.director.name && equipoDirectivo.director.name.trim() ? equipoDirectivo.director.hours : 0) + (equipoDirectivo.jefatura.name && equipoDirectivo.jefatura.name.trim() ? equipoDirectivo.jefatura.hours : 0) + (equipoDirectivo.secretaria.name && equipoDirectivo.secretaria.name.trim() ? equipoDirectivo.secretaria.hours : 0);
+        html += '<tr class="directivo-total"><td colspan="2">TOTAL</td><td><span id="total-directivo">' + totalDir + '</span></td></tr>';
         html += '</tbody></table>';
 
-        const hasError = total !== 24;
+        const hasError = totalDir !== 24;
         html += '<div class="directivo-error" style="display:' + (hasError ? 'block' : 'none') + '">¡El total debe ser 24 horas!</div>';
 
         container.innerHTML = html;
@@ -2314,7 +2695,7 @@
         var usedNames = {};
         if (data && data[area] && data[area][dept]) {
             data[area][dept].forEach(function(p) {
-                if (p.name && !p.unassigned) {
+                if (p.name) {
                     usedNames[p.name.toLowerCase()] = true;
                 }
             });
@@ -2353,6 +2734,41 @@
         });
     }
 
+    function updateOrientacionDatalist(input) {
+        var dl = document.getElementById('dl-orientacion');
+        if (!dl) return;
+        var pool = teacherPool['orientacion'] || [];
+        var currentValue = input.value.trim().toLowerCase();
+
+        var usedNames = {};
+        if (data && data.orientacion) {
+            data.orientacion.forEach(function(p) {
+                if (p.name) usedNames[p.name.toLowerCase()] = true;
+            });
+        }
+
+        var options = [];
+        pool.forEach(function(name) {
+            var nl = name.toLowerCase();
+            if (nl === currentValue) {
+                options.push(name);
+            } else if (!usedNames[nl]) {
+                options.push(name);
+            }
+        });
+
+        if (currentValue && !options.some(function(o) { return o.toLowerCase() === currentValue; })) {
+            options.unshift(input.value.trim());
+        }
+
+        dl.innerHTML = '';
+        options.forEach(function(name) {
+            var opt = document.createElement('option');
+            opt.value = name;
+            dl.appendChild(opt);
+        });
+    }
+
     function renderAreaCard(areaKey, isAdmin, disabled) {
         const area = AREA_META[areaKey];
         let html = '';
@@ -2382,29 +2798,26 @@
             html += '</div>';
             html += '<div class="department-content">';
             html += '<table><thead><tr>';
-            html += '<th>Nombre</th><th class="checkbox-cell">JD</th><th class="radio-cell">JA</th><th class="hours-cell">Horas</th>';
+            html += '<th>Nombre</th><th class="checkbox-cell">Act.</th><th class="checkbox-cell">JD</th><th class="radio-cell">JA</th><th class="hours-cell">Horas</th>';
             if (isAdmin) html += '<th></th>';
             html += '</tr></thead><tbody>';
 
             profs.forEach(function(prof, index) {
+                const isActive = prof.active !== false;
                 const hours = (prof.jd ? 2 : 0) + (prof.ja ? 2 : 0);
-                const isUnassigned = prof.unassigned;
-                const rowClass = isUnassigned ? ' class="unassigned-row"' : '';
-                const nameDisabled = (isUnassigned || !isAdmin) ? ' disabled' : '';
+                const nameDisabled = !isAdmin ? ' disabled' : '';
                 // Attach shared datalist if pool exists and user is admin
-                var listAttr = (pool.length > 0 && !isUnassigned && isAdmin) ? ' list="' + dlId + '"' : '';
+                var listAttr = (pool.length > 0 && isAdmin) ? ' list="' + dlId + '"' : '';
+                var rowStyle = isActive ? '' : ' style="opacity:0.45"';
 
-                html += '<tr' + rowClass + '>';
+                html += '<tr' + rowStyle + '>';
                 html += '<td><input type="text" class="prof-name" data-area="' + areaKey + '" data-dept="' + deptKey + '" data-index="' + index + '" value="' + escapeAttr(prof.name) + '"' + nameDisabled + listAttr + '></td>';
+                html += '<td class="checkbox-cell"><input type="checkbox" class="prof-active" data-area="' + areaKey + '" data-dept="' + deptKey + '" data-index="' + index + '"' + (isActive ? ' checked' : '') + disabled + '></td>';
                 html += '<td class="checkbox-cell"><input type="checkbox" class="jd" data-area="' + areaKey + '" data-dept="' + deptKey + '" data-index="' + index + '"' + (prof.jd ? ' checked' : '') + disabled + '></td>';
                 html += '<td class="radio-cell"><input type="radio" name="' + areaKey + '-ja" class="ja" data-area="' + areaKey + '" data-dept="' + deptKey + '" data-index="' + index + '"' + (prof.ja ? ' checked' : '') + disabled + '></td>';
                 html += '<td class="hours-cell"><span class="hours" data-area="' + areaKey + '" data-dept="' + deptKey + '" data-index="' + index + '">' + hours + '</span></td>';
                 if (isAdmin) {
-                    if (isUnassigned) {
-                        html += '<td></td>';
-                    } else {
-                        html += '<td><button class="remove-row-btn" data-remove-prof="' + areaKey + '|' + deptKey + '|' + index + '" title="Eliminar"><i class="fas fa-times"></i></button></td>';
-                    }
+                    html += '<td><button class="remove-row-btn" data-remove-prof="' + areaKey + '|' + deptKey + '|' + index + '" title="Eliminar"><i class="fas fa-times"></i></button></td>';
                 }
                 html += '</tr>';
             });
@@ -2472,30 +2885,31 @@
         html += '<div class="orientacion-card">';
         html += '<div class="department-list"><div class="department-content">';
         html += '<table><thead><tr>';
-        html += '<th>Nombre</th><th class="radio-cell">JD</th><th class="hours-cell">Horas</th>';
+        html += '<th>Nombre</th><th class="checkbox-cell">Act.</th><th class="radio-cell">JD</th><th class="hours-cell">Horas</th>';
         if (isAdmin) html += '<th></th>';
         html += '</tr></thead><tbody>';
 
         data.orientacion.forEach(function(prof, index) {
+            const isActive = prof.active !== false;
             const hours = prof.jd ? 2 : 0;
-            const isUnassigned = prof.unassigned;
-            const rowClass = isUnassigned ? ' class="unassigned-row"' : '';
-            const nameDisabled = (isUnassigned || !isAdmin) ? ' disabled' : '';
-            html += '<tr' + rowClass + '>';
-            html += '<td><input type="text" class="prof-name" data-orientacion-index="' + index + '" value="' + escapeAttr(prof.name) + '"' + nameDisabled + '></td>';
+            const nameDisabled = !isAdmin ? ' disabled' : '';
+            var listAttr = (teacherPool['orientacion'] && teacherPool['orientacion'].length > 0 && isAdmin) ? ' list="dl-orientacion"' : '';
+            var rowStyle = isActive ? '' : ' style="opacity:0.45"';
+            html += '<tr' + rowStyle + '>';
+            html += '<td><input type="text" class="prof-name" data-orientacion-index="' + index + '" value="' + escapeAttr(prof.name) + '"' + nameDisabled + listAttr + '></td>';
+            html += '<td class="checkbox-cell"><input type="checkbox" class="prof-active-orientacion" data-orientacion-index="' + index + '"' + (isActive ? ' checked' : '') + disabled + '></td>';
             html += '<td class="radio-cell"><input type="radio" name="orientacion-jd" class="orientacion-jd" data-orientacion-index="' + index + '"' + (prof.jd ? ' checked' : '') + disabled + '></td>';
             html += '<td class="hours-cell"><span class="orientacion-hours" data-orientacion-index="' + index + '">' + hours + '</span></td>';
             if (isAdmin) {
-                if (isUnassigned) {
-                    html += '<td></td>';
-                } else {
-                    html += '<td><button class="remove-row-btn" data-remove-orientacion="' + index + '" title="Eliminar"><i class="fas fa-times"></i></button></td>';
-                }
+                html += '<td><button class="remove-row-btn" data-remove-orientacion="' + index + '" title="Eliminar"><i class="fas fa-times"></i></button></td>';
             }
             html += '</tr>';
         });
 
         html += '</tbody></table>';
+        if (teacherPool['orientacion'] && teacherPool['orientacion'].length > 0 && isAdmin) {
+            html += '<datalist id="dl-orientacion"></datalist>';
+        }
         if (isAdmin) {
             html += '<div style="margin-top:10px;"><button class="dept-action-btn dept-add-btn" id="addOrientacionBtn"><i class="fas fa-plus"></i> Añadir profesor</button></div>';
         }
@@ -2505,7 +2919,7 @@
 
         if (isAdmin) {
             document.getElementById('addOrientacionBtn').addEventListener('click', function() {
-                data.orientacion.push({ name: '', jd: false });
+                data.orientacion.push({ name: '', jd: false, active: true });
                 renderOrientacion();
                 recalculateAll();
                 debouncedFirebaseSave();
@@ -2523,7 +2937,9 @@
         Object.keys(OTRAS_META).forEach(function(key) {
             const meta = OTRAS_META[key];
             const val = data.otrasReducciones[key];
-            const hours = val.jd ? meta.hours : 0;
+            var hrs = meta.hours;
+            if (key === 'escuela40') hrs = getEscuela40Hours();
+            const hours = val.jd ? hrs : 0;
 
             html += '<div class="reduccion-card">';
             html += '<div class="reduccion-header ' + meta.headerClass + '"><h3><i class="fas ' + meta.icon + '"></i> ' + meta.name + '</h3></div>';
@@ -2531,7 +2947,10 @@
             html += '<th>Nombre</th><th class="checkbox-cell">Resp.</th><th class="hours-cell">Horas</th>';
             html += '</tr></thead><tbody>';
             html += '<tr>';
-            html += '<td><input type="text" class="prof-name" data-otras="' + key + '-name" value="' + escapeAttr(val.name) + '"' + disabled + '></td>';
+            var pickerClass = val.name ? 'otras-name-picker has-value' : 'otras-name-picker';
+            var pickerLabel = val.name ? escapeHtml(val.name) : '<span class="picker-placeholder">Seleccionar...</span>';
+            var pickerDisabled = disabled ? ' disabled' : '';
+            html += '<td><div class="' + pickerClass + '" data-otras-pick="' + key + '"' + pickerDisabled + '><span class="picker-label">' + pickerLabel + '</span><i class="fas fa-chevron-down picker-icon"></i></div></td>';
             html += '<td class="checkbox-cell"><input type="checkbox" class="otras-jd" data-otras="' + key + '"' + (val.jd ? ' checked' : '') + disabled + '></td>';
             html += '<td class="hours-cell"><span class="otras-hours" data-otras="' + key + '">' + hours + '</span></td>';
             html += '</tr>';
@@ -2539,6 +2958,81 @@
         });
 
         html += '</div>';
+        container.innerHTML = html;
+    }
+
+    function renderProfesorado() {
+        const container = document.getElementById('profesoradoSection');
+        if (!container) return;
+        const isAdmin = currentUser && currentUser.role === 'admin';
+
+        var totalTeachers = 0;
+        var deptGroups = [];
+
+        // Build department groups from data model (not teacherPool, so edits are reflected)
+        Object.keys(AREA_META).forEach(function(areaKey) {
+            var area = AREA_META[areaKey];
+            Object.keys(area.departments).forEach(function(deptKey) {
+                var deptData = data[areaKey] && data[areaKey][deptKey] ? data[areaKey][deptKey] : [];
+                var namedProfs = deptData.filter(function(p) { return p.name && p.name.trim(); });
+                if (namedProfs.length > 0) {
+                    deptGroups.push({
+                        label: area.departments[deptKey].name,
+                        areaKey: areaKey,
+                        deptKey: deptKey,
+                        teachers: namedProfs
+                    });
+                    totalTeachers += namedProfs.length;
+                }
+            });
+        });
+
+        // Also include orientación
+        var oriProfs = (data.orientacion || []).filter(function(p) { return p.name && p.name.trim(); });
+        if (oriProfs.length > 0) {
+            deptGroups.push({
+                label: 'Orientación',
+                areaKey: 'orientacion',
+                deptKey: null,
+                teachers: oriProfs
+            });
+            totalTeachers += oriProfs.length;
+        }
+
+        var html = '';
+        if (totalTeachers === 0) {
+            html += '<div class="profesorado-empty"><i class="fas fa-info-circle"></i> No hay profesorado añadido.</div>';
+        } else {
+            html += '<div class="profesorado-list-header"><i class="fas fa-users"></i> Plantilla del centro <span class="profesorado-count">(' + totalTeachers + ' profesor' + (totalTeachers !== 1 ? 'es' : '') + ')</span>';
+            if (isAdmin) {
+                html += '<button class="config-btn config-btn-danger" id="deleteAllTeachersBtn" style="margin-left:auto;padding:5px 12px;font-size:0.72rem;"><i class="fas fa-trash-alt"></i> Eliminar todo</button>';
+            }
+            html += '</div>';
+            html += '<div class="profesorado-list-container">';
+            deptGroups.forEach(function(group) {
+                html += '<div class="profesorado-dept-group">';
+                html += '<div class="profesorado-dept-label">' + escapeHtml(group.label) + '</div>';
+                group.teachers.forEach(function(prof, idx) {
+                    // Find the real index in the data array
+                    var realIdx = -1;
+                    if (group.areaKey === 'orientacion') {
+                        realIdx = data.orientacion.indexOf(prof);
+                    } else {
+                        realIdx = data[group.areaKey][group.deptKey].indexOf(prof);
+                    }
+                    var dataEditAttr = 'data-prof-edit="' + group.areaKey + '|' + group.deptKey + '|' + realIdx + '"';
+                    var dataDelAttr = 'data-prof-del="' + group.areaKey + '|' + group.deptKey + '|' + realIdx + '"';
+                    html += '<div class="profesorado-item">';
+                    html += '<input type="text" ' + dataEditAttr + ' value="' + escapeAttr(prof.name) + '"' + (isAdmin ? '' : ' disabled') + '>';
+                    if (isAdmin) {
+                        html += '<button class="profesorado-item-del" ' + dataDelAttr + ' title="Eliminar"><i class="fas fa-times"></i></button>';
+                    }
+                    html += '</div>';
+                });
+                html += '</div>';
+            });
+            html += '</div>';
+        }
         container.innerHTML = html;
     }
 
@@ -2556,7 +3050,10 @@
     }
 
     function updateDirectivoTotals() {
-        const total = equipoDirectivo.director.hours + equipoDirectivo.jefatura.hours + equipoDirectivo.secretaria.hours;
+        function getDirHours(role) {
+            return (equipoDirectivo[role].name && equipoDirectivo[role].name.trim()) ? equipoDirectivo[role].hours : 0;
+        }
+        const total = getDirHours('director') + getDirHours('jefatura') + getDirHours('secretaria');
 
         const totalEl = document.getElementById('total-directivo');
         if (totalEl) totalEl.textContent = total;
@@ -2588,15 +3085,20 @@
 
         // Otras reducciones
         Object.keys(OTRAS_META).forEach(function(key) {
-            const hours = data.otrasReducciones[key].jd ? OTRAS_META[key].hours : 0;
+            var otrHrs = OTRAS_META[key].hours;
+            if (key === 'escuela40') otrHrs = getEscuela40Hours();
+            const hours = data.otrasReducciones[key].jd ? otrHrs : 0;
             const el = document.querySelector('.otras-hours[data-otras="' + key + '"]');
             if (el) el.textContent = hours;
         });
     }
 
     function calculateResumenGeneral() {
-        // Horas del equipo directivo
-        const horasDirectivo = equipoDirectivo.director.hours + equipoDirectivo.jefatura.hours + equipoDirectivo.secretaria.hours;
+        // Horas del equipo directivo (solo contar si hay nombre asignado)
+        function getDirHours(role) {
+            return (equipoDirectivo[role].name && equipoDirectivo[role].name.trim()) ? equipoDirectivo[role].hours : 0;
+        }
+        const horasDirectivo = getDirHours('director') + getDirHours('jefatura') + getDirHours('secretaria');
 
         // Calcular horas de Plan de Centro
         let horasPlanCentro = 0;
@@ -2625,7 +3127,7 @@
 
         // Calcular horas de enseñanza digital (TDE y Escuela 4.0)
         const horasTDE = data.otrasReducciones.tde.jd ? 3 : 0;
-        const horasEscuela40 = data.otrasReducciones.escuela40.jd ? 1 : 0;
+        const horasEscuela40 = data.otrasReducciones.escuela40.jd ? getEscuela40Hours() : 0;
         const horasEnsenanzaDigital = horasTDE + horasEscuela40;
 
         // Calcular total
@@ -2694,7 +3196,7 @@
     // EVENT DELEGATION
     // =============================================
     function setupEventDelegation() {
-        // Directivo changes (event delegation on container)
+        // Directivo hours changes (event delegation on container)
         document.getElementById('directivoContent').addEventListener('input', function(e) {
             if (currentUser && currentUser.role !== 'admin') return;
             const target = e.target;
@@ -2705,14 +3207,23 @@
             const role = parts[0];
             const prop = parts[1];
 
-            if (prop === 'name') {
-                equipoDirectivo[role].name = target.value;
-            } else if (prop === 'hours') {
+            if (prop === 'hours') {
                 equipoDirectivo[role].hours = parseInt(target.value) || 0;
                 updateDirectivoTotals();
                 calculateResumenGeneral();
+                debouncedFirebaseSave();
             }
-            debouncedFirebaseSave();
+        });
+
+        // Directivo name picker (click to select teacher from modal)
+        document.getElementById('directivoContent').addEventListener('click', function(e) {
+            if (currentUser && currentUser.role !== 'admin') return;
+            var picker = e.target.closest('[data-directivo-pick]');
+            if (picker && !picker.hasAttribute('disabled')) {
+                var key = picker.dataset.directivoPick;
+                var currentName = equipoDirectivo[key].name || '';
+                setupTeacherPicker('directivo-' + key, currentName);
+            }
         });
 
         // Areas container delegation
@@ -2725,6 +3236,15 @@
             }
         });
 
+        // Orientación: update datalist on focus
+        document.getElementById('orientacionSection').addEventListener('focusin', function(e) {
+            if (currentUser && currentUser.role !== 'admin') return;
+            const target = e.target;
+            if (target.classList.contains('prof-name') && target.getAttribute('list') === 'dl-orientacion') {
+                updateOrientacionDatalist(target);
+            }
+        });
+
         document.getElementById('areasWrapper').addEventListener('input', function(e) {
             if (currentUser && currentUser.role !== 'admin') return;
             const target = e.target;
@@ -2734,11 +3254,6 @@
                 const area = target.dataset.area;
                 const dept = target.dataset.dept;
                 const index = parseInt(target.dataset.index);
-                // Prevent editing "Sin assignar" name
-                if (data[area][dept][index].unassigned) {
-                    target.value = 'Sin asignar';
-                    return;
-                }
                 data[area][dept][index].name = target.value;
                 debouncedFirebaseSave();
 
@@ -2750,6 +3265,17 @@
         document.getElementById('areasWrapper').addEventListener('change', function(e) {
             if (currentUser && currentUser.role !== 'admin') return;
             const target = e.target;
+
+            // Active checkbox
+            if (target.classList.contains('prof-active') && target.dataset.area && target.dataset.dept) {
+                const area = target.dataset.area;
+                const dept = target.dataset.dept;
+                const index = parseInt(target.dataset.index);
+                data[area][dept][index].active = target.checked;
+                renderAreas();
+                recalculateAll();
+                debouncedFirebaseSave();
+            }
 
             // JD checkbox
             if (target.classList.contains('jd') && target.dataset.area && target.dataset.dept) {
@@ -2817,7 +3343,7 @@
                 const parts = addBtn.dataset.addProf.split('|');
                 const area = parts[0];
                 const dept = parts[1];
-                data[area][dept].push({ name: '', jd: false, ja: false });
+                data[area][dept].push({ name: '', jd: false, ja: false, active: true });
                 renderAreas();
                 recalculateAll();
                 debouncedFirebaseSave();
@@ -2830,12 +3356,12 @@
                 const area = parts[0];
                 const dept = parts[1];
                 const index = parseInt(parts[2]);
-                if (data[area][dept][index].unassigned) return;
                 if (data[area][dept].length <= 1) {
                     showNotification('El departamento debe tener al menos un profesor', 'error');
                     return;
                 }
                 data[area][dept].splice(index, 1);
+                rebuildTeacherPoolFromData();
                 renderAreas();
                 recalculateAll();
                 debouncedFirebaseSave();
@@ -2849,10 +3375,6 @@
             const target = e.target;
             if (target.classList.contains('prof-name') && target.dataset.orientacionIndex !== undefined) {
                 const index = parseInt(target.dataset.orientacionIndex);
-                if (data.orientacion[index].unassigned) {
-                    target.value = 'Sin asignar';
-                    return;
-                }
                 data.orientacion[index].name = target.value;
                 debouncedFirebaseSave();
             }
@@ -2872,6 +3394,16 @@
                 debouncedFirebaseSave();
                 return;
             }
+
+            // Active checkbox
+            if (target.classList.contains('prof-active-orientacion')) {
+                const index = parseInt(target.dataset.orientacionIndex);
+                data.orientacion[index].active = target.checked;
+                renderOrientacion();
+                recalculateAll();
+                debouncedFirebaseSave();
+                return;
+            }
         });
 
         // Remove orientacion professor
@@ -2880,12 +3412,12 @@
             const removeBtn = e.target.closest('[data-remove-orientacion]');
             if (removeBtn) {
                 const index = parseInt(removeBtn.dataset.removeOrientacion);
-                if (data.orientacion[index].unassigned) return;
                 if (data.orientacion.length <= 1) {
                     showNotification('Orientación debe tener al menos un profesor', 'error');
                     return;
                 }
                 data.orientacion.splice(index, 1);
+                rebuildTeacherPoolFromData();
                 renderOrientacion();
                 recalculateAll();
                 debouncedFirebaseSave();
@@ -2893,13 +3425,13 @@
         });
 
         // Otras reducciones delegation
-        document.getElementById('otrasReduccionesSection').addEventListener('input', function(e) {
+        document.getElementById('otrasReduccionesSection').addEventListener('click', function(e) {
             if (currentUser && currentUser.role !== 'admin') return;
-            const target = e.target;
-            if (target.classList.contains('prof-name') && target.dataset.otras) {
-                const key = target.dataset.otras.replace('-name', '');
-                data.otrasReducciones[key].name = target.value;
-                debouncedFirebaseSave();
+            var picker = e.target.closest('[data-otras-pick]');
+            if (picker && !picker.hasAttribute('disabled')) {
+                var key = picker.dataset.otrasPick;
+                var currentName = data.otrasReducciones[key].name || '';
+                setupTeacherPicker(key, currentName);
             }
         });
 
@@ -2913,6 +3445,34 @@
                 calculateResumenGeneral();
                 debouncedFirebaseSave();
             }
+        });
+
+        // Teacher picker modal events
+        document.getElementById('teacherPickerClose').addEventListener('click', function() {
+            document.getElementById('teacherPickerModal').classList.remove('visible');
+        });
+        document.getElementById('teacherPickerCancelBtn').addEventListener('click', function() {
+            document.getElementById('teacherPickerModal').classList.remove('visible');
+        });
+        document.getElementById('teacherPickerModal').addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('visible');
+        });
+        document.getElementById('teacherPickerConfirmBtn').addEventListener('click', function() {
+            var target = window._teacherPickerTarget;
+            if (!target) return;
+            var selectedName = document.getElementById('teacherPickerSelect').value;
+            document.getElementById('teacherPickerModal').classList.remove('visible');
+
+            if (target.indexOf('directivo-') === 0) {
+                var role = target.replace('directivo-', '');
+                equipoDirectivo[role].name = selectedName;
+                renderDirectivo();
+            } else {
+                data.otrasReducciones[target].name = selectedName;
+                renderOtrasReducciones();
+            }
+            recalculateAll();
+            debouncedFirebaseSave();
         });
     }
 
@@ -3188,7 +3748,7 @@
         const pendingCount = pendingImportList.filter(function(p) { return !p.resolved; }).length;
 
         // Build department options HTML
-        let optHtml = '<option value="">— Sin asignar —</option>';
+        let optHtml = '<option value="">— Sin departamento —</option>';
         Object.keys(AREA_META).forEach(function(areaKey) {
             const area = AREA_META[areaKey];
             optHtml += '<optgroup label="' + area.title + '">';
@@ -3197,6 +3757,7 @@
             });
             optHtml += '</optgroup>';
         });
+        optHtml += '<option value="orientacion.orientacion">Orientación</option>';
 
         // Check if any rows have puesto info
         const hasPuesto = pendingImportList.some(function(p) { return p.puesto; });
@@ -3329,6 +3890,7 @@
                 addProfessorIfNotExists(p.area, p.dept, p.name);
                 count++;
             });
+            rebuildTeacherPoolFromData();
             modal.classList.remove('visible');
             renderAll();
             recalculateAll();
@@ -3372,6 +3934,64 @@
             });
             select.appendChild(optgroup);
         });
+        // Add Orientación option
+        var oriOpt = document.createElement('option');
+        oriOpt.value = 'orientacion.orientacion';
+        oriOpt.textContent = 'Orientación';
+        select.appendChild(oriOpt);
+    }
+
+    function getAllTeachers() {
+        const all = new Set();
+        for (const dept in teacherPool) {
+            teacherPool[dept].forEach(function(t) {
+                if (t && t.trim()) all.add(t.trim());
+            });
+        }
+        return [...all].sort(function(a, b) { return a.localeCompare(b, 'es'); });
+    }
+
+    function rebuildTeacherPoolFromData() {
+        teacherPool = {};
+        Object.keys(AREA_META).forEach(function(areaKey) {
+            Object.keys(AREA_META[areaKey].departments).forEach(function(deptKey) {
+                var poolKey = areaKey + '.' + deptKey;
+                var deptData = data[areaKey] && data[areaKey][deptKey] ? data[areaKey][deptKey] : [];
+                var names = [];
+                deptData.forEach(function(p) {
+                    if (p.name && p.name.trim()) {
+                        var n = p.name.trim();
+                        if (names.indexOf(n) === -1) names.push(n);
+                    }
+                });
+                if (names.length > 0) teacherPool[poolKey] = names;
+            });
+        });
+        // Orientación
+        var oriNames = [];
+        (data.orientacion || []).forEach(function(p) {
+            if (p.name && p.name.trim()) {
+                var n = p.name.trim();
+                if (oriNames.indexOf(n) === -1) oriNames.push(n);
+            }
+        });
+        if (oriNames.length > 0) teacherPool['orientacion'] = oriNames;
+    }
+
+    function setupTeacherPicker(otrasKey, currentName) {
+        window._teacherPickerTarget = otrasKey;
+        var select = document.getElementById('teacherPickerSelect');
+        select.innerHTML = '<option value="">— Sin asignar —</option>';
+        var teachers = getAllTeachers();
+        teachers.forEach(function(name) {
+            var opt = document.createElement('option');
+            opt.value = name;
+            opt.textContent = name;
+            if (name === currentName) opt.selected = true;
+            select.appendChild(opt);
+        });
+        document.getElementById('teacherPickerModal').classList.add('visible');
+        select.focus();
     }
 
     function addProfessorIfNotExists(area, dept, name) {
@@ -3381,7 +4001,12 @@
                 return p.name.toLowerCase() === name.toLowerCase();
             });
             if (!oriExists) {
-                data.orientacion.push({ name: name, jd: false });
+                data.orientacion.push({ name: name, jd: false, active: true });
+            }
+            // Update teacherPool for orientación
+            if (!teacherPool['orientacion']) teacherPool['orientacion'] = [];
+            if (!teacherPool['orientacion'].some(function(n) { return n.toLowerCase() === name.toLowerCase(); })) {
+                teacherPool['orientacion'].push(name);
             }
             return;
         }
@@ -3392,13 +4017,53 @@
             return p.name.toLowerCase() === name.toLowerCase();
         });
         if (!exists) {
-            data[area][dept].push({ name: name, jd: false, ja: false });
+            data[area][dept].push({ name: name, jd: false, ja: false, active: true });
         }
         // Always add to the teacher pool for this department
         var key = area + '.' + dept;
         if (!teacherPool[key]) teacherPool[key] = [];
         if (!teacherPool[key].some(function(n) { return n.toLowerCase() === name.toLowerCase(); })) {
             teacherPool[key].push(name);
+        }
+    }
+
+    function updateTeacherPoolEntry(areaKey, deptKey, newName, oldName) {
+        // Update teacherPool when a name is edited in the profesorado list
+        if (areaKey === 'orientacion') {
+            // For orientación, update all orientación-related pool entries
+            var poolKey = 'orientacion';
+            if (!teacherPool[poolKey]) teacherPool[poolKey] = [];
+            if (oldName) {
+                var oi = teacherPool[poolKey].findIndex(function(n) { return n.toLowerCase() === oldName.toLowerCase(); });
+                if (oi !== -1) {
+                    if (newName) {
+                        teacherPool[poolKey][oi] = newName;
+                    } else {
+                        teacherPool[poolKey].splice(oi, 1);
+                    }
+                }
+            } else if (newName) {
+                if (!teacherPool[poolKey].some(function(n) { return n.toLowerCase() === newName.toLowerCase(); })) {
+                    teacherPool[poolKey].push(newName);
+                }
+            }
+        } else {
+            var poolKey = areaKey + '.' + deptKey;
+            if (!teacherPool[poolKey]) teacherPool[poolKey] = [];
+            if (oldName) {
+                var oi = teacherPool[poolKey].findIndex(function(n) { return n.toLowerCase() === oldName.toLowerCase(); });
+                if (oi !== -1) {
+                    if (newName) {
+                        teacherPool[poolKey][oi] = newName;
+                    } else {
+                        teacherPool[poolKey].splice(oi, 1);
+                    }
+                }
+            } else if (newName) {
+                if (!teacherPool[poolKey].some(function(n) { return n.toLowerCase() === newName.toLowerCase(); })) {
+                    teacherPool[poolKey].push(newName);
+                }
+            }
         }
     }
 
@@ -3442,7 +4107,8 @@
                 if (!confirm('¿Importar estos datos? Se sobrescribirán los datos actuales.')) return;
                 equipoDirectivo = imported.equipoDirectivo;
                 data = imported.data;
-                ensureSinAsignar();
+                sanitizeData();
+                rebuildTeacherPoolFromData();
                 saveToLocal();
                 debouncedFirebaseSave();
                 renderAll();
@@ -3456,10 +4122,237 @@
         event.target.value = '';
     }
 
+    function generatePDF() {
+        try {
+        var opts = {
+            directivo: document.getElementById('rptDirectivo').checked,
+            areas: document.getElementById('rptAreas').checked,
+            orientacion: document.getElementById('rptOrientacion').checked,
+            otras: document.getElementById('rptOtras').checked,
+            resumen: document.getElementById('rptResumen').checked,
+            soloActivos: document.getElementById('rptSoloActivos').checked
+        };
+        var doc = new jspdf.jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+        var pageW = doc.internal.pageSize.getWidth();
+        var margin = 10;
+        var contentW = pageW - 2 * margin;
+        var y = margin;
+
+        // Title
+        doc.setFontSize(16);
+        doc.setFont(undefined, 'bold');
+        doc.text('Reducciones Horarias - Curso ' + currentCourse, pageW / 2, y, { align: 'center' });
+        y += 10;
+        doc.setFontSize(8);
+        doc.setFont(undefined, 'normal');
+        doc.text('Generado el ' + new Date().toLocaleDateString('es-ES') + ' a las ' + new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }), pageW / 2, y, { align: 'center' });
+        y += 8;
+
+        var checkNewPage = function(needed) {
+            if (y + needed > doc.internal.pageSize.getHeight() - 15) {
+                doc.addPage();
+                y = margin;
+            }
+        };
+
+        // Directivo
+        if (opts.directivo) {
+            checkNewPage(30);
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.text('Equipo Directivo', margin, y);
+            y += 3;
+            var dirBody = [];
+            var roles = [
+                { key: 'director', label: 'Dirección' },
+                { key: 'jefatura', label: 'Jefatura de Estudios' },
+                { key: 'secretaria', label: 'Secretaría' }
+            ];
+            var dirTotal = 0;
+            roles.forEach(function(r) {
+                var v = equipoDirectivo[r.key];
+                var h = v.name ? v.hours : 0;
+                dirTotal += h;
+                dirBody.push([r.label, v.name || '—', h + ' h']);
+            });
+            dirBody.push(['TOTAL', '', dirTotal + ' h']);
+            doc.autoTable({
+                startY: y,
+                head: [['Cargo', 'Nombre', 'Horas']],
+                body: dirBody,
+                theme: 'grid',
+                styles: { fontSize: 8, cellPadding: 2 },
+                headStyles: { fillColor: [44, 62, 80], textColor: 255 },
+                margin: { left: margin, right: margin },
+                columnStyles: { 0: { cellWidth: 45 }, 2: { halign: 'center', cellWidth: 20 } }
+            });
+            y = doc.lastAutoTable.finalY + 6;
+        }
+
+        // Areas
+        if (opts.areas) {
+            Object.keys(AREA_META).forEach(function(areaKey) {
+                var area = AREA_META[areaKey];
+                checkNewPage(25);
+                doc.setFontSize(11);
+                doc.setFont(undefined, 'bold');
+                doc.text(area.title, margin, y);
+                y += 3;
+                Object.keys(area.departments).forEach(function(deptKey) {
+                    checkNewPage(20);
+                    var deptMeta = area.departments[deptKey];
+                    var profs = data[areaKey][deptKey] || [];
+                    var rows = [];
+                    var deptHours = 0;
+                    profs.forEach(function(p) {
+                        if (opts.soloActivos && p.active === false) return;
+                        var name = p.name || '—';
+                        var h = (p.jd ? 2 : 0) + (p.ja ? 2 : 0);
+                        deptHours += h;
+                        rows.push([name, p.jd ? 'Si' : 'No', p.ja ? 'Si' : 'No', h + ' h']);
+                    });
+                    rows.push(['TOTAL ' + deptMeta.name, '', '', deptHours + ' h']);
+                    doc.autoTable({
+                        startY: y,
+                        head: [['Nombre', 'Jef. Dept.', 'Jef. Área', 'Horas']],
+                        body: rows,
+                        theme: 'grid',
+                        styles: { fontSize: 7, cellPadding: 2 },
+                        headStyles: { fillColor: [77, 171, 247], textColor: 255, fontSize: 7 },
+                        margin: { left: margin, right: margin },
+                        columnStyles: { 1: { halign: 'center', cellWidth: 18 }, 2: { halign: 'center', cellWidth: 18 }, 3: { halign: 'center', cellWidth: 18 } }
+                    });
+                    y = doc.lastAutoTable.finalY + 4;
+                });
+            });
+        }
+
+        // Orientación
+        if (opts.orientacion) {
+            checkNewPage(25);
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'bold');
+            doc.text('Orientación', margin, y);
+            y += 3;
+            var oriRows = [];
+            var oriTotal = 0;
+            (data.orientacion || []).forEach(function(p) {
+                if (opts.soloActivos && p.active === false) return;
+                var h = p.jd ? 2 : 0;
+                oriTotal += h;
+                oriRows.push([p.name || '—', p.jd ? 'Si' : 'No', h + ' h']);
+            });
+            oriRows.push(['TOTAL', '', oriTotal + ' h']);
+            doc.autoTable({
+                startY: y,
+                head: [['Nombre', 'Jef. Dept.', 'Horas']],
+                body: oriRows,
+                theme: 'grid',
+                styles: { fontSize: 8, cellPadding: 2 },
+                headStyles: { fillColor: [111, 66, 193], textColor: 255 },
+                margin: { left: margin, right: margin },
+                columnStyles: { 1: { halign: 'center', cellWidth: 18 }, 2: { halign: 'center', cellWidth: 18 } }
+            });
+            y = doc.lastAutoTable.finalY + 6;
+        }
+
+        // Otras Reducciones
+        if (opts.otras) {
+            checkNewPage(25);
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'bold');
+            doc.text('Otras Reducciones', margin, y);
+            y += 3;
+            var otrRows = [];
+            var otrTotal = 0;
+            Object.keys(OTRAS_META).forEach(function(key) {
+                var meta = OTRAS_META[key];
+                var val = data.otrasReducciones[key];
+                var mHrs = meta.hours;
+                if (key === 'escuela40') mHrs = getEscuela40Hours();
+                var h = val.jd ? mHrs : 0;
+                otrTotal += h;
+                otrRows.push([meta.name, val.name || '—', val.jd ? 'Si' : 'No', h + ' h']);
+            });
+            otrRows.push(['TOTAL', '', '', otrTotal + ' h']);
+            doc.autoTable({
+                startY: y,
+                head: [['Reducción', 'Nombre', 'Resp.', 'Horas']],
+                body: otrRows,
+                theme: 'grid',
+                styles: { fontSize: 8, cellPadding: 2 },
+                headStyles: { fillColor: [32, 201, 151], textColor: 255 },
+                margin: { left: margin, right: margin },
+                columnStyles: { 2: { halign: 'center', cellWidth: 18 }, 3: { halign: 'center', cellWidth: 18 } }
+            });
+            y = doc.lastAutoTable.finalY + 6;
+        }
+
+        // Resumen
+        if (opts.resumen) {
+            checkNewPage(40);
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.text('Resumen General', margin, y);
+            y += 3;
+            function pdfDirH(role) {
+                return (equipoDirectivo[role].name && equipoDirectivo[role].name.trim()) ? equipoDirectivo[role].hours : 0;
+            }
+            var dirH = pdfDirH('director') + pdfDirH('jefatura') + pdfDirH('secretaria');
+            var areaH = 0;
+            Object.keys(AREA_META).forEach(function(ak) {
+                Object.keys(AREA_META[ak].departments).forEach(function(dk) {
+                    (data[ak][dk] || []).forEach(function(p) {
+                        if (opts.soloActivos && p.active === false) return;
+                        areaH += (p.jd ? 2 : 0) + (p.ja ? 2 : 0);
+                    });
+                });
+            });
+            var oriH = 0;
+            (data.orientacion || []).forEach(function(p) {
+                if (opts.soloActivos && p.active === false) return;
+                oriH += p.jd ? 2 : 0;
+            });
+            var otrH = 0;
+            Object.keys(OTRAS_META).forEach(function(k) {
+                if (data.otrasReducciones[k].jd) {
+                    var mH = OTRAS_META[k].hours;
+                    if (k === 'escuela40') mH = getEscuela40Hours();
+                    otrH += mH;
+                }
+            });
+            var total = dirH + areaH + oriH + otrH;
+            doc.autoTable({
+                startY: y,
+                head: [['Concepto', 'Horas']],
+                body: [
+                    ['Equipo Directivo', dirH + ' h'],
+                    ['Áreas y Departamentos', areaH + ' h'],
+                    ['Orientación', oriH + ' h'],
+                    ['Otras Reducciones', otrH + ' h'],
+                    ['TOTAL', total + ' h']
+                ],
+                theme: 'grid',
+                styles: { fontSize: 9, cellPadding: 3 },
+                headStyles: { fillColor: [64, 192, 87], textColor: 255 },
+                margin: { left: margin, right: margin },
+                columnStyles: { 0: { cellWidth: 80 }, 1: { halign: 'center', cellWidth: 25 } }
+            });
+        }
+
+        doc.save('Informe_Reducciones_' + currentCourse + '.pdf');
+        showNotification('Informe PDF generado correctamente', 'success');
+        } catch (err) {
+            console.error('Error generando PDF:', err);
+            showNotification('Error al generar el PDF: ' + err.message, 'error');
+        }
+    }
+
     function resetData() {
         if (!confirm('¿Reiniciar todos los datos del curso ' + currentCourse + '? Esta acción no se puede deshacer.')) return;
         equipoDirectivo = getDefaultEquipoDirectivo();
-        data = getDefaultData(true);
+        data = getDefaultData();
+        teacherPool = {};
         saveToLocal();
         debouncedFirebaseSave();
         renderAll();
@@ -3530,6 +4423,8 @@
             if (doc.exists && doc.data().equipoDirectivo && doc.data().data) {
                 equipoDirectivo = doc.data().equipoDirectivo;
                 data = doc.data().data;
+                sanitizeData();
+                rebuildTeacherPoolFromData();
                 saveToLocal();
             }
         } catch (e) {
@@ -3543,9 +4438,6 @@
 
         // Load data for current course
         await loadCourseData();
-
-        // Ensure "Sin asignar" exists in every department
-        ensureSinAsignar();
 
         // Render everything
         renderAll();
@@ -3736,7 +4628,7 @@
                 return;
             }
 
-            data[area][dept].push({ name: name, jd: false, ja: false });
+            data[area][dept].push({ name: name, jd: false, ja: false, active: true });
 
             // Register in teacherPool for autocomplete
             var poolKey = area + '.' + dept;
@@ -3759,8 +4651,118 @@
             if (e.key === 'Enter') document.getElementById('addTeacherBtn').click();
         });
 
+        // Profesorado list delegation (edit, delete, delete all)
+        document.getElementById('profesoradoSection').addEventListener('input', function(e) {
+            if (currentUser && currentUser.role !== 'admin') return;
+            var editInput = e.target.closest('[data-prof-edit]');
+            if (editInput) {
+                var parts = editInput.dataset.profEdit.split('|');
+                var areaKey = parts[0];
+                var deptKey = parts[1];
+                var idx = parseInt(parts[2]);
+                var newName = editInput.value.trim();
+
+                if (areaKey === 'orientacion') {
+                    if (data.orientacion[idx]) {
+                        var oldName = data.orientacion[idx].name;
+                        data.orientacion[idx].name = newName;
+                        updateTeacherPoolEntry(areaKey, null, newName, oldName);
+                    }
+                } else {
+                    if (data[areaKey] && data[areaKey][deptKey] && data[areaKey][deptKey][idx]) {
+                        var oldName = data[areaKey][deptKey][idx].name;
+                        data[areaKey][deptKey][idx].name = newName;
+                        // Update teacherPool
+                        updateTeacherPoolEntry(areaKey, deptKey, newName, oldName);
+                    }
+                }
+                recalculateAll();
+                debouncedFirebaseSave();
+            }
+        });
+
+        document.getElementById('profesoradoSection').addEventListener('click', function(e) {
+            if (currentUser && currentUser.role !== 'admin') return;
+
+            // Delete all teachers
+            var delAllBtn = e.target.closest('#deleteAllTeachersBtn');
+            if (delAllBtn) {
+                if (!confirm('¿Estás seguro de que quieres eliminar todo el profesorado? Esta acción también eliminará los profesores asignados en las secciones del documento.')) return;
+                for (var key in teacherPool) {
+                    teacherPool[key] = [];
+                }
+                Object.keys(AREA_META).forEach(function(areaKey) {
+                    if (data[areaKey]) {
+                        Object.keys(AREA_META[areaKey].departments).forEach(function(deptKey) {
+                            if (data[areaKey][deptKey]) {
+                                data[areaKey][deptKey].forEach(function(prof) {
+                                    prof.name = '';
+                                    prof.jd = false;
+                                    prof.ja = false;
+                                });
+                            }
+                        });
+                    }
+                });
+                if (data.orientacion) {
+                    data.orientacion.forEach(function(item) {
+                        item.name = '';
+                        item.jd = false;
+                    });
+                }
+                sanitizeData();
+                rebuildTeacherPoolFromData();
+                renderAll();
+                recalculateAll();
+                debouncedFirebaseSave();
+                showNotification('Profesorado eliminado completamente', 'info');
+                return;
+            }
+
+            // Delete individual teacher
+            var delBtn = e.target.closest('[data-prof-del]');
+            if (delBtn) {
+                var parts = delBtn.dataset.profDel.split('|');
+                var areaKey = parts[0];
+                var deptKey = parts[1];
+                var idx = parseInt(parts[2]);
+
+                if (areaKey === 'orientacion') {
+                    if (data.orientacion && data.orientacion[idx]) {
+                        data.orientacion.splice(idx, 1);
+                    }
+                } else {
+                    if (data[areaKey] && data[areaKey][deptKey] && data[areaKey][deptKey][idx]) {
+                        data[areaKey][deptKey].splice(idx, 1);
+                    }
+                }
+                rebuildTeacherPoolFromData();
+                renderAll();
+                recalculateAll();
+                debouncedFirebaseSave();
+            }
+        });
+
         document.getElementById('resetBtn').addEventListener('click', resetData);
         document.getElementById('printBtn').addEventListener('click', printA3);
+
+        // Report modal (PDF)
+        document.getElementById('reportBtn').addEventListener('click', function() {
+            document.getElementById('reportModal').classList.add('visible');
+        });
+        document.getElementById('reportModalClose').addEventListener('click', function() {
+            document.getElementById('reportModal').classList.remove('visible');
+        });
+        document.getElementById('reportModalCancel').addEventListener('click', function() {
+            document.getElementById('reportModal').classList.remove('visible');
+        });
+        document.getElementById('reportModal').addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('visible');
+        });
+        document.getElementById('reportModalGenerate').addEventListener('click', function() {
+            document.getElementById('reportModal').classList.remove('visible');
+            generatePDF();
+        });
     });
     </script>
 </body>
