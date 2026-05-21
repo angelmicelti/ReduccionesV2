@@ -4566,7 +4566,7 @@
     // =============================================
     // BOOTSTRAP
     // =============================================
-    document.addEventListener('DOMContentLoaded', async function() {
+    document.addEventListener('DOMContentLoaded', function() {
         setupPWA();
 
         // Check for stored session
@@ -4579,21 +4579,22 @@
                     localStorage.removeItem('currentUser');
                     currentUser = null;
                 } else {
-                    // Verify role against Firestore first (most authoritative source)
-                    try {
-                        var userDoc = await db.collection('users').doc(currentUser.username).get();
-                        if (userDoc.exists && userDoc.data().role) {
+                    // Verify role against Firestore (non-blocking)
+                    db.collection('users').doc(currentUser.username).get().then(function(userDoc) {
+                        if (userDoc.exists && userDoc.data().role && userDoc.data().role !== currentUser.role) {
                             currentUser.role = userDoc.data().role;
                             localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                            setupUserInterface(); // Re-apply UI for new role
                         }
-                    } catch(e) {
-                        // Firestore unavailable, fallback to localStorage
+                    }).catch(function() {
+                        // Firestore unavailable, check localStorage
                         var localUsers = getLocalUsers();
                         if (localUsers[currentUser.username] && localUsers[currentUser.username].role !== currentUser.role) {
                             currentUser.role = localUsers[currentUser.username].role;
                             localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                            setupUserInterface();
                         }
-                    }
+                    });
                     document.getElementById('loginOverlay').classList.add('hidden');
                     document.getElementById('mainApp').style.display = 'block';
                     setupUserInterface();
