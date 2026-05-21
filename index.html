@@ -28,6 +28,18 @@
     <title>Gestión de Reducciones Horarias</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ===== THEME SYSTEM — CSS Custom Properties ===== */
+        :root {
+            --primary: #4dabf7;
+            --primary-hover: #3b8fd4;
+            --primary-dark: #1971c2;
+            --primary-soft: #dbe4ff;
+            --primary-light: #74c0fc;
+            --accent: #3b5bdb;
+            --body-bg-from: #f5f7fa;
+            --body-bg-to: #e4e7eb;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -38,7 +50,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+            background: linear-gradient(135deg, var(--body-bg-from) 0%, var(--body-bg-to) 100%);
             padding: 10px;
             min-height: 100vh;
         }
@@ -84,7 +96,7 @@
 
         .login-card i {
             font-size: 3rem;
-            color: #4dabf7;
+            color: var(--primary);
             margin-bottom: 15px;
         }
 
@@ -113,14 +125,14 @@
 
         .login-card input:focus {
             outline: none;
-            border-color: #4dabf7;
+            border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
         }
 
         .login-btn {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(to right, #4dabf7, #339af0);
+            background: linear-gradient(to right, var(--primary), var(--primary-hover));
             color: white;
             border: none;
             border-radius: 10px;
@@ -169,7 +181,7 @@
         }
 
         h1 i {
-            color: #4dabf7;
+            color: var(--primary);
         }
 
         .header-right {
@@ -309,7 +321,7 @@
         }
 
         .config-header-left i {
-            color: #4dabf7;
+            color: var(--primary);
         }
 
         .config-chevron {
@@ -358,7 +370,7 @@
         }
 
         .config-panel-title i {
-            color: #4dabf7;
+            color: var(--primary);
         }
 
         .config-panel-body {
@@ -387,8 +399,8 @@
             transform: translateY(-1px);
         }
 
-        .config-btn-primary { background: #4dabf7; color: white; }
-        .config-btn-primary:hover { background: #3b8fd4; }
+        .config-btn-primary { background: var(--primary); color: white; }
+        .config-btn-primary:hover { background: var(--primary-hover); }
         .config-btn-export { background: #7950f2; color: white; }
         .config-btn-export:hover { background: #6741d9; }
         .config-btn-import { background: #f76707; color: white; }
@@ -469,7 +481,7 @@
         .profesorado-item input[type="text"]:hover { border-color: #dee2e6; background: white; }
         .profesorado-item input[type="text"]:focus {
             outline: none;
-            border-color: #4dabf7;
+            border-color: var(--primary);
             background: white;
             box-shadow: 0 0 0 2px rgba(77,171,247,0.15);
         }
@@ -556,7 +568,7 @@
 
         .new-course-row button {
             padding: 8px 14px;
-            background: #4dabf7;
+            background: var(--primary);
             color: white;
             border: none;
             border-radius: 8px;
@@ -567,7 +579,7 @@
         }
 
         .new-course-row button:hover {
-            background: #3b8fd4;
+            background: var(--primary-hover);
         }
 
         /* Course list in Config panel */
@@ -595,8 +607,8 @@
         }
 
         .course-list-item.current {
-            background: #dbe4ff;
-            border-color: #74c0fc;
+            background: var(--primary-soft);
+            border-color: var(--primary-light);
             font-weight: 600;
         }
 
@@ -608,7 +620,7 @@
         }
 
         .course-list-item-name i {
-            color: #4dabf7;
+            color: var(--primary);
             font-size: 0.8rem;
         }
 
@@ -655,8 +667,8 @@
             gap: 8px;
         }
 
-        .btn-primary { background: #4dabf7; color: white; }
-        .btn-primary:hover { background: #3b8fd4; transform: translateY(-2px); }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
 
         .file-input { display: none; }
 
@@ -759,7 +771,7 @@
 
         .dept-add-btn {
             background: #e7f5ff;
-            color: #1971c2;
+            color: var(--primary-dark);
         }
 
         .dept-add-btn:hover {
@@ -810,7 +822,7 @@
 
         input[type="text"]:focus {
             outline: none;
-            border-color: #4dabf7;
+            border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
         }
 
@@ -828,7 +840,7 @@
         .hours-cell {
             text-align: center;
             font-weight: 600;
-            color: #3b5bdb;
+            color: var(--accent);
             width: 52px;
             min-width: 52px;
             max-width: 52px;
@@ -885,7 +897,7 @@
         .summary-value {
             font-size: 1.2rem;
             font-weight: 700;
-            color: #3b5bdb;
+            color: var(--accent);
         }
 
         /* Orientación */
@@ -1016,7 +1028,7 @@
             transition: border-color 0.2s, box-shadow 0.2s;
             min-height: 32px;
         }
-        .otras-name-picker:hover { border-color: #4dabf7; }
+        .otras-name-picker:hover { border-color: var(--primary); }
         .otras-name-picker.has-value {
             border-color: #a9d6ff;
             background: #e7f5ff;
@@ -1043,7 +1055,7 @@
         }
         .teacher-picker-select:focus {
             outline: none;
-            border-color: #4dabf7;
+            border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
         }
 
@@ -1067,7 +1079,7 @@
             align-items: center;
             gap: 6px;
         }
-        .report-section-title i { color: #4dabf7; }
+        .report-section-title i { color: var(--primary); }
         .report-checkbox {
             display: flex;
             align-items: center;
@@ -1081,7 +1093,7 @@
         .report-checkbox:hover { color: #2c3e50; }
         .report-checkbox input[type="checkbox"] {
             width: auto;
-            accent-color: #4dabf7;
+            accent-color: var(--primary);
         }
 
         /* Resumen General */
@@ -1135,7 +1147,7 @@
         .resumen-value {
             font-size: 1.8rem;
             font-weight: 700;
-            color: #3b5bdb;
+            color: var(--accent);
         }
 
         .resumen-item.total .resumen-value { font-size: 2.2rem; color: #2b8a3e; }
@@ -1174,7 +1186,7 @@
             right: 20px;
             padding: 15px 25px;
             border-radius: 8px;
-            background: #4dabf7;
+            background: var(--primary);
             color: white;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             z-index: 1000;
@@ -1188,7 +1200,7 @@
         .notification.show { transform: translateX(0); }
         .notification.success { background: #40c057; }
         .notification.error { background: #fa5252; }
-        .notification.info { background: #4dabf7; }
+        .notification.info { background: var(--primary); }
 
         /* ===== READ ONLY MODE ===== */
         .read-only input[type="text"],
@@ -1278,7 +1290,7 @@
             gap: 10px;
         }
 
-        .modal-header h3 i { color: #4dabf7; }
+        .modal-header h3 i { color: var(--primary); }
 
         .modal-close {
             background: none;
@@ -1327,7 +1339,7 @@
 
         .modal-batch-btn {
             padding: 8px 14px;
-            background: #4dabf7;
+            background: var(--primary);
             color: white;
             border: none;
             border-radius: 8px;
@@ -1338,7 +1350,7 @@
             transition: background 0.2s;
         }
 
-        .modal-batch-btn:hover { background: #3b8fd4; }
+        .modal-batch-btn:hover { background: var(--primary-hover); }
 
         .import-table {
             width: 100%;
@@ -1576,7 +1588,7 @@
                             <div class="new-course-row" id="addTeacherRow">
                                 <input type="text" id="newTeacherName" placeholder="Nombre del profesor/a" style="flex:1;padding:8px 12px;border:1px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:0.85rem;">
                                 <select id="newTeacherDept" style="padding:8px;border-radius:8px;border:1px solid #dee2e6;font-family:inherit;font-size:0.85rem;min-width:160px;"></select>
-                                <button id="addTeacherBtn" style="padding:8px 14px;background:#4dabf7;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;white-space:nowrap;"><i class="fas fa-plus"></i> Añadir</button>
+                                <button id="addTeacherBtn" style="padding:8px 14px;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;white-space:nowrap;"><i class="fas fa-plus"></i> Añadir</button>
                             </div>
                             <button class="config-btn config-btn-import" id="importExcelBtn"><i class="fas fa-file-excel"></i> Importar profesorado (Excel)</button>
                             <input type="file" id="excelFileInput" class="file-input" accept=".xlsx,.xls">
@@ -1633,7 +1645,7 @@
                                     <option value="user">Usuario</option>
                                     <option value="admin">Admin</option>
                                 </select>
-                                <button id="addUserBtn" style="padding:8px 14px;background:#4dabf7;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;white-space:nowrap;"><i class="fas fa-plus"></i> Añadir</button>
+                                <button id="addUserBtn" style="padding:8px 14px;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;white-space:nowrap;"><i class="fas fa-plus"></i> Añadir</button>
                             </div>
                         </div>
                     </div>
@@ -1940,6 +1952,79 @@
             if (year >= 2024) return 1;
         }
         return 0;
+    }
+
+    // =============================================
+    // THEME PALETTES PER COURSE
+    // =============================================
+    const COURSE_PALETTES = {
+        2025: { // 2025-2026
+            primary: '#f06595', primaryHover: '#e64980', primaryDark: '#d6336c',
+            primarySoft: '#ffdeeb', primaryLight: '#faa2c1', accent: '#c2255c',
+            bgFrom: '#fdf0f5', bgTo: '#f5dce6'
+        },
+        2026: { // 2026-2027
+            primary: '#ff922b', primaryHover: '#fd7e14', primaryDark: '#e8590c',
+            primarySoft: '#fff0db', primaryLight: '#ffc078', accent: '#d9480f',
+            bgFrom: '#fffcf5', bgTo: '#fff0d6'
+        },
+        2027: { // 2027-2028
+            primary: '#51cf66', primaryHover: '#40c057', primaryDark: '#2f9e44',
+            primarySoft: '#d3f9d8', primaryLight: '#8ce99a', accent: '#2b8a3e',
+            bgFrom: '#f2fcf4', bgTo: '#dbf5de'
+        },
+        2028: { // 2028-2029
+            primary: '#845ef7', primaryHover: '#7950f2', primaryDark: '#6741d9',
+            primarySoft: '#e5dbff', primaryLight: '#b197fc', accent: '#5f3dc4',
+            bgFrom: '#f8f7fc', bgTo: '#ece7f6'
+        },
+        2029: { // 2029-2030
+            primary: '#228be6', primaryHover: '#1c7ed6', primaryDark: '#1864ab',
+            primarySoft: '#d0ebff', primaryLight: '#74c0fc', accent: '#1971c2',
+            bgFrom: '#f0f8ff', bgTo: '#dce9f7'
+        },
+        2030: { // 2030-2031
+            primary: '#20c997', primaryHover: '#12b886', primaryDark: '#0ca678',
+            primarySoft: '#c3fae8', primaryLight: '#63e6be', accent: '#087f5b',
+            bgFrom: '#f0fdf8', bgTo: '#d8f5ee'
+        },
+        2031: { // 2031-2032
+            primary: '#7950f2', primaryHover: '#6741d9', primaryDark: '#5f3dc4',
+            primarySoft: '#e5dbff', primaryLight: '#9775fa', accent: '#5f3dc4',
+            bgFrom: '#f9f7fd', bgTo: '#ede7f7'
+        },
+        2032: { // 2032-2033
+            primary: '#4dabf7', primaryHover: '#3b8fd4', primaryDark: '#1971c2',
+            primarySoft: '#dbe4ff', primaryLight: '#74c0fc', accent: '#3b5bdb',
+            bgFrom: '#f5f7fa', bgTo: '#e4e7eb'
+        }
+    };
+
+    function applyCoursePalette() {
+        var match = currentCourse.match(/(\d{4})/);
+        var year = match ? parseInt(match[1]) : 2025;
+        // Find the closest palette year (or exact match)
+        var palette = COURSE_PALETTES[year];
+        if (!palette) {
+            // Cycle through palettes for years beyond 2032
+            var baseYear = 2025;
+            var paletteKeys = Object.keys(COURSE_PALETTES).map(Number).sort(function(a, b) { return a - b; });
+            var offset = ((year - baseYear) % paletteKeys.length + paletteKeys.length) % paletteKeys.length;
+            var targetYear = paletteKeys[offset];
+            palette = COURSE_PALETTES[targetYear];
+        }
+        var root = document.documentElement;
+        root.style.setProperty('--primary', palette.primary);
+        root.style.setProperty('--primary-hover', palette.primaryHover);
+        root.style.setProperty('--primary-dark', palette.primaryDark);
+        root.style.setProperty('--primary-soft', palette.primarySoft);
+        root.style.setProperty('--primary-light', palette.primaryLight);
+        root.style.setProperty('--accent', palette.accent);
+        root.style.setProperty('--body-bg-from', palette.bgFrom);
+        root.style.setProperty('--body-bg-to', palette.bgTo);
+        // Update meta theme-color for mobile browsers
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.content = palette.primary;
     }
 
     function createEmptyStructure() {
@@ -2312,6 +2397,7 @@
         }
 
         renderCourseSelector();
+        applyCoursePalette();
     }
 
     function renderCourseSelector() {
@@ -2349,7 +2435,7 @@
                 '<div class="course-list-item-name">' +
                     '<i class="fas fa-' + (isCurrent ? 'circle-dot' : 'circle') + '"></i>' +
                     '<span>Curso ' + c + '</span>' +
-                    (isCurrent ? ' <span style="font-size:0.75rem;color:#1971c2;font-weight:400;">(activo)</span>' : '') +
+                    (isCurrent ? ' <span style="font-size:0.75rem;color:var(--primary-dark);font-weight:400;">(activo)</span>' : '') +
                 '</div>' +
                 '<button class="course-delete-btn" title="Eliminar curso"' + (isCurrent ? ' disabled' : '') + ' data-course="' + c + '">' +
                     '<i class="fas fa-trash-alt"></i>' +
@@ -2387,6 +2473,7 @@
 
             // Re-render
             renderCourseSelector();
+        applyCoursePalette();
 
             showNotification('Curso ' + courseName + ' eliminado correctamente', 'success');
         } catch (e) {
@@ -2418,6 +2505,7 @@
 
         // Setup realtime listener for the new course
         setupRealtimeSync();
+        applyCoursePalette();
 
         showNotification('Curso cambiado a ' + newCourse, 'info');
     }
@@ -2452,6 +2540,7 @@
             setupRealtimeSync();
 
             renderCourseSelector();
+        applyCoursePalette();
             document.getElementById('newCourseInput').value = '';
 
             showNotification('Curso ' + courseName + ' creado correctamente', 'success');
@@ -3167,7 +3256,7 @@
             document.getElementById('horas-directivo').style.color = '#e63946';
         } else {
             document.getElementById('warning-directivo').style.display = 'none';
-            document.getElementById('horas-directivo').style.color = '#3b5bdb';
+            document.getElementById('horas-directivo').style.color = 'var(--accent)';
         }
 
         if (horasPlanCentro !== 36) {
@@ -3176,7 +3265,7 @@
             document.getElementById('horas-plan-centro').style.color = '#e63946';
         } else {
             document.getElementById('warning-plan-centro').style.display = 'none';
-            document.getElementById('horas-plan-centro').style.color = '#3b5bdb';
+            document.getElementById('horas-plan-centro').style.color = 'var(--accent)';
         }
 
         if (horasEnsenanzaDigital !== expectedEnsenanzaDigital) {
@@ -3185,7 +3274,7 @@
             document.getElementById('horas-ensenanza-digital').style.color = '#e63946';
         } else {
             document.getElementById('warning-ensenanza-digital').style.display = 'none';
-            document.getElementById('horas-ensenanza-digital').style.color = '#3b5bdb';
+            document.getElementById('horas-ensenanza-digital').style.color = 'var(--accent)';
         }
 
         if (totalHoras !== expectedTotal) {
