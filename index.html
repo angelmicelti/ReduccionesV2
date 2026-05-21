@@ -2121,135 +2121,120 @@
             return;
         }
 
-        // Show loading state
+        const hashedPw = hashPassword(password);
+
+        // ==========================================
+        // STEP 1: Check localStorage FIRST (instant)
+        // ==========================================
+        try {
+            var localUsers = getLocalUsers();
+            var deletedArr = JSON.parse(localStorage.getItem('deletedUsers') || '[]');
+
+            if (deletedArr.indexOf(username) !== -1) {
+                showNotification('Usuario o contraseña incorrectos', 'error');
+                return;
+            }
+
+            if (localUsers[username]) {
+                if (localUsers[username].passwordHash === hashedPw) {
+                    console.log('[handleLogin] Local login OK, role:', localUsers[username].role);
+                    enterApp({ username: username, name: localUsers[username].name || username, role: localUsers[username].role });
+                    return;
+                } else {
+                    showNotification('Usuario o contraseña incorrectos', 'error');
+                    return;
+                }
+            }
+        } catch (localError) {
+            console.warn('[handleLogin] localStorage error:', localError.message);
+        }
+
+        // ==========================================
+        // STEP 2: Check Firestore (with timeout)
+        // ==========================================
+        console.log('[handleLogin] Not found locally, checking Firestore...');
         var loginBtn = document.getElementById('loginBtn');
         loginBtn.disabled = true;
         loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
 
         try {
-            const hashedPw = hashPassword(password);
-            var usersSnapshot = null; // Track Firestore result for local fallback
+            var firestoreResult = null;
 
-            // === ATTEMPT 1: Firestore ===
             try {
-                // Add timeout to prevent Firestore from hanging indefinitely
-                const firestorePromise = db.collection('users').get();
-                const timeoutPromise = new Promise(function(resolve) {
+                var timeoutId = setTimeout(function() {
+                    console.warn('[handleLogin] Firestore timeout after 5s');
+                }, 5000);
+
+                var firestorePromise = db.collection('users').doc(username).get();
+                var timeoutPromise = new Promise(function(resolve) {
                     setTimeout(function() { resolve(null); }, 5000);
                 });
-                usersSnapshot = await Promise.race([firestorePromise, timeoutPromise]);
 
-                if (!usersSnapshot) {
-                    // Firestore timed out, fall through to local
-                    console.warn('Firestore login timed out after 5s, using local fallback');
-                } else if (usersSnapshot.empty) {
-                    // First user ever in Firestore: create as admin
-                    const userData = {
-                        username: username,
-                        name: username,
-                        passwordHash: hashedPw,
-                        role: 'admin',
-                        createdAt: new Date().toISOString()
-                    };
-                    await db.collection('users').doc(username).set(userData);
-                    // Also save locally as backup
-                    const localUsers = getLocalUsers();
-                    localUsers[username] = userData;
-                    saveLocalUsers(localUsers);
+                firestoreResult = await Promise.race([firestorePromise, timeoutPromise]);
+                clearTimeout(timeoutId);
+            } catch (firestoreError) {
+                console.warn('[handleLogin] Firestore error:', firestoreError.message);
+            }
 
-                    enterApp({ username: username, name: username, role: 'admin' });
+            if (firestoreResult && firestoreResult.exists) {
+                var userData = firestoreResult.data();
+                if (userData.passwordHash === hashedPw) {
+                    // Save to localStorage for future instant logins
+                    var lu = getLocalUsers();
+                    lu[username] = userData;
+                    saveLocalUsers(lu);
+
+                    console.log('[handleLogin] Firestore login OK, role:', userData.role);
+                    enterApp({ username: username, name: userData.name || username, role: userData.role });
                     return;
                 } else {
-                    // Check if user exists in Firestore (with timeout)
-                    const docPromise = db.collection('users').doc(username).get();
-                    const docTimeout = new Promise(function(resolve) {
-                        setTimeout(function() { resolve({ exists: false, timedOut: true }); }, 5000);
-                    });
-                    const userDoc = await Promise.race([docPromise, docTimeout]);
-                    if (userDoc.exists) {
-                        const userData = userDoc.data();
-                        if (userData.passwordHash === hashedPw) {
-                            // Sync this user to localStorage for offline fallback,
-                            // but preserve the localStorage role if it was changed by admin
-                            var lu = getLocalUsers();
-                            if (lu[username]) {
-                                // User exists locally — keep the local role (admin may have changed it)
-                                var savedRole = lu[username].role;
-                                lu[username] = userData;
-                                lu[username].role = savedRole;
-                            } else {
-                                lu[username] = userData;
-                            }
-                            saveLocalUsers(lu);
-                            // Use the localStorage role as the authoritative one
-                            var finalRole = lu[username].role || userData.role;
-                            enterApp({ username: username, name: userData.name || username, role: finalRole });
-                            return;
-                        } else {
-                            showNotification('Usuario o contraseña incorrectos', 'error');
-                            return;
-                        }
-                    }
-                    // User not in Firestore, fall through to local check
+                    showNotification('Usuario o contraseña incorrectos', 'error');
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
+                    return;
                 }
-            } catch (firestoreError) {
-                console.warn('Firestore no disponible para login, usando modo local:', firestoreError.message);
             }
 
-            // === ATTEMPT 2: localStorage (fallback) ===
+            // Check if Firestore has ANY users at all
             try {
-                var localUsers = getLocalUsers();
+                var allUsersPromise = db.collection('users').get();
+                var allTimeoutPromise = new Promise(function(resolve) {
+                    setTimeout(function() { resolve(null); }, 5000);
+                });
+                var allSnapshot = await Promise.race([allUsersPromise, allTimeoutPromise]);
 
-                // Exclude locally deleted users from the check
-                var deletedArr = JSON.parse(localStorage.getItem('deletedUsers') || '[]');
-                var isDeleted = deletedArr.indexOf(username) !== -1;
-
-                if (isDeleted) {
+                if (allSnapshot && !allSnapshot.empty) {
+                    // Users exist in Firestore but this one is not registered
                     showNotification('Usuario o contraseña incorrectos', 'error');
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
                     return;
                 }
-
-                if (localUsers[username]) {
-                    if (localUsers[username].passwordHash === hashedPw) {
-                        enterApp({ username: username, name: localUsers[username].name || username, role: localUsers[username].role });
-                        return;
-                    } else {
-                        showNotification('Usuario o contraseña incorrectos', 'error');
-                        return;
-                    }
-                }
-
-                // User not found locally AND Firestore was available but didn't have the user
-                // Do NOT auto-create as admin — only create if no users exist at all
-                if (usersSnapshot && !usersSnapshot.empty) {
-                    // There are users in Firestore but this one is not registered
-                    showNotification('Usuario o contraseña incorrectos', 'error');
-                    return;
-                }
-
-                // No users exist anywhere: create first admin locally
-                var userData = {
-                    username: username,
-                    name: username,
-                    passwordHash: hashedPw,
-                    role: 'admin',
-                    createdAt: new Date().toISOString()
-                };
-                localUsers[username] = userData;
-                saveLocalUsers(localUsers);
-                // Try to sync to Firestore in background
-                syncUserToFirestore(username, userData);
-                enterApp({ username: username, name: username, role: 'admin' });
-                return;
-            } catch (localError) {
-                console.error('Error en login local:', localError);
-                showNotification('Error al iniciar sesión. Verifica tu conexión e inténtalo de nuevo.', 'error');
+            } catch (e) {
+                console.warn('[handleLogin] Could not check Firestore users:', e.message);
             }
+
+            // No users exist anywhere: create first admin
+            console.log('[handleLogin] No users found, creating first admin');
+            var newUserData = {
+                username: username,
+                name: username,
+                passwordHash: hashedPw,
+                role: 'admin',
+                createdAt: new Date().toISOString()
+            };
+            var lu2 = getLocalUsers();
+            lu2[username] = newUserData;
+            saveLocalUsers(lu2);
+            syncUserToFirestore(username, newUserData);
+
+            enterApp({ username: username, name: username, role: 'admin' });
+            return;
+
         } catch (fatalError) {
-            console.error('Error fatal en login:', fatalError);
+            console.error('[handleLogin] Fatal error:', fatalError);
             showNotification('Error al iniciar sesión. Inténtalo de nuevo.', 'error');
         } finally {
-            // Always restore button state
             loginBtn.disabled = false;
             loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
         }
