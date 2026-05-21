@@ -500,6 +500,7 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 0.85rem;
+            table-layout: fixed;
         }
 
         .users-table th {
@@ -510,6 +511,10 @@
             color: #495057;
             border-bottom: 2px solid #e0e0e0;
         }
+        .users-table th:nth-child(1) { width: 40%; }
+        .users-table th:nth-child(2) { width: 20%; }
+        .users-table th:nth-child(3) { width: 20%; }
+        .users-table th:nth-child(4) { width: 20%; }
 
         .users-table td {
             padding: 8px 10px;
@@ -541,16 +546,16 @@
         /* Add user form */
         .add-user-row {
             display: grid;
-            grid-template-columns: 1fr auto auto auto;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
             gap: 8px;
             align-items: center;
             margin-bottom: 8px;
         }
         .add-user-row-sub {
-            grid-template-columns: 1fr auto auto auto;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
         }
         .add-user-row-sub .add-user-password {
-            max-width: 220px;
+            max-width: 100%;
         }
         .add-user-input {
             padding: 8px 10px;
@@ -560,6 +565,8 @@
             font-size: 0.85rem;
             background: #f8f9fa;
             transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+            width: 100%;
+            box-sizing: border-box;
         }
         .add-user-input:focus {
             outline: none;
@@ -578,29 +585,34 @@
             font-size: 0.85rem;
             background: #f8f9fa;
             cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
         }
         .add-user-btn {
-            padding: 8px 18px;
-            background: linear-gradient(135deg, #40c057, #2f9e44);
+            padding: 10px 22px;
+            background: linear-gradient(135deg, #2f9e44, #1971c2);
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: 700;
-            font-size: 0.85rem;
+            font-weight: 800;
+            font-size: 0.92rem;
             white-space: nowrap;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             transition: transform 0.15s, box-shadow 0.15s;
-            box-shadow: 0 2px 6px rgba(64, 192, 87, 0.3);
+            box-shadow: 0 3px 10px rgba(31, 113, 194, 0.35);
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
         }
         .add-user-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(64, 192, 87, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(31, 113, 194, 0.45);
         }
         .add-user-btn:active {
             transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(31, 113, 194, 0.3);
         }
 
         /* New course input */
@@ -670,6 +682,17 @@
             align-items: center;
             gap: 8px;
             color: #343a40;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 6px;
+            transition: background 0.15s;
+            flex: 1;
+        }
+        .course-list-item-name:hover {
+            background: rgba(77, 171, 247, 0.1);
+        }
+        .course-list-item.current .course-list-item-name:hover {
+            background: rgba(77, 171, 247, 0.18);
         }
 
         .course-list-item-name i {
@@ -2439,7 +2462,7 @@
             const item = document.createElement('div');
             item.className = 'course-list-item' + (isCurrent ? ' current' : '');
             item.innerHTML =
-                '<div class="course-list-item-name">' +
+                '<div class="course-list-item-name" data-course="' + c + '">' +
                     '<i class="fas fa-' + (isCurrent ? 'circle-dot' : 'circle') + '"></i>' +
                     '<span>Curso ' + c + '</span>' +
                     (isCurrent ? ' <span style="font-size:0.75rem;color:#1971c2;font-weight:400;">(activo)</span>' : '') +
@@ -2452,9 +2475,20 @@
 
         // Attach delete handlers
         container.querySelectorAll('.course-delete-btn:not([disabled])').forEach(function(btn) {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
                 var courseName = this.getAttribute('data-course');
                 deleteCourse(courseName);
+            });
+        });
+
+        // Attach click handler on course labels to switch course
+        container.querySelectorAll('.course-list-item-name').forEach(function(label) {
+            label.addEventListener('click', function() {
+                var courseName = this.getAttribute('data-course');
+                if (courseName && courseName !== currentCourse) {
+                    switchCourse(courseName);
+                }
             });
         });
     }
@@ -2508,6 +2542,9 @@
         await loadCourseData();
         renderAll();
         recalculateAll();
+
+        // Update course dropdown and list to reflect the new active course
+        renderCourseSelector();
 
         // Setup realtime listener for the new course
         setupRealtimeSync();
