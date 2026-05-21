@@ -557,6 +557,11 @@
         .add-user-row-sub .add-user-password {
             max-width: 100%;
         }
+        .add-user-row-btn {
+            display: flex;
+            justify-content: center;
+            margin-top: 4px;
+        }
         .add-user-input {
             padding: 8px 10px;
             border: 1px solid #dee2e6;
@@ -1720,10 +1725,10 @@
                                     <option value="user">Usuario</option>
                                     <option value="admin">Admin</option>
                                 </select>
-                                <button id="addUserBtn" class="add-user-btn"><i class="fas fa-user-plus"></i> Añadir usuario</button>
-                            </div>
-                            <div class="add-user-row add-user-row-sub">
                                 <input type="password" id="newUserPass" placeholder="Contraseña" class="add-user-input add-user-password">
+                            </div>
+                            <div class="add-user-row-btn">
+                                <button id="addUserBtn" class="add-user-btn"><i class="fas fa-user-plus"></i> Añadir usuario</button>
                             </div>
                         </div>
                     </div>
