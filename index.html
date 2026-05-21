@@ -1666,13 +1666,11 @@
                     <div class="config-panel">
                         <div class="config-panel-title"><i class="fas fa-chalkboard-teacher"></i> Profesorado</div>
                         <div class="config-panel-body">
-                            <div class="new-course-row" id="addTeacherRow">
-                                <input type="text" id="newTeacherName" placeholder="Nombre del profesor/a" style="flex:1;padding:8px 12px;border:1px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:0.85rem;">
-                                <select id="newTeacherDept" style="padding:8px;border-radius:8px;border:1px solid #dee2e6;font-family:inherit;font-size:0.85rem;min-width:160px;"></select>
-                                <button id="addTeacherBtn" style="padding:8px 14px;background:#4dabf7;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;white-space:nowrap;"><i class="fas fa-plus"></i> Añadir</button>
+                            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                <button class="config-btn config-btn-primary" id="openAddTeacherModalBtn"><i class="fas fa-user-plus"></i> Añadir profesor/a</button>
+                                <button class="config-btn config-btn-import" id="importExcelBtn"><i class="fas fa-file-excel"></i> Importar profesorado (Excel)</button>
+                                <input type="file" id="excelFileInput" class="file-input" accept=".xlsx,.xls">
                             </div>
-                            <button class="config-btn config-btn-import" id="importExcelBtn"><i class="fas fa-file-excel"></i> Importar profesorado (Excel)</button>
-                            <input type="file" id="excelFileInput" class="file-input" accept=".xlsx,.xls">
                             <div id="profesoradoSection"></div>
                         </div>
                     </div>
@@ -1838,6 +1836,38 @@
                 <div class="modal-actions">
                     <button class="modal-btn modal-btn-cancel" id="teacherPickerCancelBtn">Cancelar</button>
                     <button class="modal-btn modal-btn-confirm" id="teacherPickerConfirmBtn">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Teacher Modal -->
+    <div class="modal-overlay" id="addTeacherModal">
+        <div class="modal-box" style="max-width:480px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> Añadir Profesor/a</h3>
+                <button class="modal-close" id="addTeacherModalClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" style="display:flex;flex-direction:column;gap:16px;">
+                <div>
+                    <label style="display:block;font-weight:600;font-size:0.85rem;color:#495057;margin-bottom:6px;">Nombre completo</label>
+                    <input type="text" id="newTeacherName" placeholder="Ej: María García López" style="width:100%;padding:10px 14px;border:1px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:0.9rem;box-sizing:border-box;">
+                </div>
+                <div>
+                    <label style="display:block;font-weight:600;font-size:0.85rem;color:#495057;margin-bottom:6px;">Área</label>
+                    <select id="newTeacherArea" style="width:100%;padding:10px 14px;border:1px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:0.9rem;box-sizing:border-box;">
+                    </select>
+                </div>
+                <div>
+                    <label style="display:block;font-weight:600;font-size:0.85rem;color:#495057;margin-bottom:6px;">Departamento</label>
+                    <select id="newTeacherDept" style="width:100%;padding:10px 14px;border:1px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:0.9rem;box-sizing:border-box;">
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-cancel" id="addTeacherModalCancelBtn">Cancelar</button>
+                    <button class="modal-btn modal-btn-confirm" id="addTeacherModalConfirmBtn"><i class="fas fa-user-plus"></i> Añadir</button>
                 </div>
             </div>
         </div>
@@ -4128,26 +4158,53 @@
     });
 
     function populateTeacherDeptSelect() {
-        const select = document.getElementById('newTeacherDept');
-        if (!select || !data) return;
-        select.innerHTML = '';
+        // Populate area select for the modal
+        const areaSelect = document.getElementById('newTeacherArea');
+        const deptSelect = document.getElementById('newTeacherDept');
+        if (!areaSelect || !deptSelect || !data) return;
+
+        // Build area options
+        areaSelect.innerHTML = '';
         Object.keys(AREA_META).forEach(function(areaKey) {
-            const area = AREA_META[areaKey];
-            const optgroup = document.createElement('optgroup');
-            optgroup.label = area.title;
-            Object.keys(area.departments).forEach(function(deptKey) {
-                const opt = document.createElement('option');
-                opt.value = areaKey + '.' + deptKey;
-                opt.textContent = area.departments[deptKey].name;
-                optgroup.appendChild(opt);
-            });
-            select.appendChild(optgroup);
+            var opt = document.createElement('option');
+            opt.value = areaKey;
+            opt.textContent = AREA_META[areaKey].title;
+            areaSelect.appendChild(opt);
         });
-        // Add Orientación option
         var oriOpt = document.createElement('option');
-        oriOpt.value = 'orientacion.orientacion';
+        oriOpt.value = 'orientacion';
         oriOpt.textContent = 'Orientación';
-        select.appendChild(oriOpt);
+        areaSelect.appendChild(oriOpt);
+
+        // Initial department population
+        populateDeptSelectFromArea(areaSelect.value);
+
+        // Area change updates department list
+        areaSelect.onchange = function() {
+            populateDeptSelectFromArea(this.value);
+        };
+    }
+
+    function populateDeptSelectFromArea(areaKey) {
+        const deptSelect = document.getElementById('newTeacherDept');
+        if (!deptSelect) return;
+        deptSelect.innerHTML = '';
+
+        if (areaKey === 'orientacion') {
+            var opt = document.createElement('option');
+            opt.value = 'orientacion.orientacion';
+            opt.textContent = 'Orientación';
+            deptSelect.appendChild(opt);
+            return;
+        }
+
+        if (!AREA_META[areaKey]) return;
+        Object.keys(AREA_META[areaKey].departments).forEach(function(deptKey) {
+            var opt = document.createElement('option');
+            opt.value = areaKey + '.' + deptKey;
+            opt.textContent = AREA_META[areaKey].departments[deptKey].name;
+            deptSelect.appendChild(opt);
+        });
     }
 
     function getAllTeachers() {
@@ -4815,8 +4872,27 @@
             this.value = '';
         });
 
-        // Add individual teacher
-        document.getElementById('addTeacherBtn').addEventListener('click', function() {
+        // Add teacher modal
+        document.getElementById('openAddTeacherModalBtn').addEventListener('click', function() {
+            document.getElementById('newTeacherName').value = '';
+            var areaSelect = document.getElementById('newTeacherArea');
+            if (areaSelect.options.length > 0) areaSelect.selectedIndex = 0;
+            populateDeptSelectFromArea(areaSelect.value);
+            document.getElementById('addTeacherModal').classList.add('visible');
+            setTimeout(function() { document.getElementById('newTeacherName').focus(); }, 100);
+        });
+        document.getElementById('addTeacherModalClose').addEventListener('click', function() {
+            document.getElementById('addTeacherModal').classList.remove('visible');
+        });
+        document.getElementById('addTeacherModalCancelBtn').addEventListener('click', function() {
+            document.getElementById('addTeacherModal').classList.remove('visible');
+        });
+        document.getElementById('addTeacherModal').addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('visible');
+        });
+
+        // Confirm add teacher from modal
+        document.getElementById('addTeacherModalConfirmBtn').addEventListener('click', function() {
             var name = document.getElementById('newTeacherName').value.trim();
             var deptValue = document.getElementById('newTeacherDept').value;
 
@@ -4852,7 +4928,7 @@
                 debouncedFirebaseSave();
                 renderAll();
                 recalculateAll();
-                document.getElementById('newTeacherName').value = '';
+                document.getElementById('addTeacherModal').classList.remove('visible');
                 showNotification(name + ' añadido/a a Orientación', 'success');
                 return;
             }
@@ -4884,14 +4960,13 @@
             debouncedFirebaseSave();
             renderAll();
             recalculateAll();
-
-            document.getElementById('newTeacherName').value = '';
+            document.getElementById('addTeacherModal').classList.remove('visible');
             showNotification(name + ' añadido/a a ' + AREA_META[area].departments[dept].name, 'success');
         });
 
-        // Enter key on teacher name input
+        // Enter key on teacher name input in modal
         document.getElementById('newTeacherName').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') document.getElementById('addTeacherBtn').click();
+            if (e.key === 'Enter') document.getElementById('addTeacherModalConfirmBtn').click();
         });
 
         // Profesorado list delegation (edit, delete, delete all)
