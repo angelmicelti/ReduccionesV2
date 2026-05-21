@@ -538,6 +538,71 @@
             background: #ffeef0;
         }
 
+        /* Add user form */
+        .add-user-row {
+            display: grid;
+            grid-template-columns: 1fr auto auto auto;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .add-user-row-sub {
+            grid-template-columns: 1fr auto auto auto;
+        }
+        .add-user-row-sub .add-user-password {
+            max-width: 220px;
+        }
+        .add-user-input {
+            padding: 8px 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            background: #f8f9fa;
+            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+        }
+        .add-user-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.15);
+        }
+        .add-user-input::placeholder {
+            color: #adb5bd;
+        }
+        .add-user-select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            font-family: inherit;
+            font-size: 0.85rem;
+            background: #f8f9fa;
+            cursor: pointer;
+        }
+        .add-user-btn {
+            padding: 8px 18px;
+            background: linear-gradient(135deg, #40c057, #2f9e44);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 2px 6px rgba(64, 192, 87, 0.3);
+        }
+        .add-user-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(64, 192, 87, 0.4);
+        }
+        .add-user-btn:active {
+            transform: translateY(0);
+        }
+
         /* New course input */
         .new-course-row {
             display: flex;
@@ -1625,15 +1690,17 @@
                     <div class="config-panel" id="usersPanel" style="display:none; grid-column: 1 / -1;">
                         <div class="config-panel-title"><i class="fas fa-users-cog"></i> Gestión de Usuarios</div>
                         <div class="config-panel-body" id="usersPanelBody">
-                            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                                <input type="text" id="newUserName" placeholder="Nombre completo" style="flex:1;min-width:120px;padding:8px 12px;border:1px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:0.85rem;">
-                                <input type="text" id="newUserUsername" placeholder="Usuario" style="width:100px;padding:8px 12px;border:1px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:0.85rem;">
-                                <input type="password" id="newUserPass" placeholder="Contraseña" style="width:100px;padding:8px 12px;border:1px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:0.85rem;">
-                                <select id="newUserRole" style="padding:8px;border-radius:8px;border:1px solid #dee2e6;font-family:inherit;font-size:0.85rem;">
+                            <div class="add-user-row">
+                                <input type="text" id="newUserName" placeholder="Nombre completo" class="add-user-input">
+                                <input type="text" id="newUserUsername" placeholder="Usuario" class="add-user-input">
+                                <select id="newUserRole" class="add-user-select">
                                     <option value="user">Usuario</option>
                                     <option value="admin">Admin</option>
                                 </select>
-                                <button id="addUserBtn" style="padding:8px 14px;background:#4dabf7;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;white-space:nowrap;"><i class="fas fa-plus"></i> Añadir</button>
+                                <button id="addUserBtn" class="add-user-btn"><i class="fas fa-user-plus"></i> Añadir usuario</button>
+                            </div>
+                            <div class="add-user-row add-user-row-sub">
+                                <input type="password" id="newUserPass" placeholder="Contraseña" class="add-user-input add-user-password">
                             </div>
                         </div>
                     </div>
@@ -2365,7 +2432,9 @@
         const container = document.getElementById('courseListContainer');
         if (!container) return;
         container.innerHTML = '';
-        courseList.forEach(function(c) {
+        // Sort courses ascending (oldest first) for display
+        var sortedCourses = courseList.slice().sort();
+        sortedCourses.forEach(function(c) {
             const isCurrent = (c === currentCourse);
             const item = document.createElement('div');
             item.className = 'course-list-item' + (isCurrent ? ' current' : '');
@@ -2449,6 +2518,21 @@
     async function createNewCourse(courseName) {
         courseName = courseName.trim();
         if (!courseName) return;
+
+        // Validate format: 20XX-20YY (two 4-digit years separated by hyphen)
+        if (!/^\d{4}-\d{4}$/.test(courseName)) {
+            showNotification('Formato incorrecto. Usa el formato 20XX-20YY (ej: 2026-2027)', 'error');
+            return;
+        }
+        // Validate that second year = first year + 1
+        var parts = courseName.split('-');
+        var startYear = parseInt(parts[0]);
+        var endYear = parseInt(parts[1]);
+        if (endYear !== startYear + 1) {
+            showNotification('El segundo año debe ser el siguiente al primero (ej: 2026-2027)', 'error');
+            return;
+        }
+
         if (courseList.indexOf(courseName) !== -1) {
             showNotification('Ese curso ya existe', 'error');
             return;
