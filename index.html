@@ -2134,26 +2134,24 @@
             console.log('[handleLogin v6] Step 4: localUsers keys =', Object.keys(localUsers));
             var deletedArr = JSON.parse(localStorage.getItem('deletedUsers') || '[]');
 
-            if (deletedArr.indexOf(username) !== -1) {
-                console.log('[handleLogin v6] User is in deleted list');
-                showNotification('Usuario o contraseña incorrectos', 'error');
-                return;
-            }
-
-            console.log('[handleLogin v6] Step 5: looking for user', username, 'in locals...');
             if (localUsers[username]) {
-                console.log('[handleLogin v6] Step 6: user found locally, comparing passwords...');
+                console.log('[handleLogin v6] Step 5: looking for user', username, 'in locals...');
                 if (localUsers[username].passwordHash === hashedPw) {
                     console.log('[handleLogin v6] Step 7: Local login OK, role:', localUsers[username].role);
                     enterApp({ username: username, name: localUsers[username].name || username, role: localUsers[username].role });
                     return;
                 } else {
                     console.log('[handleLogin v6] Step 6b: Password mismatch! local=', localUsers[username].passwordHash, 'typed=', hashedPw);
-                    showNotification('Usuario o contraseña incorrectos', 'error');
-                    return;
+                    // Password hash format may have changed — don't reject, try Firestore instead
+                    console.log('[handleLogin v6] Step 6c: Hash mismatch, falling through to Firestore check...');
                 }
             } else {
                 console.log('[handleLogin v6] Step 5b: User NOT found locally');
+            }
+
+            // If user is in deleted list, still try Firestore — they may have been recreated there
+            if (deletedArr.indexOf(username) !== -1) {
+                console.log('[handleLogin v6] User in deleted list locally, but will check Firestore...');
             }
         } catch (localError) {
             console.error('[handleLogin v6] localStorage ERROR:', localError);
@@ -2186,19 +2184,33 @@
             if (firestoreResult && firestoreResult.exists) {
                 var userData = firestoreResult.data();
                 if (userData.passwordHash === hashedPw) {
+                    // Save to localStorage for future instant logins
                     var lu = getLocalUsers();
                     lu[username] = userData;
                     saveLocalUsers(lu);
 
+                    // Remove from deleted list if present
+                    var delArr = JSON.parse(localStorage.getItem('deletedUsers') || '[]');
+                    var delIdx = delArr.indexOf(username);
+                    if (delIdx !== -1) {
+                        delArr.splice(delIdx, 1);
+                        localStorage.setItem('deletedUsers', JSON.stringify(delArr));
+                        console.log('[handleLogin v6] Removed', username, 'from deletedUsers list');
+                    }
+
                     console.log('[handleLogin v6] Firestore login OK, role:', userData.role);
                     enterApp({ username: username, name: userData.name || username, role: userData.role });
                     return;
-                } else {
+                } else if (userData.passwordHash && userData.passwordHash !== hashedPw) {
+                    // Firestore hash doesn't match either — the password is wrong
+                    console.log('[handleLogin v6] Firestore password mismatch');
                     showNotification('Usuario o contraseña incorrectos', 'error');
                     loginBtn.disabled = false;
                     loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
                     return;
                 }
+            } else {
+                console.log('[handleLogin v6] Firestore: user not found or timeout');
             }
 
             // Check if Firestore has ANY users at all
