@@ -28,18 +28,6 @@
     <title>Gestión de Reducciones Horarias</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ===== THEME SYSTEM — CSS Custom Properties ===== */
-        :root {
-            --primary: #4dabf7;
-            --primary-hover: #3b8fd4;
-            --primary-dark: #1971c2;
-            --primary-soft: #dbe4ff;
-            --primary-light: #74c0fc;
-            --accent: #3b5bdb;
-            --body-bg-from: #f5f7fa;
-            --body-bg-to: #e4e7eb;
-        }
-
         * {
             box-sizing: border-box;
             margin: 0;
@@ -50,7 +38,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, var(--body-bg-from) 0%, var(--body-bg-to) 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
             padding: 10px;
             min-height: 100vh;
         }
@@ -96,7 +84,7 @@
 
         .login-card i {
             font-size: 3rem;
-            color: var(--primary);
+            color: #4dabf7;
             margin-bottom: 15px;
         }
 
@@ -125,14 +113,14 @@
 
         .login-card input:focus {
             outline: none;
-            border-color: var(--primary);
+            border-color: #4dabf7;
             box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
         }
 
         .login-btn {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(to right, var(--primary), var(--primary-hover));
+            background: linear-gradient(to right, #4dabf7, #339af0);
             color: white;
             border: none;
             border-radius: 10px;
@@ -181,7 +169,7 @@
         }
 
         h1 i {
-            color: var(--primary);
+            color: #4dabf7;
         }
 
         .header-right {
@@ -321,7 +309,7 @@
         }
 
         .config-header-left i {
-            color: var(--primary);
+            color: #4dabf7;
         }
 
         .config-chevron {
@@ -370,7 +358,7 @@
         }
 
         .config-panel-title i {
-            color: var(--primary);
+            color: #4dabf7;
         }
 
         .config-panel-body {
@@ -399,8 +387,8 @@
             transform: translateY(-1px);
         }
 
-        .config-btn-primary { background: var(--primary); color: white; }
-        .config-btn-primary:hover { background: var(--primary-hover); }
+        .config-btn-primary { background: #4dabf7; color: white; }
+        .config-btn-primary:hover { background: #3b8fd4; }
         .config-btn-export { background: #7950f2; color: white; }
         .config-btn-export:hover { background: #6741d9; }
         .config-btn-import { background: #f76707; color: white; }
@@ -481,7 +469,7 @@
         .profesorado-item input[type="text"]:hover { border-color: #dee2e6; background: white; }
         .profesorado-item input[type="text"]:focus {
             outline: none;
-            border-color: var(--primary);
+            border-color: #4dabf7;
             background: white;
             box-shadow: 0 0 0 2px rgba(77,171,247,0.15);
         }
@@ -568,7 +556,7 @@
 
         .new-course-row button {
             padding: 8px 14px;
-            background: var(--primary);
+            background: #4dabf7;
             color: white;
             border: none;
             border-radius: 8px;
@@ -579,7 +567,7 @@
         }
 
         .new-course-row button:hover {
-            background: var(--primary-hover);
+            background: #3b8fd4;
         }
 
         /* Course list in Config panel */
@@ -607,8 +595,8 @@
         }
 
         .course-list-item.current {
-            background: var(--primary-soft);
-            border-color: var(--primary-light);
+            background: #dbe4ff;
+            border-color: #74c0fc;
             font-weight: 600;
         }
 
@@ -620,7 +608,7 @@
         }
 
         .course-list-item-name i {
-            color: var(--primary);
+            color: #4dabf7;
             font-size: 0.8rem;
         }
 
@@ -667,8 +655,8 @@
             gap: 8px;
         }
 
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .btn-primary { background: #4dabf7; color: white; }
+        .btn-primary:hover { background: #3b8fd4; transform: translateY(-2px); }
 
         .file-input { display: none; }
 
@@ -771,7 +759,7 @@
 
         .dept-add-btn {
             background: #e7f5ff;
-            color: var(--primary-dark);
+            color: #1971c2;
         }
 
         .dept-add-btn:hover {
@@ -822,7 +810,7 @@
 
         input[type="text"]:focus {
             outline: none;
-            border-color: var(--primary);
+            border-color: #4dabf7;
             box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
         }
 
@@ -840,7 +828,7 @@
         .hours-cell {
             text-align: center;
             font-weight: 600;
-            color: var(--accent);
+            color: #3b5bdb;
             width: 52px;
             min-width: 52px;
             max-width: 52px;
@@ -897,7 +885,7 @@
         .summary-value {
             font-size: 1.2rem;
             font-weight: 700;
-            color: var(--accent);
+            color: #3b5bdb;
         }
 
         /* Orientación */
@@ -1028,7 +1016,7 @@
             transition: border-color 0.2s, box-shadow 0.2s;
             min-height: 32px;
         }
-        .otras-name-picker:hover { border-color: var(--primary); }
+        .otras-name-picker:hover { border-color: #4dabf7; }
         .otras-name-picker.has-value {
             border-color: #a9d6ff;
             background: #e7f5ff;
@@ -1055,7 +1043,7 @@
         }
         .teacher-picker-select:focus {
             outline: none;
-            border-color: var(--primary);
+            border-color: #4dabf7;
             box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
         }
 
@@ -1079,7 +1067,7 @@
             align-items: center;
             gap: 6px;
         }
-        .report-section-title i { color: var(--primary); }
+        .report-section-title i { color: #4dabf7; }
         .report-checkbox {
             display: flex;
             align-items: center;
@@ -1093,7 +1081,7 @@
         .report-checkbox:hover { color: #2c3e50; }
         .report-checkbox input[type="checkbox"] {
             width: auto;
-            accent-color: var(--primary);
+            accent-color: #4dabf7;
         }
 
         /* Resumen General */
@@ -1147,7 +1135,7 @@
         .resumen-value {
             font-size: 1.8rem;
             font-weight: 700;
-            color: var(--accent);
+            color: #3b5bdb;
         }
 
         .resumen-item.total .resumen-value { font-size: 2.2rem; color: #2b8a3e; }
@@ -1186,7 +1174,7 @@
             right: 20px;
             padding: 15px 25px;
             border-radius: 8px;
-            background: var(--primary);
+            background: #4dabf7;
             color: white;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             z-index: 1000;
@@ -1200,7 +1188,7 @@
         .notification.show { transform: translateX(0); }
         .notification.success { background: #40c057; }
         .notification.error { background: #fa5252; }
-        .notification.info { background: var(--primary); }
+        .notification.info { background: #4dabf7; }
 
         /* ===== READ ONLY MODE ===== */
         .read-only input[type="text"],
@@ -1290,7 +1278,7 @@
             gap: 10px;
         }
 
-        .modal-header h3 i { color: var(--primary); }
+        .modal-header h3 i { color: #4dabf7; }
 
         .modal-close {
             background: none;
@@ -1339,7 +1327,7 @@
 
         .modal-batch-btn {
             padding: 8px 14px;
-            background: var(--primary);
+            background: #4dabf7;
             color: white;
             border: none;
             border-radius: 8px;
@@ -1350,7 +1338,7 @@
             transition: background 0.2s;
         }
 
-        .modal-batch-btn:hover { background: var(--primary-hover); }
+        .modal-batch-btn:hover { background: #3b8fd4; }
 
         .import-table {
             width: 100%;
@@ -1588,7 +1576,7 @@
                             <div class="new-course-row" id="addTeacherRow">
                                 <input type="text" id="newTeacherName" placeholder="Nombre del profesor/a" style="flex:1;padding:8px 12px;border:1px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:0.85rem;">
                                 <select id="newTeacherDept" style="padding:8px;border-radius:8px;border:1px solid #dee2e6;font-family:inherit;font-size:0.85rem;min-width:160px;"></select>
-                                <button id="addTeacherBtn" style="padding:8px 14px;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;white-space:nowrap;"><i class="fas fa-plus"></i> Añadir</button>
+                                <button id="addTeacherBtn" style="padding:8px 14px;background:#4dabf7;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;white-space:nowrap;"><i class="fas fa-plus"></i> Añadir</button>
                             </div>
                             <button class="config-btn config-btn-import" id="importExcelBtn"><i class="fas fa-file-excel"></i> Importar profesorado (Excel)</button>
                             <input type="file" id="excelFileInput" class="file-input" accept=".xlsx,.xls">
@@ -1645,7 +1633,7 @@
                                     <option value="user">Usuario</option>
                                     <option value="admin">Admin</option>
                                 </select>
-                                <button id="addUserBtn" style="padding:8px 14px;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;white-space:nowrap;"><i class="fas fa-plus"></i> Añadir</button>
+                                <button id="addUserBtn" style="padding:8px 14px;background:#4dabf7;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;white-space:nowrap;"><i class="fas fa-plus"></i> Añadir</button>
                             </div>
                         </div>
                     </div>
@@ -1709,7 +1697,7 @@
                     <h3>Horas de reducción Enseñanza Digital</h3>
                     <div class="resumen-value" id="horas-ensenanza-digital">0</div>
                     <div class="resumen-warning" id="warning-ensenanza-digital">
-                        <i class="fas fa-exclamation-triangle"></i> Deben ser <span id="expected-ed-label">4</span> horas
+                        <i class="fas fa-exclamation-triangle"></i> Deben ser 4 horas
                     </div>
                 </div>
                 <div class="resumen-item total">
@@ -1954,79 +1942,6 @@
         return 0;
     }
 
-    // =============================================
-    // THEME PALETTES PER COURSE
-    // =============================================
-    const COURSE_PALETTES = {
-        2025: { // 2025-2026
-            primary: '#f06595', primaryHover: '#e64980', primaryDark: '#d6336c',
-            primarySoft: '#ffdeeb', primaryLight: '#faa2c1', accent: '#c2255c',
-            bgFrom: '#fdf0f5', bgTo: '#f5dce6'
-        },
-        2026: { // 2026-2027
-            primary: '#ff922b', primaryHover: '#fd7e14', primaryDark: '#e8590c',
-            primarySoft: '#fff0db', primaryLight: '#ffc078', accent: '#d9480f',
-            bgFrom: '#fffcf5', bgTo: '#fff0d6'
-        },
-        2027: { // 2027-2028
-            primary: '#51cf66', primaryHover: '#40c057', primaryDark: '#2f9e44',
-            primarySoft: '#d3f9d8', primaryLight: '#8ce99a', accent: '#2b8a3e',
-            bgFrom: '#f2fcf4', bgTo: '#dbf5de'
-        },
-        2028: { // 2028-2029
-            primary: '#845ef7', primaryHover: '#7950f2', primaryDark: '#6741d9',
-            primarySoft: '#e5dbff', primaryLight: '#b197fc', accent: '#5f3dc4',
-            bgFrom: '#f8f7fc', bgTo: '#ece7f6'
-        },
-        2029: { // 2029-2030
-            primary: '#228be6', primaryHover: '#1c7ed6', primaryDark: '#1864ab',
-            primarySoft: '#d0ebff', primaryLight: '#74c0fc', accent: '#1971c2',
-            bgFrom: '#f0f8ff', bgTo: '#dce9f7'
-        },
-        2030: { // 2030-2031
-            primary: '#20c997', primaryHover: '#12b886', primaryDark: '#0ca678',
-            primarySoft: '#c3fae8', primaryLight: '#63e6be', accent: '#087f5b',
-            bgFrom: '#f0fdf8', bgTo: '#d8f5ee'
-        },
-        2031: { // 2031-2032
-            primary: '#7950f2', primaryHover: '#6741d9', primaryDark: '#5f3dc4',
-            primarySoft: '#e5dbff', primaryLight: '#9775fa', accent: '#5f3dc4',
-            bgFrom: '#f9f7fd', bgTo: '#ede7f7'
-        },
-        2032: { // 2032-2033
-            primary: '#4dabf7', primaryHover: '#3b8fd4', primaryDark: '#1971c2',
-            primarySoft: '#dbe4ff', primaryLight: '#74c0fc', accent: '#3b5bdb',
-            bgFrom: '#f5f7fa', bgTo: '#e4e7eb'
-        }
-    };
-
-    function applyCoursePalette() {
-        var match = currentCourse.match(/(\d{4})/);
-        var year = match ? parseInt(match[1]) : 2025;
-        // Find the closest palette year (or exact match)
-        var palette = COURSE_PALETTES[year];
-        if (!palette) {
-            // Cycle through palettes for years beyond 2032
-            var baseYear = 2025;
-            var paletteKeys = Object.keys(COURSE_PALETTES).map(Number).sort(function(a, b) { return a - b; });
-            var offset = ((year - baseYear) % paletteKeys.length + paletteKeys.length) % paletteKeys.length;
-            var targetYear = paletteKeys[offset];
-            palette = COURSE_PALETTES[targetYear];
-        }
-        var root = document.documentElement;
-        root.style.setProperty('--primary', palette.primary);
-        root.style.setProperty('--primary-hover', palette.primaryHover);
-        root.style.setProperty('--primary-dark', palette.primaryDark);
-        root.style.setProperty('--primary-soft', palette.primarySoft);
-        root.style.setProperty('--primary-light', palette.primaryLight);
-        root.style.setProperty('--accent', palette.accent);
-        root.style.setProperty('--body-bg-from', palette.bgFrom);
-        root.style.setProperty('--body-bg-to', palette.bgTo);
-        // Update meta theme-color for mobile browsers
-        var meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.content = palette.primary;
-    }
-
     function createEmptyStructure() {
         return {
             equipoDirectivo: getDefaultEquipoDirectivo(),
@@ -2114,175 +2029,111 @@
         const username = document.getElementById('loginUsername').value.trim();
         const password = document.getElementById('loginPassword').value;
 
-        console.log('[handleLogin v6] Attempting login for:', username, '(pass len:', password ? password.length : 0, ')');
-
         if (!username || !password) {
             showNotification('Por favor, introduce usuario y contraseña', 'error');
             return;
         }
 
-        console.log('[handleLogin v6] Step 1: hashing password...');
         const hashedPw = hashPassword(password);
-        console.log('[handleLogin v6] Step 2: hash done =', hashedPw);
 
-        // ==========================================
-        // STEP 1: Check localStorage FIRST (instant)
-        // ==========================================
-        console.log('[handleLogin v6] Step 3: checking localStorage...');
+        // === ATTEMPT 1: Firestore ===
+        try {
+            // Add timeout to prevent Firestore from hanging indefinitely
+            const firestorePromise = db.collection('users').get();
+            const timeoutPromise = new Promise(function(resolve) {
+                setTimeout(function() { resolve(null); }, 5000);
+            });
+            const usersSnapshot = await Promise.race([firestorePromise, timeoutPromise]);
+
+            if (!usersSnapshot) {
+                // Firestore timed out, fall through to local
+                console.warn('Firestore login timed out after 5s, using local fallback');
+            } else if (usersSnapshot.empty) {
+                // First user ever in Firestore: create as admin
+                const userData = {
+                    username: username,
+                    name: username,
+                    passwordHash: hashedPw,
+                    role: 'admin',
+                    createdAt: new Date().toISOString()
+                };
+                await db.collection('users').doc(username).set(userData);
+                // Also save locally as backup
+                const localUsers = getLocalUsers();
+                localUsers[username] = userData;
+                saveLocalUsers(localUsers);
+
+                enterApp({ username: username, name: username, role: 'admin' });
+                return;
+            } else {
+                // Check if user exists in Firestore
+                const userDoc = await db.collection('users').doc(username).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    if (userData.passwordHash === hashedPw) {
+                        enterApp({ username: username, name: userData.name || username, role: userData.role });
+                        return;
+                    } else {
+                        showNotification('Usuario o contraseña incorrectos', 'error');
+                        return;
+                    }
+                }
+                // User not in Firestore, fall through to local check
+            }
+        } catch (firestoreError) {
+            console.warn('Firestore no disponible para login, usando modo local:', firestoreError.message);
+        }
+
+        // === ATTEMPT 2: localStorage (fallback) ===
         try {
             var localUsers = getLocalUsers();
-            console.log('[handleLogin v6] Step 4: localUsers keys =', Object.keys(localUsers));
+
+            // Exclude locally deleted users from the check
             var deletedArr = JSON.parse(localStorage.getItem('deletedUsers') || '[]');
+            var isDeleted = deletedArr.indexOf(username) !== -1;
+
+            if (isDeleted) {
+                showNotification('Usuario o contraseña incorrectos', 'error');
+                return;
+            }
 
             if (localUsers[username]) {
-                console.log('[handleLogin v6] Step 5: looking for user', username, 'in locals...');
                 if (localUsers[username].passwordHash === hashedPw) {
-                    console.log('[handleLogin v6] Step 7: Local login OK, role:', localUsers[username].role);
                     enterApp({ username: username, name: localUsers[username].name || username, role: localUsers[username].role });
                     return;
                 } else {
-                    console.log('[handleLogin v6] Step 6b: Password mismatch! local=', localUsers[username].passwordHash, 'typed=', hashedPw);
-                    // Password hash format may have changed — don't reject, try Firestore instead
-                    console.log('[handleLogin v6] Step 6c: Hash mismatch, falling through to Firestore check...');
-                }
-            } else {
-                console.log('[handleLogin v6] Step 5b: User NOT found locally');
-            }
-
-            // If user is in deleted list, still try Firestore — they may have been recreated there
-            if (deletedArr.indexOf(username) !== -1) {
-                console.log('[handleLogin v6] User in deleted list locally, but will check Firestore...');
-            }
-        } catch (localError) {
-            console.error('[handleLogin v6] localStorage ERROR:', localError);
-        }
-
-        // ==========================================
-        // STEP 2: Check Firestore (with timeout)
-        // ==========================================
-        console.log('[handleLogin v6] Step 8: checking Firestore...');
-        var loginBtn = document.getElementById('loginBtn');
-        loginBtn.disabled = true;
-        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
-
-        try {
-            var firestoreResult = null;
-
-            try {
-                var firestorePromise = db.collection('users').doc(username).get();
-                var timeoutPromise = new Promise(function(resolve) {
-                    setTimeout(function() { resolve(null); }, 5000);
-                });
-
-                console.log('[handleLogin v6] Step 9: waiting for Firestore (5s timeout)...');
-                firestoreResult = await Promise.race([firestorePromise, timeoutPromise]);
-                console.log('[handleLogin v6] Step 10: Firestore result =', firestoreResult ? (firestoreResult.exists ? 'exists' : 'not_found') : 'timeout');
-            } catch (firestoreError) {
-                console.error('[handleLogin v6] Firestore ERROR:', firestoreError);
-            }
-
-            if (firestoreResult && firestoreResult.exists) {
-                var userData = firestoreResult.data();
-                if (userData.passwordHash === hashedPw) {
-                    // Save to localStorage for future instant logins
-                    var lu = getLocalUsers();
-                    lu[username] = userData;
-                    saveLocalUsers(lu);
-
-                    // Remove from deleted list if present
-                    var delArr = JSON.parse(localStorage.getItem('deletedUsers') || '[]');
-                    var delIdx = delArr.indexOf(username);
-                    if (delIdx !== -1) {
-                        delArr.splice(delIdx, 1);
-                        localStorage.setItem('deletedUsers', JSON.stringify(delArr));
-                        console.log('[handleLogin v6] Removed', username, 'from deletedUsers list');
-                    }
-
-                    console.log('[handleLogin v6] Firestore login OK, role:', userData.role);
-                    enterApp({ username: username, name: userData.name || username, role: userData.role });
-                    return;
-                } else if (userData.passwordHash && userData.passwordHash !== hashedPw) {
-                    // Firestore hash doesn't match either — the password is wrong
-                    console.log('[handleLogin v6] Firestore password mismatch');
                     showNotification('Usuario o contraseña incorrectos', 'error');
-                    loginBtn.disabled = false;
-                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
                     return;
                 }
-            } else {
-                console.log('[handleLogin v6] Firestore: user not found or timeout');
             }
 
-            // Check if Firestore has ANY users at all
-            try {
-                var allUsersPromise = db.collection('users').get();
-                var allTimeoutPromise = new Promise(function(resolve) {
-                    setTimeout(function() { resolve(null); }, 5000);
-                });
-                var allSnapshot = await Promise.race([allUsersPromise, allTimeoutPromise]);
-
-                if (allSnapshot && !allSnapshot.empty) {
-                    showNotification('Usuario o contraseña incorrectos', 'error');
-                    loginBtn.disabled = false;
-                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
-                    return;
-                }
-            } catch (e) {
-                console.warn('[handleLogin v6] Could not check Firestore users:', e.message);
-            }
-
-            // No users exist anywhere: create first admin
-            console.log('[handleLogin v6] Creating first admin');
-            var newUserData = {
+            // No user found anywhere: create first admin locally
+            var userData = {
                 username: username,
                 name: username,
                 passwordHash: hashedPw,
                 role: 'admin',
                 createdAt: new Date().toISOString()
             };
-            var lu2 = getLocalUsers();
-            lu2[username] = newUserData;
-            saveLocalUsers(lu2);
-            syncUserToFirestore(username, newUserData);
-
+            localUsers[username] = userData;
+            saveLocalUsers(localUsers);
+            // Try to sync to Firestore in background
+            syncUserToFirestore(username, userData);
             enterApp({ username: username, name: username, role: 'admin' });
             return;
-
-        } catch (fatalError) {
-            console.error('[handleLogin v6] Fatal error:', fatalError);
-            showNotification('Error al iniciar sesión. Inténtalo de nuevo.', 'error');
-        } finally {
-            loginBtn.disabled = false;
-            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
+        } catch (localError) {
+            console.error('Error en login local:', localError);
+            showNotification('Error al iniciar sesión. Verifica tu conexión e inténtalo de nuevo.', 'error');
         }
     }
 
     function enterApp(user) {
         currentUser = user;
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        console.log('[enterApp] Login OK for', user.username, 'role:', user.role);
         document.getElementById('loginOverlay').classList.add('hidden');
         document.getElementById('mainApp').style.display = 'block';
-        try {
-            setupUserInterface();
-        } catch (e) {
-            console.error('[enterApp] setupUserInterface error:', e);
-        }
-        initApp().then(function() {
-            console.log('[enterApp] initApp completed successfully');
-        }).catch(function(e) {
-            console.error('[enterApp] initApp error:', e);
-            showNotification('Error al cargar datos. Se usa modo local.', 'error');
-            // Render with whatever local data we have
-            try {
-                loadFromLocal();
-                renderAll();
-                recalculateAll();
-                setupEventDelegation();
-            } catch (e2) {
-                console.error('[enterApp] Fallback render error:', e2);
-            }
-        });
+        setupUserInterface();
+        initApp();
     }
 
     function handleLogout() {
@@ -2327,27 +2178,14 @@
 
         // Try to merge with Firestore data (but exclude locally deleted users)
         var deletedArr = JSON.parse(localStorage.getItem('deletedUsers') || '[]');
-        var firestoreAvailable = false;
         try {
             var snapshot = await db.collection('users').get();
-            firestoreAvailable = true;
             snapshot.forEach(function(doc) {
                 var u = doc.data();
                 if (u.username && deletedArr.indexOf(u.username) === -1) {
-                    if (usersMap[u.username]) {
-                        // User exists locally — keep ALL local data untouched.
-                        // Do NOT overwrite role, name, or passwordHash from Firestore.
-                        // localStorage is the authoritative source for existing users.
-                    } else {
-                        // New user from Firestore not yet in localStorage — add them
-                        usersMap[u.username] = u;
-                    }
+                    usersMap[u.username] = u;
                 }
             });
-            // NOTE: Do NOT sync Firestore data back to localStorage here.
-            // This was causing roles to be overwritten: if a Firestore update
-            // failed (e.g. the admin changed a user role but the write didn't persist),
-            // the old role from Firestore would overwrite the correct local role.
         } catch (e) {
             console.warn('No se pudo leer usuarios de Firestore:', e.message);
         }
@@ -2359,24 +2197,48 @@
             return;
         }
 
+        // Find the first admin (superadmin) — the one with the oldest createdAt
+        var firstAdminUsername = null;
+        var oldestDate = null;
+        userKeys.forEach(function(key) {
+            var u = usersMap[key];
+            if (u.role === 'admin') {
+                if (!oldestDate || (u.createdAt && u.createdAt < oldestDate)) {
+                    oldestDate = u.createdAt || '';
+                    firstAdminUsername = u.username;
+                } else if (!u.createdAt && !oldestDate) {
+                    firstAdminUsername = u.username;
+                }
+            }
+        });
+        // Fallback: if no createdAt found, pick the first admin in the list
+        if (!firstAdminUsername) {
+            userKeys.forEach(function(key) {
+                if (usersMap[key].role === 'admin' && !firstAdminUsername) {
+                    firstAdminUsername = key;
+                }
+            });
+        }
+
         let html = '<table class="users-table"><thead><tr><th>Nombre</th><th>Usuario</th><th>Rol</th><th></th></tr></thead><tbody>';
         userKeys.forEach(function(key) {
             var u = usersMap[key];
+            var isSuperAdmin = u.username === firstAdminUsername;
             var isSelf = u.username === currentUser.username;
             html += '<tr>';
-            html += '<td>' + escapeHtml(u.name || u.username) + '</td>';
+            html += '<td>' + escapeHtml(u.name || u.username) + (isSuperAdmin ? ' <span style="font-size:0.7rem;color:#FFA000;">(Superadmin)</span>' : '') + '</td>';
             html += '<td style="font-size:0.8rem;color:#868e96;">' + escapeHtml(u.username) + '</td>';
-            html += '<td><select data-user-username="' + escapeHtml(u.username) + '" class="user-role-select"' + (isSelf ? ' disabled' : '') + '>';
+            html += '<td><select data-user-username="' + escapeHtml(u.username) + '" class="user-role-select"' + (isSuperAdmin ? ' disabled' : '') + '>';
             html += '<option value="admin"' + (u.role === 'admin' ? ' selected' : '') + '>Admin</option>';
             html += '<option value="user"' + (u.role === 'user' ? ' selected' : '') + '>Usuario</option>';
             html += '</select></td>';
-            html += '<td>' + (isSelf ? '' : '<button class="user-delete-btn" data-user-username="' + escapeHtml(u.username) + '" title="Eliminar"><i class="fas fa-trash"></i></button>') + '</td>';
+            html += '<td>' + (isSuperAdmin ? '' : '<button class="user-delete-btn" data-user-username="' + escapeHtml(u.username) + '" title="Eliminar"><i class="fas fa-trash"></i></button>') + '</td>';
             html += '</tr>';
         });
         html += '</tbody></table>';
 
-        // Remove any existing tables before inserting (prevent duplicates)
-        body.querySelectorAll('.users-table').forEach(function(t) { t.remove(); });
+        var existingTable = body.querySelector('.users-table');
+        if (existingTable) existingTable.remove();
         body.insertAdjacentHTML('afterbegin', html);
 
         // Event delegation for role changes
@@ -2385,19 +2247,15 @@
                 var username = this.dataset.userUsername;
                 var newRole = this.value;
 
-                // Update localStorage immediately (source of truth for offline)
+                // Update localStorage
                 var localUsers = getLocalUsers();
                 if (localUsers[username]) {
                     localUsers[username].role = newRole;
                     saveLocalUsers(localUsers);
-                } else {
-                    // User exists in Firestore but not locally — create local entry
-                    localUsers[username] = { username: username, role: newRole };
-                    saveLocalUsers(localUsers);
                 }
 
-                // Try Firestore update — use set with merge to be more robust
-                db.collection('users').doc(username).set({ role: newRole }, { merge: true }).catch(function(err) {
+                // Try Firestore update
+                db.collection('users').doc(username).update({ role: newRole }).catch(function(err) {
                     console.warn('No se pudo actualizar rol en Firestore:', err.message);
                 });
 
@@ -2407,6 +2265,7 @@
                     localStorage.setItem('currentUser', JSON.stringify(currentUser));
                     setupUserInterface();
                 }
+                loadUsersPanel();
             });
         });
 
@@ -2478,7 +2337,6 @@
         }
 
         renderCourseSelector();
-        applyCoursePalette();
     }
 
     function renderCourseSelector() {
@@ -2498,10 +2356,8 @@
     function updateExpectedTotalLabel() {
         var expectedEnsenanzaDigital = 3 + getEscuela40Hours();
         var expectedTotal = 24 + 36 + expectedEnsenanzaDigital;
-        var labelTotal = document.getElementById('expected-total-label');
-        if (labelTotal) labelTotal.textContent = expectedTotal;
-        var labelED = document.getElementById('expected-ed-label');
-        if (labelED) labelED.textContent = expectedEnsenanzaDigital;
+        var label = document.getElementById('expected-total-label');
+        if (label) label.textContent = expectedTotal;
     }
 
     function renderCourseList() {
@@ -2516,7 +2372,7 @@
                 '<div class="course-list-item-name">' +
                     '<i class="fas fa-' + (isCurrent ? 'circle-dot' : 'circle') + '"></i>' +
                     '<span>Curso ' + c + '</span>' +
-                    (isCurrent ? ' <span style="font-size:0.75rem;color:var(--primary-dark);font-weight:400;">(activo)</span>' : '') +
+                    (isCurrent ? ' <span style="font-size:0.75rem;color:#1971c2;font-weight:400;">(activo)</span>' : '') +
                 '</div>' +
                 '<button class="course-delete-btn" title="Eliminar curso"' + (isCurrent ? ' disabled' : '') + ' data-course="' + c + '">' +
                     '<i class="fas fa-trash-alt"></i>' +
@@ -2554,7 +2410,6 @@
 
             // Re-render
             renderCourseSelector();
-        applyCoursePalette();
 
             showNotification('Curso ' + courseName + ' eliminado correctamente', 'success');
         } catch (e) {
@@ -2584,13 +2439,8 @@
         renderAll();
         recalculateAll();
 
-        // Update course selectors and lists to reflect the active course
-        renderCourseSelector();
-        renderCourseList();
-
         // Setup realtime listener for the new course
         setupRealtimeSync();
-        applyCoursePalette();
 
         showNotification('Curso cambiado a ' + newCourse, 'info');
     }
@@ -2625,7 +2475,6 @@
             setupRealtimeSync();
 
             renderCourseSelector();
-        applyCoursePalette();
             document.getElementById('newCourseInput').value = '';
 
             showNotification('Curso ' + courseName + ' creado correctamente', 'success');
@@ -3341,7 +3190,7 @@
             document.getElementById('horas-directivo').style.color = '#e63946';
         } else {
             document.getElementById('warning-directivo').style.display = 'none';
-            document.getElementById('horas-directivo').style.color = 'var(--accent)';
+            document.getElementById('horas-directivo').style.color = '#3b5bdb';
         }
 
         if (horasPlanCentro !== 36) {
@@ -3350,7 +3199,7 @@
             document.getElementById('horas-plan-centro').style.color = '#e63946';
         } else {
             document.getElementById('warning-plan-centro').style.display = 'none';
-            document.getElementById('horas-plan-centro').style.color = 'var(--accent)';
+            document.getElementById('horas-plan-centro').style.color = '#3b5bdb';
         }
 
         if (horasEnsenanzaDigital !== expectedEnsenanzaDigital) {
@@ -3359,7 +3208,7 @@
             document.getElementById('horas-ensenanza-digital').style.color = '#e63946';
         } else {
             document.getElementById('warning-ensenanza-digital').style.display = 'none';
-            document.getElementById('horas-ensenanza-digital').style.color = 'var(--accent)';
+            document.getElementById('horas-ensenanza-digital').style.color = '#3b5bdb';
         }
 
         if (totalHoras !== expectedTotal) {
@@ -4620,56 +4469,32 @@
     }
 
     async function initApp() {
-        console.log('[initApp] Starting...');
+        // Load course list
+        await loadCourseList();
 
-        // Load course list (with timeout)
-        try {
-            await Promise.race([
-                loadCourseList(),
-                new Promise(function(_, reject) { setTimeout(function() { reject(new Error('loadCourseList timeout')); }, 8000); })
-            ]);
-        } catch (e) {
-            console.warn('[initApp] loadCourseList failed, using local fallback:', e.message);
-            courseList = JSON.parse(localStorage.getItem('courseList') || '["2025-2026"]');
-            var savedCourse = localStorage.getItem('currentCourse');
-            if (savedCourse && courseList.indexOf(savedCourse) !== -1) currentCourse = savedCourse;
-            renderCourseSelector();
-            applyCoursePalette();
-        }
-
-        // Load data for current course (with timeout)
-        try {
-            await Promise.race([
-                loadCourseData(),
-                new Promise(function(_, reject) { setTimeout(function() { reject(new Error('loadCourseData timeout')); }, 8000); })
-            ]);
-        } catch (e) {
-            console.warn('[initApp] loadCourseData failed, using local fallback:', e.message);
-            loadFromLocal();
-        }
+        // Load data for current course
+        await loadCourseData();
 
         // Render everything
         renderAll();
         recalculateAll();
 
         // Populate teacher department selector
-        try { populateTeacherDeptSelect(); } catch (e) { console.warn('[initApp] populateTeacherDeptSelect error:', e); }
+        populateTeacherDeptSelect();
 
         // Setup event delegation
-        try { setupEventDelegation(); } catch (e) { console.warn('[initApp] setupEventDelegation error:', e); }
+        setupEventDelegation();
 
         // Setup realtime sync
-        try { setupRealtimeSync(); } catch (e) { console.warn('[initApp] setupRealtimeSync error:', e); }
+        setupRealtimeSync();
 
         // Setup config panel
-        try { setupConfigPanel(); } catch (e) { console.warn('[initApp] setupConfigPanel error:', e); }
+        setupConfigPanel();
 
         // Load users panel for admin
         if (currentUser && currentUser.role === 'admin') {
-            try { loadUsersPanel(); } catch (e) { console.warn('[initApp] loadUsersPanel error:', e); }
+            loadUsersPanel();
         }
-
-        console.log('[initApp] Completed successfully');
     }
 
     // =============================================
@@ -4688,25 +4513,10 @@
                     localStorage.removeItem('currentUser');
                     currentUser = null;
                 } else {
-                    // Verify role against localStorage users (non-blocking)
-                    // localStorage is the authoritative source for roles because
-                    // the admin changes roles there first (Firestore update may fail)
-                    var localUsers = getLocalUsers();
-                    if (localUsers[currentUser.username] && localUsers[currentUser.username].role) {
-                        var localRole = localUsers[currentUser.username].role;
-                        if (localRole !== currentUser.role) {
-                            currentUser.role = localRole;
-                            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                        }
-                    }
                     document.getElementById('loginOverlay').classList.add('hidden');
                     document.getElementById('mainApp').style.display = 'block';
-                    try { setupUserInterface(); } catch (e) { console.error('[autoLogin] setupUserInterface error:', e); }
-                    initApp().catch(function(e) {
-                        console.error('[autoLogin] initApp error:', e);
-                        // Don't kick user out, just render with local data
-                        try { loadFromLocal(); renderAll(); recalculateAll(); } catch(e2) { console.error(e2); }
-                    });
+                    setupUserInterface();
+                    initApp();
                 }
             } catch (e) {
                 localStorage.removeItem('currentUser');
@@ -4722,14 +4532,6 @@
         });
         document.getElementById('loginPassword').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') handleLogin();
-        });
-
-        // Global error handler — log everything to help debug
-        window.addEventListener('error', function(e) {
-            console.error('[GLOBAL ERROR]', e.message, e.filename, e.lineno, e.colno);
-        });
-        window.addEventListener('unhandledrejection', function(e) {
-            console.error('[UNHANDLED PROMISE]', e.reason);
         });
 
         // Add user button (admin panel)
