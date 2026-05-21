@@ -2048,6 +2048,10 @@
     // Remove empty or "Sin asignar" entries from loaded data (legacy cleanup)
     function sanitizeData() {
         if (!data) return;
+        // Ensure orientacion exists as an array
+        if (!Array.isArray(data.orientacion)) data.orientacion = [];
+        // Ensure otrasReducciones exists
+        if (!data.otrasReducciones) data.otrasReducciones = {};
         ['socio', 'tecnologico', 'artistico'].forEach(function(areaKey) {
             if (!data[areaKey]) return;
             Object.keys(data[areaKey]).forEach(function(deptKey) {
@@ -2582,9 +2586,14 @@
         courseName = courseName.trim();
         if (!courseName) return;
 
+        // Guard against double-click
+        if (createNewCourse._pending) return;
+        createNewCourse._pending = true;
+
         // Validate format: 20XX-20YY (two 4-digit years separated by hyphen)
         if (!/^\d{4}-\d{4}$/.test(courseName)) {
             showNotification('Formato incorrecto. Usa el formato 20XX-20YY (ej: 2026-2027)', 'error');
+            createNewCourse._pending = false;
             return;
         }
         // Validate that second year = first year + 1
@@ -2593,15 +2602,21 @@
         var endYear = parseInt(parts[1]);
         if (endYear !== startYear + 1) {
             showNotification('El segundo año debe ser el siguiente al primero (ej: 2026-2027)', 'error');
+            createNewCourse._pending = false;
             return;
         }
 
         if (courseList.indexOf(courseName) !== -1) {
             showNotification('Ese curso ya existe', 'error');
+            createNewCourse._pending = false;
             return;
         }
 
         try {
+            // Save current course data before switching (like switchCourse does)
+            await saveToFirebaseSilent();
+            saveToLocal();
+
             // Create new course as copy of structure (empty names)
             const structure = createEmptyStructure();
             await db.collection('cursos').doc(courseName).set(structure);
@@ -2629,6 +2644,7 @@
         } catch (e) {
             showNotification('Error al crear curso: ' + e.message, 'error');
         }
+        createNewCourse._pending = false;
     }
 
     // =============================================
@@ -2636,8 +2652,11 @@
     // =============================================
     function saveToLocal() {
         const saveObj = { equipoDirectivo: equipoDirectivo, data: data };
-        localStorage.setItem('reduccionesData', JSON.stringify(saveObj));
-        localStorage.setItem('reduccionesData_' + currentCourse, JSON.stringify(saveObj));
+        var jsonStr = JSON.stringify(saveObj);
+        localStorage.setItem('reduccionesData', jsonStr);
+        localStorage.setItem('reduccionesData_' + currentCourse, jsonStr);
+        // Store local modification timestamp for offline comparison
+        localStorage.setItem('reduccionesData_' + currentCourse + '_ts', new Date().toISOString());
     }
 
     function loadFromLocal() {
@@ -2677,15 +2696,14 @@
                 lastModified: new Date().toISOString(),
                 version: "2.0"
             };
-            // Record write timestamp for echo filtering
-            _localWriteTimestamps.push(Date.now());
-            _lastSyncJson = JSON.stringify({ equipoDirectivo: equipoDirectivo, data: data });
+            // Increment write counter for echo filtering
+            _localWriteCounter++;
             await db.collection('cursos').doc(currentCourse).set(saveObj, { merge: true });
             return true;
         } catch (e) {
             console.error('Firebase save error:', e);
-            // Remove last timestamp since write failed
-            if (_localWriteTimestamps.length > 0) _localWriteTimestamps.pop();
+            // Decrement counter since write failed
+            _localWriteCounter--;
             return false;
         }
     }
@@ -2730,6 +2748,8 @@
                 saveToLocal();
                 renderAll();
                 recalculateAll();
+                // Sync echo counter so the next realtime snapshot doesn't re-apply this data
+                _lastSnapshotCounter = _localWriteCounter;
                 updateSyncStatus('synced');
                 showNotification('Datos restaurados desde Firebase', 'success');
             }
@@ -2751,11 +2771,10 @@
     // =============================================
     // REALTIME SYNC
     // =============================================
-    // Counter to prevent echoing back our own writes (supports concurrent writes)
-    // Uses a Set of write timestamps so multiple onSnapshot triggers from a single write
-    // are all properly filtered out.
-    let _localWriteTimestamps = [];
-    let _lastSyncJson = '';
+    // Echo detection: a counter incremented on each local write.
+    // The snapshot handler skips updates if the counter has changed since last snapshot.
+    let _localWriteCounter = 0;
+    let _lastSnapshotCounter = 0;
 
     function setupRealtimeSync() {
         if (firebaseUnsubscribe) {
@@ -2763,8 +2782,8 @@
             firebaseUnsubscribe = null;
         }
 
-        _localWriteTimestamps = [];
-        _lastSyncJson = JSON.stringify({ equipoDirectivo: equipoDirectivo, data: data });
+        _localWriteCounter = 0;
+        _lastSnapshotCounter = 0;
 
         firebaseUnsubscribe = db.collection('cursos').doc(currentCourse).onSnapshot(function(doc) {
             if (!doc.exists) {
@@ -2776,32 +2795,23 @@
             const remoteData = doc.data();
 
             if (remoteData.equipoDirectivo && remoteData.data) {
-                const remoteJson = JSON.stringify({ equipoDirectivo: remoteData.equipoDirectivo, data: remoteData.data });
-
-                // Skip if we just wrote this data ourselves (avoid echo loop)
-                // Compare JSON content - if identical to what we last wrote, skip
-                if (_localWriteTimestamps.length > 0) {
-                    // Remove timestamps older than 5 seconds (stale writes)
-                    var now = Date.now();
-                    _localWriteTimestamps = _localWriteTimestamps.filter(function(ts) { return now - ts < 5000; });
-
-                    // If remote data matches our last sync OR there's a recent pending write, skip
-                    if (remoteJson === _lastSyncJson) {
-                        return;
-                    }
+                // Skip if this snapshot is an echo of our own write.
+                // _lastSnapshotCounter is set when we apply a remote update.
+                // If _localWriteCounter has advanced since, it means WE wrote — skip.
+                if (_localWriteCounter !== _lastSnapshotCounter) {
+                    // This is our own echo. Just acknowledge it and move on.
+                    _lastSnapshotCounter = _localWriteCounter;
+                    return;
                 }
 
-                // Only update if data actually changed from another source
-                if (remoteJson !== _lastSyncJson) {
-                    _lastSyncJson = remoteJson;
-                    equipoDirectivo = remoteData.equipoDirectivo;
-                    data = remoteData.data;
-                    sanitizeData();
-                    rebuildTeacherPoolFromData();
-                    saveToLocal();
-                    renderAll();
-                    recalculateAll();
-                }
+                // Data changed from another source (another device/user)
+                equipoDirectivo = remoteData.equipoDirectivo;
+                data = remoteData.data;
+                sanitizeData();
+                rebuildTeacherPoolFromData();
+                saveToLocal();
+                renderAll();
+                recalculateAll();
             }
         }, function(error) {
             console.warn('Realtime sync error:', error);
@@ -3116,7 +3126,7 @@
 
         Object.keys(OTRAS_META).forEach(function(key) {
             const meta = OTRAS_META[key];
-            const val = data.otrasReducciones[key];
+            const val = (data.otrasReducciones && data.otrasReducciones[key]) || { name: '', jd: false };
             var hrs = meta.hours;
             if (key === 'escuela40') hrs = getEscuela40Hours();
             const hours = val.jd ? hrs : 0;
@@ -3257,20 +3267,27 @@
         });
 
         // Orientación
-        data.orientacion.forEach(function(prof, index) {
-            const hours = prof.jd ? 2 : 0;
-            const el = document.querySelector('.orientacion-hours[data-orientacion-index="' + index + '"]');
-            if (el) el.textContent = hours;
-        });
+        if (data.orientacion) {
+            data.orientacion.forEach(function(prof, index) {
+                const hours = prof.jd ? 2 : 0;
+                const el = document.querySelector('.orientacion-hours[data-orientacion-index="' + index + '"]');
+                if (el) el.textContent = hours;
+            });
+        }
 
         // Otras reducciones
-        Object.keys(OTRAS_META).forEach(function(key) {
-            var otrHrs = OTRAS_META[key].hours;
-            if (key === 'escuela40') otrHrs = getEscuela40Hours();
-            const hours = data.otrasReducciones[key].jd ? otrHrs : 0;
-            const el = document.querySelector('.otras-hours[data-otras="' + key + '"]');
-            if (el) el.textContent = hours;
-        });
+        if (data.otrasReducciones) {
+            Object.keys(OTRAS_META).forEach(function(key) {
+                var otrHrs = OTRAS_META[key].hours;
+                if (key === 'escuela40') otrHrs = getEscuela40Hours();
+                var val = data.otrasReducciones[key];
+                if (val) {
+                    const hours = val.jd ? otrHrs : 0;
+                    const el = document.querySelector('.otras-hours[data-otras="' + key + '"]');
+                    if (el) el.textContent = hours;
+                }
+            });
+        }
     }
 
     function calculateResumenGeneral() {
@@ -3285,7 +3302,9 @@
 
         // Horas de las áreas (JD y JA)
         Object.keys(AREA_META).forEach(function(areaKey) {
+            if (!data[areaKey]) return;
             Object.keys(AREA_META[areaKey].departments).forEach(function(deptKey) {
+                if (!data[areaKey][deptKey]) return;
                 data[areaKey][deptKey].forEach(function(prof) {
                     if (prof.jd) horasPlanCentro += 2;
                     if (prof.ja) horasPlanCentro += 2;
@@ -3294,20 +3313,23 @@
         });
 
         // Horas de orientación
-        data.orientacion.forEach(function(prof) {
-            if (prof.jd) horasPlanCentro += 2;
-        });
+        if (data.orientacion) {
+            data.orientacion.forEach(function(prof) {
+                if (prof.jd) horasPlanCentro += 2;
+            });
+        }
 
         // Otras reducciones para Plan de Centro
-        if (data.otrasReducciones.convivencia.jd) horasPlanCentro += 2;
-        if (data.otrasReducciones.actividades.jd) horasPlanCentro += 2;
-        if (data.otrasReducciones.forevin.jd) horasPlanCentro += 2;
-        if (data.otrasReducciones.tutoria.jd) horasPlanCentro += 1;
-        if (data.otrasReducciones.otraPdc.jd) horasPlanCentro += 1;
+        var otr = data.otrasReducciones || {};
+        if (otr.convivencia && otr.convivencia.jd) horasPlanCentro += 2;
+        if (otr.actividades && otr.actividades.jd) horasPlanCentro += 2;
+        if (otr.forevin && otr.forevin.jd) horasPlanCentro += 2;
+        if (otr.tutoria && otr.tutoria.jd) horasPlanCentro += 1;
+        if (otr.otraPdc && otr.otraPdc.jd) horasPlanCentro += 1;
 
         // Calcular horas de enseñanza digital (TDE y Escuela 4.0)
-        const horasTDE = data.otrasReducciones.tde.jd ? 3 : 0;
-        const horasEscuela40 = data.otrasReducciones.escuela40.jd ? getEscuela40Hours() : 0;
+        const horasTDE = otr.tde && otr.tde.jd ? 3 : 0;
+        const horasEscuela40 = otr.escuela40 && otr.escuela40.jd ? getEscuela40Hours() : 0;
         const horasEnsenanzaDigital = horasTDE + horasEscuela40;
 
         // Calcular total
@@ -3380,6 +3402,9 @@
     // EVENT DELEGATION
     // =============================================
     function setupEventDelegation() {
+        // Guard: only set up once to prevent duplicate listeners on re-login
+        if (setupEventDelegation._initialized) return;
+        setupEventDelegation._initialized = true;
         // Directivo hours changes (event delegation on container)
         document.getElementById('directivoContent').addEventListener('input', function(e) {
             if (currentUser && currentUser.role !== 'admin') return;
@@ -4606,14 +4631,22 @@
         loadFromLocal();
 
         // Try to load from Firebase if available
+        // Only overwrite local data if Firebase timestamp is newer (preserves offline edits)
         try {
             const doc = await db.collection('cursos').doc(currentCourse).get();
             if (doc.exists && doc.data().equipoDirectivo && doc.data().data) {
-                equipoDirectivo = doc.data().equipoDirectivo;
-                data = doc.data().data;
-                sanitizeData();
-                rebuildTeacherPoolFromData();
-                saveToLocal();
+                var localTs = localStorage.getItem('reduccionesData_' + currentCourse + '_ts');
+                var remoteTs = doc.data().lastModified;
+                var localDate = localTs ? new Date(localTs) : new Date(0);
+                var remoteDate = remoteTs ? new Date(remoteTs) : new Date(0);
+                // Prefer Firebase only if it's newer than local (with 1s tolerance for clock drift)
+                if (!localTs || remoteDate.getTime() > localDate.getTime() + 1000) {
+                    equipoDirectivo = doc.data().equipoDirectivo;
+                    data = doc.data().data;
+                    sanitizeData();
+                    rebuildTeacherPoolFromData();
+                    saveToLocal();
+                }
             }
         } catch (e) {
             console.warn('Could not load from Firebase, using local data:', e);
@@ -4800,6 +4833,30 @@
             var area = parts[0];
             var dept = parts[1];
 
+            // Special handling for Orientación (data.orientacion is an array, not nested)
+            if (area === 'orientacion') {
+                if (!data.orientacion) data.orientacion = [];
+                var exists = data.orientacion.some(function(p) {
+                    return p.name.toLowerCase() === name.toLowerCase();
+                });
+                if (exists) {
+                    showNotification('Ese profesor/a ya existe en Orientación', 'error');
+                    return;
+                }
+                data.orientacion.push({ name: name, jd: false, ja: false, active: true });
+                if (!teacherPool['orientacion']) teacherPool['orientacion'] = [];
+                if (!teacherPool['orientacion'].some(function(n) { return n.toLowerCase() === name.toLowerCase(); })) {
+                    teacherPool['orientacion'].push(name);
+                }
+                saveToLocal();
+                debouncedFirebaseSave();
+                renderAll();
+                recalculateAll();
+                document.getElementById('newTeacherName').value = '';
+                showNotification(name + ' añadido/a a Orientación', 'success');
+                return;
+            }
+
             if (!data[area] || !data[area][dept]) {
                 showNotification('Departamento no válido', 'error');
                 return;
@@ -4864,6 +4921,15 @@
                 }
                 recalculateAll();
                 debouncedFirebaseSave();
+            }
+        });
+
+        // When a profesorado name input loses focus, refresh main view to propagate changes
+        document.getElementById('profesoradoSection').addEventListener('focusout', function(e) {
+            var editInput = e.target.closest('[data-prof-edit]');
+            if (editInput) {
+                renderAll();
+                recalculateAll();
             }
         });
 
