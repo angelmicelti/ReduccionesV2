@@ -2133,6 +2133,7 @@
         document.getElementById('loginOverlay').classList.add('hidden');
         document.getElementById('mainApp').style.display = 'block';
         setupUserInterface();
+        setupConfigPanel(); // Sync — ensures accordion works immediately
         initApp();
     }
 
@@ -4408,11 +4409,15 @@
         const body = document.getElementById('configBody');
         const chevron = document.getElementById('configChevron');
 
-        header.addEventListener('click', function() {
+        // Remove old listener to prevent duplicates on re-login
+        header.removeEventListener('click', setupConfigPanel._handler);
+        setupConfigPanel._handler = function() {
             body.classList.toggle('expanded');
             chevron.classList.toggle('expanded');
-        });
+        };
+        header.addEventListener('click', setupConfigPanel._handler);
     }
+    setupConfigPanel._handler = null;
 
     // =============================================
     // PWA FUNCTIONALITY
@@ -4488,9 +4493,6 @@
         // Setup realtime sync
         setupRealtimeSync();
 
-        // Setup config panel
-        setupConfigPanel();
-
         // Load users panel for admin
         if (currentUser && currentUser.role === 'admin') {
             loadUsersPanel();
@@ -4516,6 +4518,7 @@
                     document.getElementById('loginOverlay').classList.add('hidden');
                     document.getElementById('mainApp').style.display = 'block';
                     setupUserInterface();
+                    setupConfigPanel(); // Sync — ensures accordion works immediately
                     initApp();
                 }
             } catch (e) {
