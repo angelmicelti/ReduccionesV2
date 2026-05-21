@@ -2120,6 +2120,7 @@
         }
 
         const hashedPw = hashPassword(password);
+        var usersSnapshot = null; // Track Firestore result for local fallback
 
         // === ATTEMPT 1: Firestore ===
         try {
@@ -2128,7 +2129,7 @@
             const timeoutPromise = new Promise(function(resolve) {
                 setTimeout(function() { resolve(null); }, 5000);
             });
-            const usersSnapshot = await Promise.race([firestorePromise, timeoutPromise]);
+            usersSnapshot = await Promise.race([firestorePromise, timeoutPromise]);
 
             if (!usersSnapshot) {
                 // Firestore timed out, fall through to local
@@ -2192,7 +2193,15 @@
                 }
             }
 
-            // No user found anywhere: create first admin locally
+            // User not found locally AND Firestore was available but didn't have the user
+            // Do NOT auto-create as admin — only create if no users exist at all
+            if (usersSnapshot && !usersSnapshot.empty) {
+                // There are users in Firestore but this one is not registered
+                showNotification('Usuario o contraseña incorrectos', 'error');
+                return;
+            }
+
+            // No users exist anywhere: create first admin locally
             var userData = {
                 username: username,
                 name: username,
@@ -2263,14 +2272,26 @@
 
         // Try to merge with Firestore data (but exclude locally deleted users)
         var deletedArr = JSON.parse(localStorage.getItem('deletedUsers') || '[]');
+        var firestoreAvailable = false;
         try {
             var snapshot = await db.collection('users').get();
+            firestoreAvailable = true;
             snapshot.forEach(function(doc) {
                 var u = doc.data();
                 if (u.username && deletedArr.indexOf(u.username) === -1) {
                     usersMap[u.username] = u;
                 }
             });
+            // Sync Firestore data back to localStorage to keep them consistent
+            var localUsers = getLocalUsers();
+            var changed = false;
+            Object.keys(usersMap).forEach(function(key) {
+                if (!localUsers[key] || JSON.stringify(localUsers[key]) !== JSON.stringify(usersMap[key])) {
+                    localUsers[key] = usersMap[key];
+                    changed = true;
+                }
+            });
+            if (changed) saveLocalUsers(localUsers);
         } catch (e) {
             console.warn('No se pudo leer usuarios de Firestore:', e.message);
         }
@@ -2298,8 +2319,8 @@
         });
         html += '</tbody></table>';
 
-        var existingTable = body.querySelector('.users-table');
-        if (existingTable) existingTable.remove();
+        // Remove any existing tables before inserting (prevent duplicates)
+        body.querySelectorAll('.users-table').forEach(function(t) { t.remove(); });
         body.insertAdjacentHTML('afterbegin', html);
 
         // Event delegation for role changes
