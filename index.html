@@ -2114,6 +2114,8 @@
         const username = document.getElementById('loginUsername').value.trim();
         const password = document.getElementById('loginPassword').value;
 
+        console.log('[handleLogin] Attempting login for:', username);
+
         if (!username || !password) {
             showNotification('Por favor, introduce usuario y contraseña', 'error');
             return;
@@ -2256,16 +2258,29 @@
     function enterApp(user) {
         currentUser = user;
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        console.log('[enterApp] Login OK for', user.username, 'role:', user.role);
         document.getElementById('loginOverlay').classList.add('hidden');
         document.getElementById('mainApp').style.display = 'block';
-        setupUserInterface();
         try {
-            initApp();
+            setupUserInterface();
         } catch (e) {
-            console.error('Error in initApp:', e);
-            showNotification('Error al cargar la aplicación. La página se recargará.', 'error');
-            setTimeout(function() { location.reload(); }, 2000);
+            console.error('[enterApp] setupUserInterface error:', e);
         }
+        initApp().then(function() {
+            console.log('[enterApp] initApp completed successfully');
+        }).catch(function(e) {
+            console.error('[enterApp] initApp error:', e);
+            showNotification('Error al cargar datos. Se usa modo local.', 'error');
+            // Render with whatever local data we have
+            try {
+                loadFromLocal();
+                renderAll();
+                recalculateAll();
+                setupEventDelegation();
+            } catch (e2) {
+                console.error('[enterApp] Fallback render error:', e2);
+            }
+        });
     }
 
     function handleLogout() {
@@ -2569,6 +2584,10 @@
         await loadCourseData();
         renderAll();
         recalculateAll();
+
+        // Update course selectors and lists to reflect the active course
+        renderCourseSelector();
+        renderCourseList();
 
         // Setup realtime listener for the new course
         setupRealtimeSync();
@@ -4602,32 +4621,56 @@
     }
 
     async function initApp() {
-        // Load course list
-        await loadCourseList();
+        console.log('[initApp] Starting...');
 
-        // Load data for current course
-        await loadCourseData();
+        // Load course list (with timeout)
+        try {
+            await Promise.race([
+                loadCourseList(),
+                new Promise(function(_, reject) { setTimeout(function() { reject(new Error('loadCourseList timeout')); }, 8000); })
+            ]);
+        } catch (e) {
+            console.warn('[initApp] loadCourseList failed, using local fallback:', e.message);
+            courseList = JSON.parse(localStorage.getItem('courseList') || '["2025-2026"]');
+            var savedCourse = localStorage.getItem('currentCourse');
+            if (savedCourse && courseList.indexOf(savedCourse) !== -1) currentCourse = savedCourse;
+            renderCourseSelector();
+            applyCoursePalette();
+        }
+
+        // Load data for current course (with timeout)
+        try {
+            await Promise.race([
+                loadCourseData(),
+                new Promise(function(_, reject) { setTimeout(function() { reject(new Error('loadCourseData timeout')); }, 8000); })
+            ]);
+        } catch (e) {
+            console.warn('[initApp] loadCourseData failed, using local fallback:', e.message);
+            loadFromLocal();
+        }
 
         // Render everything
         renderAll();
         recalculateAll();
 
         // Populate teacher department selector
-        populateTeacherDeptSelect();
+        try { populateTeacherDeptSelect(); } catch (e) { console.warn('[initApp] populateTeacherDeptSelect error:', e); }
 
         // Setup event delegation
-        setupEventDelegation();
+        try { setupEventDelegation(); } catch (e) { console.warn('[initApp] setupEventDelegation error:', e); }
 
         // Setup realtime sync
-        setupRealtimeSync();
+        try { setupRealtimeSync(); } catch (e) { console.warn('[initApp] setupRealtimeSync error:', e); }
 
         // Setup config panel
-        setupConfigPanel();
+        try { setupConfigPanel(); } catch (e) { console.warn('[initApp] setupConfigPanel error:', e); }
 
         // Load users panel for admin
         if (currentUser && currentUser.role === 'admin') {
-            loadUsersPanel();
+            try { loadUsersPanel(); } catch (e) { console.warn('[initApp] loadUsersPanel error:', e); }
         }
+
+        console.log('[initApp] Completed successfully');
     }
 
     // =============================================
@@ -4659,8 +4702,12 @@
                     }
                     document.getElementById('loginOverlay').classList.add('hidden');
                     document.getElementById('mainApp').style.display = 'block';
-                    setupUserInterface();
-                    initApp();
+                    try { setupUserInterface(); } catch (e) { console.error('[autoLogin] setupUserInterface error:', e); }
+                    initApp().catch(function(e) {
+                        console.error('[autoLogin] initApp error:', e);
+                        // Don't kick user out, just render with local data
+                        try { loadFromLocal(); renderAll(); recalculateAll(); } catch(e2) { console.error(e2); }
+                    });
                 }
             } catch (e) {
                 localStorage.removeItem('currentUser');
@@ -4676,6 +4723,14 @@
         });
         document.getElementById('loginPassword').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') handleLogin();
+        });
+
+        // Global error handler — log everything to help debug
+        window.addEventListener('error', function(e) {
+            console.error('[GLOBAL ERROR]', e.message, e.filename, e.lineno, e.colno);
+        });
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('[UNHANDLED PROMISE]', e.reason);
         });
 
         // Add user button (admin panel)
