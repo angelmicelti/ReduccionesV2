@@ -2114,45 +2114,55 @@
         const username = document.getElementById('loginUsername').value.trim();
         const password = document.getElementById('loginPassword').value;
 
-        console.log('[handleLogin] Attempting login for:', username);
+        console.log('[handleLogin v6] Attempting login for:', username, '(pass len:', password ? password.length : 0, ')');
 
         if (!username || !password) {
             showNotification('Por favor, introduce usuario y contraseña', 'error');
             return;
         }
 
+        console.log('[handleLogin v6] Step 1: hashing password...');
         const hashedPw = hashPassword(password);
+        console.log('[handleLogin v6] Step 2: hash done =', hashedPw);
 
         // ==========================================
         // STEP 1: Check localStorage FIRST (instant)
         // ==========================================
+        console.log('[handleLogin v6] Step 3: checking localStorage...');
         try {
             var localUsers = getLocalUsers();
+            console.log('[handleLogin v6] Step 4: localUsers keys =', Object.keys(localUsers));
             var deletedArr = JSON.parse(localStorage.getItem('deletedUsers') || '[]');
 
             if (deletedArr.indexOf(username) !== -1) {
+                console.log('[handleLogin v6] User is in deleted list');
                 showNotification('Usuario o contraseña incorrectos', 'error');
                 return;
             }
 
+            console.log('[handleLogin v6] Step 5: looking for user', username, 'in locals...');
             if (localUsers[username]) {
+                console.log('[handleLogin v6] Step 6: user found locally, comparing passwords...');
                 if (localUsers[username].passwordHash === hashedPw) {
-                    console.log('[handleLogin] Local login OK, role:', localUsers[username].role);
+                    console.log('[handleLogin v6] Step 7: Local login OK, role:', localUsers[username].role);
                     enterApp({ username: username, name: localUsers[username].name || username, role: localUsers[username].role });
                     return;
                 } else {
+                    console.log('[handleLogin v6] Step 6b: Password mismatch! local=', localUsers[username].passwordHash, 'typed=', hashedPw);
                     showNotification('Usuario o contraseña incorrectos', 'error');
                     return;
                 }
+            } else {
+                console.log('[handleLogin v6] Step 5b: User NOT found locally');
             }
         } catch (localError) {
-            console.warn('[handleLogin] localStorage error:', localError.message);
+            console.error('[handleLogin v6] localStorage ERROR:', localError);
         }
 
         // ==========================================
         // STEP 2: Check Firestore (with timeout)
         // ==========================================
-        console.log('[handleLogin] Not found locally, checking Firestore...');
+        console.log('[handleLogin v6] Step 8: checking Firestore...');
         var loginBtn = document.getElementById('loginBtn');
         loginBtn.disabled = true;
         loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
@@ -2161,30 +2171,26 @@
             var firestoreResult = null;
 
             try {
-                var timeoutId = setTimeout(function() {
-                    console.warn('[handleLogin] Firestore timeout after 5s');
-                }, 5000);
-
                 var firestorePromise = db.collection('users').doc(username).get();
                 var timeoutPromise = new Promise(function(resolve) {
                     setTimeout(function() { resolve(null); }, 5000);
                 });
 
+                console.log('[handleLogin v6] Step 9: waiting for Firestore (5s timeout)...');
                 firestoreResult = await Promise.race([firestorePromise, timeoutPromise]);
-                clearTimeout(timeoutId);
+                console.log('[handleLogin v6] Step 10: Firestore result =', firestoreResult ? (firestoreResult.exists ? 'exists' : 'not_found') : 'timeout');
             } catch (firestoreError) {
-                console.warn('[handleLogin] Firestore error:', firestoreError.message);
+                console.error('[handleLogin v6] Firestore ERROR:', firestoreError);
             }
 
             if (firestoreResult && firestoreResult.exists) {
                 var userData = firestoreResult.data();
                 if (userData.passwordHash === hashedPw) {
-                    // Save to localStorage for future instant logins
                     var lu = getLocalUsers();
                     lu[username] = userData;
                     saveLocalUsers(lu);
 
-                    console.log('[handleLogin] Firestore login OK, role:', userData.role);
+                    console.log('[handleLogin v6] Firestore login OK, role:', userData.role);
                     enterApp({ username: username, name: userData.name || username, role: userData.role });
                     return;
                 } else {
@@ -2204,18 +2210,17 @@
                 var allSnapshot = await Promise.race([allUsersPromise, allTimeoutPromise]);
 
                 if (allSnapshot && !allSnapshot.empty) {
-                    // Users exist in Firestore but this one is not registered
                     showNotification('Usuario o contraseña incorrectos', 'error');
                     loginBtn.disabled = false;
                     loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
                     return;
                 }
             } catch (e) {
-                console.warn('[handleLogin] Could not check Firestore users:', e.message);
+                console.warn('[handleLogin v6] Could not check Firestore users:', e.message);
             }
 
             // No users exist anywhere: create first admin
-            console.log('[handleLogin] No users found, creating first admin');
+            console.log('[handleLogin v6] Creating first admin');
             var newUserData = {
                 username: username,
                 name: username,
@@ -2232,7 +2237,7 @@
             return;
 
         } catch (fatalError) {
-            console.error('[handleLogin] Fatal error:', fatalError);
+            console.error('[handleLogin v6] Fatal error:', fatalError);
             showNotification('Error al iniciar sesión. Inténtalo de nuevo.', 'error');
         } finally {
             loginBtn.disabled = false;
