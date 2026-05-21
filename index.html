@@ -4566,7 +4566,7 @@
     // =============================================
     // BOOTSTRAP
     // =============================================
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', async function() {
         setupPWA();
 
         // Check for stored session
@@ -4579,11 +4579,20 @@
                     localStorage.removeItem('currentUser');
                     currentUser = null;
                 } else {
-                    // Verify role is still current (may have been changed by admin)
-                    var localUsers = getLocalUsers();
-                    if (localUsers[currentUser.username] && localUsers[currentUser.username].role !== currentUser.role) {
-                        currentUser.role = localUsers[currentUser.username].role;
-                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    // Verify role against Firestore first (most authoritative source)
+                    try {
+                        var userDoc = await db.collection('users').doc(currentUser.username).get();
+                        if (userDoc.exists && userDoc.data().role) {
+                            currentUser.role = userDoc.data().role;
+                            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        }
+                    } catch(e) {
+                        // Firestore unavailable, fallback to localStorage
+                        var localUsers = getLocalUsers();
+                        if (localUsers[currentUser.username] && localUsers[currentUser.username].role !== currentUser.role) {
+                            currentUser.role = localUsers[currentUser.username].role;
+                            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        }
                     }
                     document.getElementById('loginOverlay').classList.add('hidden');
                     document.getElementById('mainApp').style.display = 'block';
