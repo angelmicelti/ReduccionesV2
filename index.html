@@ -4579,6 +4579,12 @@
                     localStorage.removeItem('currentUser');
                     currentUser = null;
                 } else {
+                    // Verify role is still current (may have been changed by admin)
+                    var localUsers = getLocalUsers();
+                    if (localUsers[currentUser.username] && localUsers[currentUser.username].role !== currentUser.role) {
+                        currentUser.role = localUsers[currentUser.username].role;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    }
                     document.getElementById('loginOverlay').classList.add('hidden');
                     document.getElementById('mainApp').style.display = 'block';
                     setupUserInterface();
