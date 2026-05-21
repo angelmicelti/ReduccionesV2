@@ -2166,6 +2166,10 @@
                 if (userDoc.exists) {
                     const userData = userDoc.data();
                     if (userData.passwordHash === hashedPw) {
+                        // Save to localStorage so offline login works in the future
+                        var localUsers = getLocalUsers();
+                        localUsers[username] = userData;
+                        saveLocalUsers(localUsers);
                         enterApp({ username: username, name: userData.name || username, role: userData.role });
                         return;
                     } else {
@@ -2438,7 +2442,8 @@
     function renderCourseSelector() {
         const selector = document.getElementById('courseSelector');
         selector.innerHTML = '';
-        courseList.forEach(function(c) {
+        var sorted = courseList.slice().sort();
+        sorted.forEach(function(c) {
             const opt = document.createElement('option');
             opt.value = c;
             opt.textContent = 'Curso ' + c;
@@ -2462,13 +2467,29 @@
         container.innerHTML = '';
         // Sort courses ascending (oldest first) for display
         var sortedCourses = courseList.slice().sort();
-        sortedCourses.forEach(function(c) {
+        // Palette of distinct soft hues for each course
+        var palette = [
+            { bg: '#dbe4ff', border: '#a5d8ff', icon: '#4dabf7' },  // blue
+            { bg: '#d3f9d8', border: '#8ce99a', icon: '#51cf66' },  // green
+            { bg: '#fff3bf', border: '#ffe066', icon: '#fcc419' },  // yellow
+            { bg: '#ffd8a8', border: '#ffc078', icon: '#ff922b' },  // orange
+            { bg: '#ffdee2', border: '#ffa8b7', icon: '#ff6b6b' },  // red
+            { bg: '#e5dbff', border: '#c3b1ff', icon: '#9775fa' },  // violet
+            { bg: '#c3fae8', border: '#63e6be', icon: '#20c997' },  // teal
+            { bg: '#99e9f2', border: '#3bc9db', icon: '#15aabf' }   // cyan
+        ];
+        sortedCourses.forEach(function(c, idx) {
+            var color = palette[idx % palette.length];
             const isCurrent = (c === currentCourse);
             const item = document.createElement('div');
             item.className = 'course-list-item' + (isCurrent ? ' current' : '');
+            if (!isCurrent) {
+                item.style.background = color.bg;
+                item.style.borderColor = color.border;
+            }
             item.innerHTML =
                 '<div class="course-list-item-name" data-course="' + c + '">' +
-                    '<i class="fas fa-' + (isCurrent ? 'circle-dot' : 'circle') + '"></i>' +
+                    '<i class="fas fa-' + (isCurrent ? 'circle-dot' : 'circle') + '" style="color:' + (isCurrent ? '#4dabf7' : color.icon) + ';"></i>' +
                     '<span>Curso ' + c + '</span>' +
                     (isCurrent ? ' <span style="font-size:0.75rem;color:#1971c2;font-weight:400;">(activo)</span>' : '') +
                 '</div>' +
