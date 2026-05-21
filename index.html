@@ -1697,7 +1697,7 @@
                     <h3>Horas de reducción Enseñanza Digital</h3>
                     <div class="resumen-value" id="horas-ensenanza-digital">0</div>
                     <div class="resumen-warning" id="warning-ensenanza-digital">
-                        <i class="fas fa-exclamation-triangle"></i> Deben ser 4 horas
+                        <i class="fas fa-exclamation-triangle"></i> Deben ser <span id="expected-ed-label">4</span> horas
                     </div>
                 </div>
                 <div class="resumen-item total">
@@ -2332,8 +2332,10 @@
     function updateExpectedTotalLabel() {
         var expectedEnsenanzaDigital = 3 + getEscuela40Hours();
         var expectedTotal = 24 + 36 + expectedEnsenanzaDigital;
-        var label = document.getElementById('expected-total-label');
-        if (label) label.textContent = expectedTotal;
+        var labelTotal = document.getElementById('expected-total-label');
+        if (labelTotal) labelTotal.textContent = expectedTotal;
+        var labelED = document.getElementById('expected-ed-label');
+        if (labelED) labelED.textContent = expectedEnsenanzaDigital;
     }
 
     function renderCourseList() {
