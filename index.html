@@ -2335,14 +2335,11 @@
                 var u = doc.data();
                 if (u.username && deletedArr.indexOf(u.username) === -1) {
                     if (usersMap[u.username]) {
-                        // User exists in both localStorage and Firestore.
-                        // Prefer localStorage role (admin may have just changed it),
-                        // but merge other fields from Firestore (name, etc.)
-                        usersMap[u.username].name = u.name || usersMap[u.username].name;
-                        usersMap[u.username].passwordHash = u.passwordHash || usersMap[u.username].passwordHash;
-                        // Keep the localStorage role — do NOT overwrite from Firestore
+                        // User exists locally — keep ALL local data untouched.
+                        // Do NOT overwrite role, name, or passwordHash from Firestore.
+                        // localStorage is the authoritative source for existing users.
                     } else {
-                        // New user from Firestore not yet in localStorage
+                        // New user from Firestore not yet in localStorage — add them
                         usersMap[u.username] = u;
                     }
                 }
