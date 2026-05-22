@@ -28,6 +28,16 @@
     <title>Gestión de Reducciones Horarias</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ===== CSS CUSTOM PROPERTIES — Course Theme ===== */
+        :root {
+            --accent: #4dabf7;
+            --accent-dark: #3b8fd4;
+            --accent-darker: #3b5bdb;
+            --accent-rgb: 77, 171, 247;
+            --accent-light: #dbe4ff;
+            --accent-bg: #e7f5ff;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -41,6 +51,15 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
             padding: 10px;
             min-height: 100vh;
+        }
+
+        /* Smooth transitions for theme changes */
+        .login-card i, .login-btn, h1 i, .config-header-left i, .config-panel-title i,
+        .config-btn-primary, .btn-primary, .new-course-row button,
+        .course-list-item-name i, .resumen-item, .resumen-value, .summary-value,
+        .otras-name-picker.has-value, .notification, .notification.info,
+        .modal-header h3 i, .modal-batch-btn, .hours-cell {
+            transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
         }
 
         .container {
@@ -84,7 +103,7 @@
 
         .login-card i {
             font-size: 3rem;
-            color: #4dabf7;
+            color: var(--accent);
             margin-bottom: 15px;
         }
 
@@ -113,14 +132,14 @@
 
         .login-card input:focus {
             outline: none;
-            border-color: #4dabf7;
-            box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.2);
         }
 
         .login-btn {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(to right, #4dabf7, #339af0);
+            background: linear-gradient(to right, var(--accent), var(--accent-dark));
             color: white;
             border: none;
             border-radius: 10px;
@@ -132,7 +151,7 @@
 
         .login-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(77, 171, 247, 0.4);
+            box-shadow: 0 5px 20px rgba(var(--accent-rgb), 0.4);
         }
 
         /* ===== HEADER ===== */
@@ -169,7 +188,7 @@
         }
 
         h1 i {
-            color: #4dabf7;
+            color: var(--accent);
         }
 
         .header-right {
@@ -309,7 +328,7 @@
         }
 
         .config-header-left i {
-            color: #4dabf7;
+            color: var(--accent);
         }
 
         .config-chevron {
@@ -358,7 +377,7 @@
         }
 
         .config-panel-title i {
-            color: #4dabf7;
+            color: var(--accent);
         }
 
         .config-panel-body {
@@ -387,8 +406,8 @@
             transform: translateY(-1px);
         }
 
-        .config-btn-primary { background: #4dabf7; color: white; }
-        .config-btn-primary:hover { background: #3b8fd4; }
+        .config-btn-primary { background: var(--accent); color: white; }
+        .config-btn-primary:hover { background: var(--accent-dark); }
         .config-btn-export { background: #7950f2; color: white; }
         .config-btn-export:hover { background: #6741d9; }
         .config-btn-import { background: #f76707; color: white; }
@@ -469,9 +488,9 @@
         .profesorado-item input[type="text"]:hover { border-color: #dee2e6; background: white; }
         .profesorado-item input[type="text"]:focus {
             outline: none;
-            border-color: #4dabf7;
+            border-color: var(--accent);
             background: white;
-            box-shadow: 0 0 0 2px rgba(77,171,247,0.15);
+            box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.15);
         }
         .profesorado-item-del {
             background: none;
@@ -577,7 +596,7 @@
             outline: none;
             border-color: var(--primary);
             background: white;
-            box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.15);
+            box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.15);
         }
         .add-user-input::placeholder {
             color: #adb5bd;
@@ -638,7 +657,7 @@
 
         .new-course-row button {
             padding: 8px 14px;
-            background: #4dabf7;
+            background: var(--accent);
             color: white;
             border: none;
             border-radius: 8px;
@@ -649,7 +668,7 @@
         }
 
         .new-course-row button:hover {
-            background: #3b8fd4;
+            background: var(--accent-dark);
         }
 
         /* Course list in Config panel */
@@ -677,8 +696,8 @@
         }
 
         .course-list-item.current {
-            background: #dbe4ff;
-            border-color: #74c0fc;
+            background: var(--accent-light);
+            border-color: var(--accent);
             font-weight: 600;
         }
 
@@ -694,14 +713,14 @@
             flex: 1;
         }
         .course-list-item-name:hover {
-            background: rgba(77, 171, 247, 0.1);
+            background: rgba(var(--accent-rgb), 0.1);
         }
         .course-list-item.current .course-list-item-name:hover {
-            background: rgba(77, 171, 247, 0.18);
+            background: rgba(var(--accent-rgb), 0.18);
         }
 
         .course-list-item-name i {
-            color: #4dabf7;
+            color: var(--accent);
             font-size: 0.8rem;
         }
 
@@ -748,8 +767,8 @@
             gap: 8px;
         }
 
-        .btn-primary { background: #4dabf7; color: white; }
-        .btn-primary:hover { background: #3b8fd4; transform: translateY(-2px); }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); }
 
         .file-input { display: none; }
 
@@ -851,12 +870,13 @@
         }
 
         .dept-add-btn {
-            background: #e7f5ff;
-            color: #1971c2;
+            background: var(--accent-bg);
+            color: var(--accent-darker);
         }
 
         .dept-add-btn:hover {
-            background: #d0ebff;
+            background: var(--accent-light);
+            color: var(--accent-dark);
         }
 
         .dept-remove-btn {
@@ -903,8 +923,8 @@
 
         input[type="text"]:focus {
             outline: none;
-            border-color: #4dabf7;
-            box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.2);
         }
 
         input[type="number"] {
@@ -921,7 +941,7 @@
         .hours-cell {
             text-align: center;
             font-weight: 600;
-            color: #3b5bdb;
+            color: var(--accent-darker);
             width: 52px;
             min-width: 52px;
             max-width: 52px;
@@ -978,7 +998,7 @@
         .summary-value {
             font-size: 1.2rem;
             font-weight: 700;
-            color: #3b5bdb;
+            color: var(--accent-darker);
         }
 
         /* Orientación */
@@ -1109,10 +1129,10 @@
             transition: border-color 0.2s, box-shadow 0.2s;
             min-height: 32px;
         }
-        .otras-name-picker:hover { border-color: #4dabf7; }
+        .otras-name-picker:hover { border-color: var(--accent); }
         .otras-name-picker.has-value {
-            border-color: #a9d6ff;
-            background: #e7f5ff;
+            border-color: var(--accent-light);
+            background: var(--accent-bg);
             font-weight: 600;
         }
         .otras-name-picker[disabled] {
@@ -1136,8 +1156,8 @@
         }
         .teacher-picker-select:focus {
             outline: none;
-            border-color: #4dabf7;
-            box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.2);
         }
 
         /* Report Modal Options */
@@ -1160,7 +1180,7 @@
             align-items: center;
             gap: 6px;
         }
-        .report-section-title i { color: #4dabf7; }
+        .report-section-title i { color: var(--accent); }
         .report-checkbox {
             display: flex;
             align-items: center;
@@ -1174,7 +1194,7 @@
         .report-checkbox:hover { color: #2c3e50; }
         .report-checkbox input[type="checkbox"] {
             width: auto;
-            accent-color: #4dabf7;
+            accent-color: var(--accent);
         }
 
         /* Resumen General */
@@ -1197,9 +1217,9 @@
 
         .resumen-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
-            max-width: 1400px;
+            max-width: 960px;
             margin: 0 auto;
         }
 
@@ -1209,7 +1229,7 @@
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             text-align: center;
-            border-left: 4px solid #4d79ff;
+            border-left: 4px solid var(--accent);
             position: relative;
         }
 
@@ -1220,7 +1240,7 @@
         .resumen-item.total {
             border-left-color: #40c057;
             background: #ebfbee;
-            grid-column: span 2;
+            grid-column: 1 / -1;
         }
 
         .resumen-item h3 { font-size: 1.1rem; margin-bottom: 15px; color: #495057; }
@@ -1228,7 +1248,7 @@
         .resumen-value {
             font-size: 1.8rem;
             font-weight: 700;
-            color: #3b5bdb;
+            color: var(--accent-darker);
         }
 
         .resumen-item.total .resumen-value { font-size: 2.2rem; color: #2b8a3e; }
@@ -1257,7 +1277,7 @@
             margin-top: 15px;
         }
 
-        .footer-links a { color: #a9d6ff; text-decoration: none; transition: color 0.3s; }
+        .footer-links a { color: var(--accent-light); text-decoration: none; transition: color 0.3s; }
         .footer-links a:hover { color: white; }
 
         /* Notification */
@@ -1267,7 +1287,7 @@
             right: 20px;
             padding: 15px 25px;
             border-radius: 8px;
-            background: #4dabf7;
+            background: var(--accent);
             color: white;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             z-index: 1000;
@@ -1281,7 +1301,7 @@
         .notification.show { transform: translateX(0); }
         .notification.success { background: #40c057; }
         .notification.error { background: #fa5252; }
-        .notification.info { background: #4dabf7; }
+        .notification.info { background: var(--accent); }
 
         /* ===== READ ONLY MODE ===== */
         .read-only input[type="text"],
@@ -1371,7 +1391,7 @@
             gap: 10px;
         }
 
-        .modal-header h3 i { color: #4dabf7; }
+        .modal-header h3 i { color: var(--accent); }
 
         .modal-close {
             background: none;
@@ -1420,7 +1440,7 @@
 
         .modal-batch-btn {
             padding: 8px 14px;
-            background: #4dabf7;
+            background: var(--accent);
             color: white;
             border: none;
             border-radius: 8px;
@@ -1431,7 +1451,7 @@
             transition: background 0.2s;
         }
 
-        .modal-batch-btn:hover { background: #3b8fd4; }
+        .modal-batch-btn:hover { background: var(--accent-dark); }
 
         .import-table {
             width: 100%;
@@ -2523,7 +2543,7 @@
             }
             item.innerHTML =
                 '<div class="course-list-item-name" data-course="' + c + '">' +
-                    '<i class="fas fa-' + (isCurrent ? 'circle-dot' : 'circle') + '" style="color:' + (isCurrent ? '#4dabf7' : color.icon) + ';"></i>' +
+                    '<i class="fas fa-' + (isCurrent ? 'circle-dot' : 'circle') + '" style="color:' + (isCurrent ? 'var(--accent)' : color.icon) + ';"></i>' +
                     '<span>Curso ' + c + '</span>' +
                     (isCurrent ? ' <span style="font-size:0.75rem;color:#1971c2;font-weight:400;">(activo)</span>' : '') +
                 '</div>' +
@@ -2575,10 +2595,41 @@
             // Re-render
             renderCourseSelector();
 
+            // Update theme since indices may have changed
+            applyCourseTheme();
+
             showNotification('Curso ' + courseName + ' eliminado correctamente', 'success');
         } catch (e) {
             showNotification('Error al eliminar curso: ' + e.message, 'error');
         }
+    }
+
+    // ===== Course-based color theme =====
+    var courseThemes = [
+        { accent: '#4dabf7', accentDark: '#3b8fd4', accentDarker: '#3b5bdb', accentRgb: '77, 171, 247', accentLight: '#dbe4ff', accentBg: '#e7f5ff' },
+        { accent: '#51cf66', accentDark: '#40c057', accentDarker: '#2b8a3e', accentRgb: '81, 207, 102', accentLight: '#d3f9d8', accentBg: '#ebfbee' },
+        { accent: '#fcc419', accentDark: '#fab005', accentDarker: '#e67700', accentRgb: '252, 196, 25',  accentLight: '#fff3bf', accentBg: '#fff9db' },
+        { accent: '#ff922b', accentDark: '#fd7e14', accentDarker: '#e8590c', accentRgb: '255, 146, 43', accentLight: '#ffd8a8', accentBg: '#fff4e6' },
+        { accent: '#ff6b6b', accentDark: '#fa5252', accentDarker: '#e03131', accentRgb: '255, 107, 107', accentLight: '#ffdee2', accentBg: '#fff5f5' },
+        { accent: '#9775fa', accentDark: '#845ef7', accentDarker: '#7048e8', accentRgb: '151, 117, 250', accentLight: '#e5dbff', accentBg: '#f3f0ff' },
+        { accent: '#20c997', accentDark: '#12b886', accentDarker: '#0ca678', accentRgb: '32, 201, 151', accentLight: '#c3fae8', accentBg: '#e6fcf5' },
+        { accent: '#15aabf', accentDark: '#1098ad', accentDarker: '#0c8599', accentRgb: '21, 170, 191', accentLight: '#99e9f2', accentBg: '#e3fafc' }
+    ];
+
+    function applyCourseTheme() {
+        var sortedCourses = courseList.slice().sort();
+        var idx = sortedCourses.indexOf(currentCourse);
+        var theme = courseThemes[idx >= 0 ? idx % courseThemes.length : 0];
+        var root = document.documentElement;
+        root.style.setProperty('--accent', theme.accent);
+        root.style.setProperty('--accent-dark', theme.accentDark);
+        root.style.setProperty('--accent-darker', theme.accentDarker);
+        root.style.setProperty('--accent-rgb', theme.accentRgb);
+        root.style.setProperty('--accent-light', theme.accentLight);
+        root.style.setProperty('--accent-bg', theme.accentBg);
+        // Update PWA theme-color meta tag
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.content = theme.accent;
     }
 
     async function switchCourse(newCourse) {
@@ -2597,6 +2648,9 @@
         // Switch to new course
         currentCourse = newCourse;
         localStorage.setItem('currentCourse', currentCourse);
+
+        // Apply the color theme for the new course
+        applyCourseTheme();
 
         // Load new course data
         await loadCourseData();
@@ -2660,6 +2714,9 @@
             // Auto-switch to the new course
             currentCourse = courseName;
             localStorage.setItem('currentCourse', currentCourse);
+
+            // Apply theme for the new course
+            applyCourseTheme();
 
             // Load the new empty data
             await loadCourseData();
@@ -3390,7 +3447,7 @@
             document.getElementById('horas-directivo').style.color = '#e63946';
         } else {
             document.getElementById('warning-directivo').style.display = 'none';
-            document.getElementById('horas-directivo').style.color = '#3b5bdb';
+            document.getElementById('horas-directivo').style.color = 'var(--accent-darker)';
         }
 
         if (horasPlanCentro !== 36) {
@@ -3399,7 +3456,7 @@
             document.getElementById('horas-plan-centro').style.color = '#e63946';
         } else {
             document.getElementById('warning-plan-centro').style.display = 'none';
-            document.getElementById('horas-plan-centro').style.color = '#3b5bdb';
+            document.getElementById('horas-plan-centro').style.color = 'var(--accent-darker)';
         }
 
         if (horasEnsenanzaDigital !== expectedEnsenanzaDigital) {
@@ -3408,7 +3465,7 @@
             document.getElementById('horas-ensenanza-digital').style.color = '#e63946';
         } else {
             document.getElementById('warning-ensenanza-digital').style.display = 'none';
-            document.getElementById('horas-ensenanza-digital').style.color = '#3b5bdb';
+            document.getElementById('horas-ensenanza-digital').style.color = 'var(--accent-darker)';
         }
 
         if (totalHoras !== expectedTotal) {
@@ -4716,6 +4773,9 @@
 
         // Load data for current course
         await loadCourseData();
+
+        // Apply color theme for the current course
+        applyCourseTheme();
 
         // Render everything
         renderAll();
