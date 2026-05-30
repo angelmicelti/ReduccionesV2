@@ -1981,6 +1981,85 @@
     const db = firebase.firestore();
 
     // =============================================
+    // NAMESPACED COLLECTION CONSTANTS
+    // All collections are prefixed with 'rh_' to avoid
+    // collisions with other apps sharing the same database.
+    // =============================================
+    const COL_USERS = 'rh_users';
+    const COL_CURSOS = 'rh_cursos';
+    const COL_CURSOS_META = 'rh_cursos_meta';
+    const APP_TAG = 'rh'; // Tag embedded in documents for extra safety
+    const MIGRATION_FLAG = 'rh_migrated_v1';
+
+    // =============================================
+    // DATA MIGRATION
+    // Migrates data from old (unprefixed) collections
+    // to the new namespaced collections on first load.
+    // =============================================
+    async function migrateOldDataIfNeeded() {
+        if (localStorage.getItem(MIGRATION_FLAG)) return;
+        console.log('[Migración] Iniciando migración de datos a colecciones prefijadas...');
+        try {
+            // --- Migrate users ---
+            try {
+                const oldUsersSnap = await db.collection('users').get();
+                let userCount = 0;
+                const batch1 = db.batch();
+                oldUsersSnap.forEach(function(doc) {
+                    const d = doc.data();
+                    d._app = APP_TAG;
+                    batch1.set(db.collection(COL_USERS).doc(doc.id), d);
+                    userCount++;
+                });
+                if (userCount > 0) {
+                    await batch1.commit();
+                    console.log('[Migración] ' + userCount + ' usuarios migrados a ' + COL_USERS);
+                }
+            } catch(e) {
+                console.warn('[Migración] Error migrando usuarios (puede que no existan):', e.message);
+            }
+
+            // --- Migrate cursos ---
+            try {
+                const oldCursosSnap = await db.collection('cursos').get();
+                let cursoCount = 0;
+                const batch2 = db.batch();
+                oldCursosSnap.forEach(function(doc) {
+                    const d = doc.data();
+                    d._app = APP_TAG;
+                    batch2.set(db.collection(COL_CURSOS).doc(doc.id), d);
+                    cursoCount++;
+                });
+                if (cursoCount > 0) {
+                    await batch2.commit();
+                    console.log('[Migración] ' + cursoCount + ' cursos migrados a ' + COL_CURSOS);
+                }
+            } catch(e) {
+                console.warn('[Migración] Error migrando cursos:', e.message);
+            }
+
+            // --- Migrate cursos_meta ---
+            try {
+                const oldMetaDoc = await db.collection('cursos_meta').doc('lista').get();
+                if (oldMetaDoc.exists) {
+                    const d = oldMetaDoc.data();
+                    d._app = APP_TAG;
+                    await db.collection(COL_CURSOS_META).doc('lista').set(d);
+                    console.log('[Migración] cursos_meta migrado a ' + COL_CURSOS_META);
+                }
+            } catch(e) {
+                console.warn('[Migración] Error migrando cursos_meta:', e.message);
+            }
+
+            localStorage.setItem(MIGRATION_FLAG, new Date().toISOString());
+            console.log('[Migración] Completada correctamente.');
+            showNotification('Datos migrados a colecciones aisladas', 'success');
+        } catch(e) {
+            console.error('[Migración] Error general:', e);
+        }
+    }
+
+    // =============================================
     // GLOBAL STATE
     // =============================================
     let currentUser = null;
@@ -2181,7 +2260,7 @@
 
     // Save users to Firestore (fire-and-forget, won't block UI)
     function syncUserToFirestore(username, userData) {
-        db.collection('users').doc(username).set(userData).catch(function(err) {
+        db.collection(COL_USERS).doc(username).set(Object.assign({}, userData, { _app: APP_TAG })).catch(function(err) {
             console.warn('No se pudo sincronizar usuario con Firestore:', err.message);
         });
     }
@@ -2200,7 +2279,7 @@
         // === ATTEMPT 1: Firestore ===
         try {
             // Add timeout to prevent Firestore from hanging indefinitely
-            const firestorePromise = db.collection('users').get();
+            const firestorePromise = db.collection(COL_USERS).get();
             const timeoutPromise = new Promise(function(resolve) {
                 setTimeout(function() { resolve(null); }, 5000);
             });
@@ -2218,7 +2297,7 @@
                     role: 'admin',
                     createdAt: new Date().toISOString()
                 };
-                await db.collection('users').doc(username).set(userData);
+                await db.collection(COL_USERS).doc(username).set(Object.assign({}, userData, { _app: APP_TAG }));
                 // Also save locally as backup
                 const localUsers = getLocalUsers();
                 localUsers[username] = userData;
@@ -2228,7 +2307,7 @@
                 return;
             } else {
                 // Check if user exists in Firestore
-                const userDoc = await db.collection('users').doc(username).get();
+                const userDoc = await db.collection(COL_USERS).doc(username).get();
                 if (userDoc.exists) {
                     const userData = userDoc.data();
                     if (userData.passwordHash === hashedPw) {
@@ -2345,7 +2424,7 @@
         // Try to merge with Firestore data (but exclude locally deleted users)
         var deletedArr = JSON.parse(localStorage.getItem('deletedUsers') || '[]');
         try {
-            var snapshot = await db.collection('users').get();
+            var snapshot = await db.collection(COL_USERS).get();
             snapshot.forEach(function(doc) {
                 var u = doc.data();
                 if (u.username && deletedArr.indexOf(u.username) === -1) {
@@ -2421,7 +2500,7 @@
                 }
 
                 // Try Firestore update
-                db.collection('users').doc(username).update({ role: newRole }).catch(function(err) {
+                db.collection(COL_USERS).doc(username).update({ role: newRole }).catch(function(err) {
                     console.warn('No se pudo actualizar rol en Firestore:', err.message);
                 });
 
@@ -2452,7 +2531,7 @@
                 localStorage.setItem('deletedUsers', JSON.stringify(deletedArr));
 
                 // Try Firestore delete (don't block UI on this)
-                db.collection('users').doc(username).delete().catch(function(err) {
+                db.collection(COL_USERS).doc(username).delete().catch(function(err) {
                     console.warn('No se pudo eliminar de Firestore:', err.message);
                 });
 
@@ -2473,12 +2552,12 @@
     // =============================================
     async function loadCourseList() {
         try {
-            const doc = await db.collection('cursos_meta').doc('lista').get();
+            const doc = await db.collection(COL_CURSOS_META).doc('lista').get();
             if (doc.exists && doc.data().cursos) {
                 courseList = doc.data().cursos;
             } else {
                 courseList = ['2025-2026'];
-                await db.collection('cursos_meta').doc('lista').set({ cursos: courseList });
+                await db.collection(COL_CURSOS_META).doc('lista').set({ cursos: courseList, _app: APP_TAG });
             }
         } catch (e) {
             console.warn('Could not load course list from Firebase, using default:', e);
@@ -2593,12 +2672,12 @@
 
         try {
             // Remove from Firebase
-            await db.collection('cursos').doc(courseName).delete();
+            await db.collection(COL_CURSOS).doc(courseName).delete();
 
             // Update course list
             courseList = courseList.filter(function(c) { return c !== courseName; });
             courseList.sort().reverse();
-            await db.collection('cursos_meta').doc('lista').set({ cursos: courseList });
+            await db.collection(COL_CURSOS_META).doc('lista').set({ cursos: courseList, _app: APP_TAG });
             localStorage.setItem('courseList', JSON.stringify(courseList));
 
             // Also remove localStorage data for that course
@@ -2715,12 +2794,13 @@
 
             // Create new course as copy of structure (empty names)
             const structure = createEmptyStructure();
-            await db.collection('cursos').doc(courseName).set(structure);
+            structure._app = APP_TAG;
+            await db.collection(COL_CURSOS).doc(courseName).set(structure);
 
             // Update course list
             courseList.push(courseName);
             courseList.sort().reverse();
-            await db.collection('cursos_meta').doc('lista').set({ cursos: courseList });
+            await db.collection(COL_CURSOS_META).doc('lista').set({ cursos: courseList, _app: APP_TAG });
             localStorage.setItem('courseList', JSON.stringify(courseList));
 
             // Auto-switch to the new course
@@ -2797,7 +2877,8 @@
             };
             // Increment write counter for echo filtering
             _localWriteCounter++;
-            await db.collection('cursos').doc(currentCourse).set(saveObj, { merge: true });
+            saveObj._app = APP_TAG;
+            await db.collection(COL_CURSOS).doc(currentCourse).set(saveObj, { merge: true });
             return true;
         } catch (e) {
             console.error('Firebase save error:', e);
@@ -2828,7 +2909,7 @@
     async function restoreFromFirebase() {
         updateSyncStatus('syncing');
         try {
-            const doc = await db.collection('cursos').doc(currentCourse).get();
+            const doc = await db.collection(COL_CURSOS).doc(currentCourse).get();
             if (!doc.exists) {
                 showNotification('No hay datos en Firebase para este curso', 'info');
                 updateSyncStatus('synced');
@@ -2884,7 +2965,7 @@
         _localWriteCounter = 0;
         _lastSnapshotCounter = 0;
 
-        firebaseUnsubscribe = db.collection('cursos').doc(currentCourse).onSnapshot(function(doc) {
+        firebaseUnsubscribe = db.collection(COL_CURSOS).doc(currentCourse).onSnapshot(function(doc) {
             if (!doc.exists) {
                 updateSyncStatus('offline');
                 return;
@@ -4759,7 +4840,7 @@
         // Try to load from Firebase if available
         // Only overwrite local data if Firebase timestamp is newer (preserves offline edits)
         try {
-            const doc = await db.collection('cursos').doc(currentCourse).get();
+            const doc = await db.collection(COL_CURSOS).doc(currentCourse).get();
             if (doc.exists && doc.data().equipoDirectivo && doc.data().data) {
                 var localTs = localStorage.getItem('reduccionesData_' + currentCourse + '_ts');
                 var remoteTs = doc.data().lastModified;
@@ -4813,6 +4894,9 @@
     // =============================================
     document.addEventListener('DOMContentLoaded', function() {
         setupPWA();
+
+        // Migrate data from old collections to new namespaced ones (runs once)
+        migrateOldDataIfNeeded();
 
         // Check for stored session
         const storedUser = localStorage.getItem('currentUser');
